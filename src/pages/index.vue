@@ -308,7 +308,7 @@
     :copy-to-today-loading="loading.copyToToday"
     :selected-date="state.selectedDateObj"
     :unread-count="unreadCount"
-    @refresh="downloadData"
+    @refresh="() => downloadData(false, true)"
     @zoom="zoom"
     @open-messages="$refs.messageLog.drawer = true"
     @open-settings="$router.push('/settings')"
@@ -1488,12 +1488,15 @@ export default {
       }
     },
 
-    async downloadData(forceClear = false) {
+    async downloadData(forceClear = false, forceRefresh = false) {
       if (this.loading.download) return;
 
       try {
         this.loading.download = true;
-        const response = await dataProvider.loadData("classworks-data-" + this.state.dateString);
+        const response = await dataProvider.loadDataWithCacheFirst(
+          "classworks-data-" + this.state.dateString,
+          forceRefresh,
+        );
 
         if (response.success == false) {
           if (response.error.code === "NOT_FOUND") {
@@ -1524,7 +1527,9 @@ export default {
           };
           this.state.synced = true;
           this.state.showNoDataMessage = false;
-          this.$message.success("下载成功", "数据已更新");
+          if (forceRefresh) {
+            this.$message.success("下载成功", "数据已更新");
+          }
         }
       } catch (error) {
         // 数据加载失败时的处理
@@ -1631,7 +1636,7 @@ export default {
       try {
         // 加载学生列表
         try {
-          const response = await dataProvider.loadData("classworks-list-main");
+          const response = await dataProvider.loadDataWithCacheFirst("classworks-list-main");
 
           if (response.success != false && Array.isArray(response)) {
             this.state.studentList = response.map((student) => student.name);
@@ -1652,7 +1657,7 @@ export default {
 
     async loadSubjects() {
       try {
-        const subjectsResponse = await dataProvider.loadData("classworks-config-subject");
+        const subjectsResponse = await dataProvider.loadDataWithCacheFirst("classworks-config-subject");
         if (subjectsResponse && Array.isArray(subjectsResponse)) {
           // 更新科目列表
           this.state.availableSubjects = subjectsResponse;
@@ -1692,7 +1697,7 @@ export default {
 
       if (this.refreshBeforeEdit) {
         try {
-          await this.downloadData();
+          await this.downloadData(false, true);
         } catch (err) {
           console.error("刷新数据失败:", err);
           this.$message.error("刷新数据失败，可能显示的不是最新数据");
@@ -1833,7 +1838,7 @@ export default {
         this.state.isToday = dateStr === this.formatDate(this.getToday());
 
         // Load both data and subjects in parallel, force clear data when switching dates
-        await Promise.all([this.downloadData(true), this.loadSubjects()]);
+        await Promise.all([this.downloadData(true, true), this.loadSubjects()]);
       } catch (error) {
         console.error("Date processing error:", error);
         this.$message.error("日期处理错误", "请重新选择日期");
@@ -1860,7 +1865,7 @@ export default {
         if (!this.debouncedRealtimeRefresh) {
           this.debouncedRealtimeRefresh = debounce(async () => {
             const oldHomework = JSON.parse(JSON.stringify(this.state.boardData.homework));
-            await this.downloadData();
+            await this.downloadData(false, true);
             const now = new Date();
             const hh = String(now.getHours()).padStart(2, "0");
             const mm = String(now.getMinutes()).padStart(2, "0");
@@ -1898,7 +1903,7 @@ export default {
 
           // 检查是否是通知列表更新
           if (msg.key === "notification-list") {
-            this.loadPersistentNotifications();
+            this.loadPersistentNotifications(true);
             return;
           }
 
@@ -2540,9 +2545,9 @@ export default {
       }
     },
 
-    async loadPersistentNotifications() {
+    async loadPersistentNotifications(forceRefresh = false) {
       try {
-        const res = await dataProvider.loadData("notification-list");
+        const res = await dataProvider.loadDataWithCacheFirst("notification-list", forceRefresh);
         if (res && Array.isArray(res)) {
           this.persistentNotifications = res;
         } else if (res && res.success !== false && Array.isArray(res.data)) {

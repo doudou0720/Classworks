@@ -14,7 +14,7 @@ export const useExamStore = defineStore("exam", {
       if (this.loadingList) return;
       this.loadingList = true;
       try {
-        const response = await dataProvider.loadData("es_list");
+        const response = await dataProvider.loadDataWithCacheFirst("es_list");
         if (Array.isArray(response)) {
           this.examList = response;
         } else {
@@ -33,7 +33,7 @@ export const useExamStore = defineStore("exam", {
 
       this.loadingDetails[id] = true;
       try {
-        const response = await dataProvider.loadData(`es_${id}`);
+        const response = await dataProvider.loadDataWithCacheFirst(`es_${id}`);
         if (response) {
           this.exams[id] = response;
         }

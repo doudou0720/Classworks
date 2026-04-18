@@ -24,12 +24,61 @@ export default {
     }
   },
 
+  loadDataWithCacheFirst: async (key, forceRefresh = false) => {
+    const provider = getSetting("server.provider");
+    const useServer = provider === "kv-server" || provider === "classworkscloud";
+
+    if (!useServer) {
+      return kvLocalProvider.loadData(key);
+    }
+
+    if (forceRefresh) {
+      try {
+        const serverData = await kvServerProvider.loadData(key);
+        if (serverData && serverData.success !== false) {
+          await kvLocalProvider.saveData(key, serverData);
+        }
+        return serverData;
+      } catch (error) {
+        console.warn("loadDataWithCacheFirst forceRefresh error:", error);
+        return kvServerProvider.loadData(key);
+      }
+    }
+
+    try {
+      const localHasData = await kvLocalProvider.hasData(key);
+
+      if (localHasData) {
+        const localData = await kvLocalProvider.loadData(key);
+        kvServerProvider.loadData(key).then((serverData) => {
+          if (serverData && serverData.success !== false) {
+            kvLocalProvider.saveData(key, serverData);
+          }
+        }).catch(() => {});
+        return localData;
+      }
+
+      return await kvServerProvider.loadData(key);
+    } catch (error) {
+      console.warn("loadDataWithCacheFirst error:", error);
+      return kvServerProvider.loadData(key);
+    }
+  },
+
   saveData: async (key, data) => {
     const provider = getSetting("server.provider");
     const useServer = provider === "kv-server" || provider === "classworkscloud";
 
     if (useServer) {
-      return kvServerProvider.saveData(key, data);
+      const result = await kvServerProvider.saveData(key, data);
+      if (result && result.success !== false) {
+        try {
+          await kvLocalProvider.saveData(key, data);
+        } catch (localError) {
+          console.warn("Failed to save to local cache:", localError);
+        }
+      }
+      return result;
     } else {
       return kvLocalProvider.saveData(key, data);
     }

@@ -22,6 +22,16 @@ const initDB = async () => {
 };
 
 export const kvLocalProvider = {
+  async hasData(key) {
+    try {
+      const db = await initDB();
+      const data = await db.get("kv", key);
+      return !!data;
+    } catch {
+      return false;
+    }
+  },
+
   async loadData(key) {
     try {
       const db = await initDB();
