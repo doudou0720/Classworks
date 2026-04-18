@@ -1,9 +1,9 @@
 # Classworks
 
-![GitHub](https://img.shields.io/github/license/ZeroCatDev/Classworks?style=flat-square)
-![GitHub stars](https://img.shields.io/github/stars/ZeroCatDev/Classworks?style=flat-square)
-![GitHub forks](https://img.shields.io/github/forks/ZeroCatDev/Classworks?style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/ZeroCatDev/Classworks?style=flat-square)
+![GitHub](https://img.shields.io/github/license/doudou0720/Classworks?style=flat-square)
+![GitHub stars](https://img.shields.io/github/stars/doudou0720/Classworks?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/doudou0720/Classworks?style=flat-square)
+![GitHub issues](https://img.shields.io/github/issues/doudou0720/Classworks?style=flat-square)
 ![Classworks](./images/banner.png)
 
 适用于班级大屏的作业板小工具
@@ -25,7 +25,7 @@ QQ：[964979747](https://qm.qq.com/q/4RX45b1Oac)
 
 ```bash
 # 克隆项目
-git clone https://github.com/ZeroCatDev/Classworks.git
+git clone https://github.com/doudou0720/Classworks.git
 cd Classworks
 
 # 安装依赖
@@ -40,7 +40,7 @@ pnpm run build
 
 ## 🤝 参与贡献
 
-Classworks 非常欢迎你的加入！[提一个 Issue](https://github.com/ZeroCatDev/Classworks/issues/new) 或者提交一个 Pull Request。对于小白问题，最好在 qq 群里问，我们会尽量回答。
+Classworks 非常欢迎你的加入！[提一个 Issue](https://github.com/doudou0720/Classworks/issues/new) 或者提交一个 Pull Request。对于小白问题，最好在 qq 群里问，我们会尽量回答。
 
 ZeroCat 的项目 遵循 [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) 行为规范
 <br/>孙悟元 希望你遵循 [提问的智慧](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md)
