@@ -555,7 +555,8 @@ export default {
   white-space: nowrap;
 }
 
-:deep(.v-chip) {
+.template-buttons :deep(.v-chip),
+.pages-container :deep(.v-chip) {
   cursor: pointer;
   user-select: none;
 }

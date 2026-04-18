@@ -476,12 +476,11 @@ export default {
 </script>
 
 <style scoped>
-/* Dialog 容器样式 */
-:deep(.v-dialog) {
+.urgent-notification-card :deep(.v-dialog) {
   backdrop-filter: blur(8px);
 }
 
-:deep(.v-overlay__scrim) {
+.urgent-notification-card :deep(.v-overlay__scrim) {
   background: rgba(0, 0, 0, 0.8) !important;
 }
 

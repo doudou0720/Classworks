@@ -199,27 +199,21 @@ export default defineConfig({
     chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
-        advancedChunks: {
-          // 核心框架（极少变动，长缓存）
-          "vendor-vue": {
-            test: /[\\/]node_modules[\\/](vue|vue-router|pinia)[\\/]/,
-          },
-          // UI 框架
-          "vendor-vuetify": {
-            test: /[\\/]node_modules[\\/]vuetify[\\/]/,
-          },
-          // 监控（异步加载，独立 chunk）
-          "vendor-sentry": {
-            test: /[\\/]node_modules[\\/]@sentry[\\/]/,
-          },
-          // 实时通信
-          "vendor-socket": {
-            test: /[\\/]node_modules[\\/]socket\.io-client[\\/]/,
-          },
-          // 通用工具库
-          "vendor-utils": {
-            test: /[\\/]node_modules[\\/](axios|uuid|js-base64)[\\/]/,
-          },
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (/[\\/]node_modules[\\/](vue|vue-router|pinia)[\\/]/.test(id)) {
+              return "vendor-vue";
+            }
+            if (/[\\/]node_modules[\\/]vuetify[\\/]/.test(id)) {
+              return "vendor-vuetify";
+            }
+            if (/[\\/]node_modules[\\/]socket\.io-client[\\/]/.test(id)) {
+              return "vendor-socket";
+            }
+            if (/[\\/]node_modules[\\/](axios|uuid|js-base64)[\\/]/.test(id)) {
+              return "vendor-utils";
+            }
+          }
         },
       },
     },

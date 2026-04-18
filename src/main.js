@@ -1,7 +1,7 @@
 /**
  * main.js
  *
- * 精简启动流水线：快速挂载 Vue app，重型依赖（Sentry/Clarity）异步加载
+ * 精简启动流水线：快速挂载 Vue app，重型依赖（Clarity）异步加载
  */
 
 // 核心插件（Vuetify / Router / Pinia）
@@ -27,18 +27,6 @@ app.component("GlobalMessage", GlobalMessage);
 app.mount("#app");
 
 // ====== 以下全部异步，不阻塞首屏渲染 ======
-
-// 异步初始化 Sentry（延迟到首帧渲染完成后，防止 errorHandler 与渲染周期冲突）
-setTimeout(() => {
-  import("./utils/sentry")
-    .then(({ initSentry }) => {
-      const router = app.config.globalProperties.$router;
-      initSentry(app, router);
-    })
-    .catch((err) => {
-      console.warn("Sentry 初始化失败:", err);
-    });
-}, 1000);
 
 // 异步加载 Clarity（在页面完全加载后）
 const loadClarity = async () => {
