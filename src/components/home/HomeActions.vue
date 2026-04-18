@@ -11,13 +11,7 @@
     >
       上传
     </v-btn>
-    <v-btn
-      v-else
-      color="success"
-      size="large"
-      rounded="xl"
-      @click="$emit('show-sync-message')"
-    >
+    <v-btn v-else color="success" size="large" rounded="xl" @click="$emit('show-sync-message')">
       同步完成
     </v-btn>
     <v-btn
@@ -38,18 +32,10 @@
       variant="elevated"
       divided
     >
-      <v-btn
-        prepend-icon="mdi-calendar-check"
-        size="large"
-        @click="$router.push('/examschedule')"
-      >
+      <v-btn prepend-icon="mdi-calendar-check" size="large" @click="$router.push('/examschedule')">
         考试看板
       </v-btn>
-      <v-btn
-        icon="mdi-plus"
-        size="large"
-        @click="$emit('add-exam-card')"
-      />
+      <v-btn icon="mdi-plus" size="large" @click="$emit('add-exam-card')" />
     </v-btn-group>
     <v-btn
       v-if="showListCardButton"
@@ -64,9 +50,7 @@
     <v-btn
       v-if="showFullscreenButton"
       :color="isFullscreen ? 'blue-grey' : 'blue'"
-      :prepend-icon="
-        isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'
-      "
+      :prepend-icon="isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
       class="ml-2"
       size="large"
       @click="$emit('toggle-fullscreen')"
@@ -93,23 +77,13 @@
     variant="tonal"
   >
     <v-card-title class="text-subtitle-1">
-      <v-icon
-        icon="mdi-shield-check"
-        size="small"
-        start
-      />
+      <v-icon icon="mdi-shield-check" size="small" start />
       屏幕保护技术已启用
     </v-card-title>
     <v-card-text class="text-body-2">
-      <p>
-        为防止OLED/LCD屏幕烧屏，界面元素会定期微调位置。
-      </p>
-      <p class="text-caption text-grey">
-        此功能不会影响正常使用，仅在长时间静止显示时生效。
-      </p>
-      <p class="text-caption text-grey">
-        建议在放学后关闭显示器以节约能源。
-      </p>
+      <p>为防止OLED/LCD屏幕烧屏，界面元素会定期微调位置。</p>
+      <p class="text-caption text-grey">此功能不会影响正常使用，仅在长时间静止显示时生效。</p>
+      <p class="text-caption text-grey">建议在放学后关闭显示器以节约能源。</p>
     </v-card-text>
   </v-card>
 </template>

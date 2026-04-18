@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="gridContainer"
-    class="grid-masonry"
-  >
+  <div ref="gridContainer" class="grid-masonry">
     <TransitionGroup name="grid">
       <div
         v-for="item in sortedItems"
@@ -15,26 +12,17 @@
         class="grid-item"
       >
         <!-- 时间卡片 -->
-        <div
-          v-if="item.type === 'time'"
-          style="height: 100%"
-        >
+        <div v-if="item.type === 'time'" style="height: 100%">
           <time-card />
         </div>
 
         <!-- 一言卡片 -->
-        <div
-          v-else-if="item.type === 'hitokoto'"
-          style="height: 100%"
-        >
+        <div v-else-if="item.type === 'hitokoto'" style="height: 100%">
           <hitokoto-card />
         </div>
 
         <!-- 考试卡片 -->
-        <div
-          v-else-if="item.type === 'exam'"
-          style="height: 100%"
-        >
+        <div v-else-if="item.type === 'exam'" style="height: 100%">
           <concise-exam-card
             :exam-id="item.data.examId"
             :content-style="contentStyle"
@@ -45,7 +33,11 @@
         <!-- 出勤卡片 -->
         <v-card
           v-else-if="item.type === 'attendance'"
-          :class="{ 'glow-highlight': highlightedCards[item.key], 'cursor-not-allowed': isEditingDisabled, 'cursor-pointer': !isEditingDisabled }"
+          :class="{
+            'glow-highlight': highlightedCards[item.key],
+            'cursor-not-allowed': isEditingDisabled,
+            'cursor-pointer': !isEditingDisabled,
+          }"
           border
           class="glow-track"
           height="100%"
@@ -54,11 +46,7 @@
           @touchmove="handleTouchMove"
         >
           <v-card-title class="d-flex align-center">
-            <v-icon
-              class="mr-2"
-              color="primary"
-              icon="mdi-account-group"
-            />
+            <v-icon class="mr-2" color="primary" icon="mdi-account-group" />
             出勤统计
           </v-card-title>
           <v-card-text>
@@ -67,25 +55,17 @@
               <span class="text-h6">
                 {{ item.data.total - item.data.exclude.length }}/{{
                   item.data.total -
-                    item.data.absent.length -
-                    (!getSetting("display.lateStudentsArePresent")) * item.data.late.length -
-                    item.data.exclude.length
+                  item.data.absent.length -
+                  !getSetting("display.lateStudentsArePresent") * item.data.late.length -
+                  item.data.exclude.length
                 }}
               </span>
             </div>
             <v-divider class="mb-2" />
 
-            <div
-              v-if="item.data.absent.length > 0"
-              class="mb-2"
-            >
-              <div class="text-error text-caption mb-1">
-                请假 ({{ item.data.absent.length }})
-              </div>
-              <div
-                class="d-flex flex-wrap"
-                style="gap: 4px"
-              >
+            <div v-if="item.data.absent.length > 0" class="mb-2">
+              <div class="text-error text-caption mb-1">请假 ({{ item.data.absent.length }})</div>
+              <div class="d-flex flex-wrap" style="gap: 4px">
                 <v-chip
                   v-for="name in item.data.absent"
                   :key="name"
@@ -98,17 +78,9 @@
               </div>
             </div>
 
-            <div
-              v-if="item.data.late.length > 0"
-              class="mb-2"
-            >
-              <div class="text-warning text-caption mb-1">
-                迟到 ({{ item.data.late.length }})
-              </div>
-              <div
-                class="d-flex flex-wrap"
-                style="gap: 4px"
-              >
+            <div v-if="item.data.late.length > 0" class="mb-2">
+              <div class="text-warning text-caption mb-1">迟到 ({{ item.data.late.length }})</div>
+              <div class="d-flex flex-wrap" style="gap: 4px">
                 <v-chip
                   v-for="name in item.data.late"
                   :key="name"
@@ -121,17 +93,9 @@
               </div>
             </div>
 
-            <div
-              v-if="item.data.exclude.length > 0"
-              class="mb-2"
-            >
-              <div class="text-grey text-caption mb-1">
-                不参与 ({{ item.data.exclude.length }})
-              </div>
-              <div
-                class="d-flex flex-wrap"
-                style="gap: 4px"
-              >
+            <div v-if="item.data.exclude.length > 0" class="mb-2">
+              <div class="text-grey text-caption mb-1">不参与 ({{ item.data.exclude.length }})</div>
+              <div class="d-flex flex-wrap" style="gap: 4px">
                 <v-chip
                   v-for="name in item.data.exclude"
                   :key="name"
@@ -147,8 +111,8 @@
             <div
               v-if="
                 item.data.absent.length === 0 &&
-                  item.data.late.length === 0 &&
-                  item.data.exclude.length === 0
+                item.data.late.length === 0 &&
+                item.data.exclude.length === 0
               "
               class="text-success text-center mt-2"
             >
@@ -160,7 +124,11 @@
         <!-- 自定义/测试卡片 -->
         <v-card
           v-else-if="item.type === 'custom'"
-          :class="{ 'glow-highlight': highlightedCards[item.key], 'cursor-not-allowed': isEditingDisabled, 'cursor-pointer': !isEditingDisabled }"
+          :class="{
+            'glow-highlight': highlightedCards[item.key],
+            'cursor-not-allowed': isEditingDisabled,
+            'cursor-pointer': !isEditingDisabled,
+          }"
           border
           class="glow-track"
           height="100%"
@@ -169,11 +137,7 @@
           @touchmove="handleTouchMove"
         >
           <v-card-title class="text-primary">
-            <v-icon
-              class="mr-2"
-              icon="mdi-card-text-outline"
-              size="small"
-            />
+            <v-icon class="mr-2" icon="mdi-card-text-outline" size="small" />
             {{ item.name }}
           </v-card-title>
           <v-card-text :style="contentStyle">
@@ -184,7 +148,11 @@
         <!-- 普通作业卡片 -->
         <v-card
           v-else
-          :class="{ 'glow-highlight': highlightedCards[item.key], 'cursor-not-allowed': isEditingDisabled, 'cursor-pointer': !isEditingDisabled }"
+          :class="{
+            'glow-highlight': highlightedCards[item.key],
+            'cursor-not-allowed': isEditingDisabled,
+            'cursor-pointer': !isEditingDisabled,
+          }"
           border
           class="glow-track"
           height="100%"
@@ -196,10 +164,7 @@
           <v-card-title>{{ item.name }}</v-card-title>
           <v-card-text :style="contentStyle">
             <v-list>
-              <v-list-item
-                v-for="text in splitPoint(item.content)"
-                :key="text"
-              >
+              <v-list-item v-for="text in splitPoint(item.content)" :key="text">
                 {{ text }}
               </v-list-item>
             </v-list>
@@ -212,10 +177,7 @@
   <!-- 单独显示空科目 -->
   <div class="empty-subjects mt-4">
     <!-- 移动端优化视图 -->
-    <div
-      v-if="isMobile"
-      class="d-flex flex-wrap justify-center"
-    >
+    <div v-if="isMobile" class="d-flex flex-wrap justify-center">
       <v-chip
         v-for="subject in unusedSubjects"
         :key="subject.name"
@@ -224,37 +186,28 @@
         variant="tonal"
         @click="handleCardClick('dialog', subject.name)"
       >
-        <v-icon
-          start
-          size="small"
-        >
-          {{ isReadOnlyToken ? 'mdi-cancel' : 'mdi-plus' }}
+        <v-icon start size="small">
+          {{ isReadOnlyToken ? "mdi-cancel" : "mdi-plus" }}
         </v-icon>
         {{ subject.name }}
       </v-chip>
     </div>
 
     <template v-else-if="emptySubjectDisplay === 'button'">
-      <v-btn-group
-        divided
-        variant="tonal"
-      >
+      <v-btn-group divided variant="tonal">
         <v-btn
           v-for="subject in unusedSubjects"
           :key="subject.name"
           @click="handleCardClick('dialog', subject.name)"
         >
           <v-icon start>
-            {{ isReadOnlyToken ? 'mdi-cancel' : 'mdi-plus' }}
+            {{ isReadOnlyToken ? "mdi-cancel" : "mdi-plus" }}
           </v-icon>
           {{ subject.name }}
         </v-btn>
       </v-btn-group>
     </template>
-    <div
-      v-else
-      class="empty-subjects-grid"
-    >
+    <div v-else class="empty-subjects-grid">
       <TransitionGroup name="v-list">
         <v-card
           v-for="subject in unusedSubjects"
@@ -269,26 +222,12 @@
           </v-card-title>
           <v-card-text class="text-center">
             <template v-if="isReadOnlyToken">
-              <v-icon
-                color="grey"
-                size="small"
-              >
-                mdi-cancel
-              </v-icon>
-              <div class="text-caption text-grey">
-                当日无作业
-              </div>
+              <v-icon color="grey" size="small"> mdi-cancel </v-icon>
+              <div class="text-caption text-grey">当日无作业</div>
             </template>
             <template v-else>
-              <v-icon
-                color="grey"
-                size="small"
-              >
-                mdi-plus
-              </v-icon>
-              <div class="text-caption text-grey">
-                点击添加作业
-              </div>
+              <v-icon color="grey" size="small"> mdi-plus </v-icon>
+              <div class="text-caption text-grey">点击添加作业</div>
             </template>
           </v-card-text>
         </v-card>
@@ -301,7 +240,7 @@
 import HitokotoCard from "@/components/HitokotoCard.vue";
 import TimeCard from "@/components/TimeCard.vue";
 import ConciseExamCard from "@/components/home/ConciseExamCard.vue";
-import {getSetting} from "@/utils/settings.js";
+import { getSetting } from "@/utils/settings.js";
 
 export default {
   name: "HomeworkGrid",
@@ -344,12 +283,12 @@ export default {
   data() {
     return {
       isReadOnlyToken: false,
-    }
+    };
   },
   computed: {
     settings() {
-      return settings
-    }
+      return settings;
+    },
   },
   async mounted() {
     /* eslint-disable no-undef */
@@ -368,7 +307,7 @@ export default {
       this.resizeAllGridItems();
       // Observe all items
       if (this.$refs.items) {
-        this.$refs.items.forEach(item => {
+        this.$refs.items.forEach((item) => {
           // Observe the content inside the grid item
           if (item.firstElementChild) {
             this.resizeObserver.observe(item.firstElementChild);
@@ -385,7 +324,7 @@ export default {
     this.$nextTick(() => {
       this.resizeAllGridItems();
       if (this.$refs.items) {
-        this.$refs.items.forEach(item => {
+        this.$refs.items.forEach((item) => {
           if (item.firstElementChild) {
             this.resizeObserver.observe(item.firstElementChild);
           }
@@ -413,46 +352,46 @@ export default {
           manager = this.$root.$refs.studentNameManager;
         }
 
-        if (manager && typeof manager.isReadOnly !== 'undefined') {
+        if (manager && typeof manager.isReadOnly !== "undefined") {
           this.isReadOnlyToken = manager.isReadOnly;
         } else {
           // 如果无法直接访问manager，尝试通过全局设置获取token信息
           // 这里需要使用utils/settings中的函数
-          const { getSetting } = await import('@/utils/settings');
-          const token = getSetting('server.kvToken');
+          const { getSetting } = await import("@/utils/settings");
+          const token = getSetting("server.kvToken");
 
           if (token) {
             // 通过API获取token信息来判断是否只读
-            const { default: axios } = await import('@/axios/axios');
-            const serverUrl = getSetting('server.domain');
+            const { default: axios } = await import("@/axios/axios");
+            const serverUrl = getSetting("server.domain");
 
             if (serverUrl) {
               try {
                 const tokenResponse = await axios.get(`${serverUrl}/kv/_token`, {
                   headers: {
-                    Authorization: `Bearer ${token}`
-                  }
+                    Authorization: `Bearer ${token}`,
+                  },
                 });
 
-                if (tokenResponse.data && typeof tokenResponse.data.isReadOnly !== 'undefined') {
+                if (tokenResponse.data && typeof tokenResponse.data.isReadOnly !== "undefined") {
                   this.isReadOnlyToken = tokenResponse.data.isReadOnly;
                 }
               } catch (err) {
-                console.error('获取Token信息失败:', err);
+                console.error("获取Token信息失败:", err);
               }
             }
           }
         }
       } catch (error) {
-        console.error('检查只读状态失败:', error);
+        console.error("检查只读状态失败:", error);
       }
     },
     resizeGridItem(item) {
       const grid = this.$refs.gridContainer;
       if (!grid) return;
 
-      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('gap'));
+      const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue("grid-auto-rows"));
+      const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue("gap"));
 
       // Find the content element (v-card or div)
       const content = item.firstElementChild;
@@ -471,19 +410,19 @@ export default {
     resizeAllGridItems() {
       const items = this.$refs.items;
       if (items) {
-        items.forEach(item => this.resizeGridItem(item));
+        items.forEach((item) => this.resizeGridItem(item));
       }
     },
     handleCardClick(type, key) {
       if (this.isEditingDisabled) {
-        this.$emit('disabled-click');
+        this.$emit("disabled-click");
         return;
       }
 
-      if (type === 'attendance') {
-        this.$emit('open-attendance');
-      } else if (type === 'dialog') {
-        this.$emit('open-dialog', key);
+      if (type === "attendance") {
+        this.$emit("open-attendance");
+      } else if (type === "dialog") {
+        this.$emit("open-dialog", key);
       }
     },
     splitPoint(content) {

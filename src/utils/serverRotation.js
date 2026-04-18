@@ -20,9 +20,9 @@ const PROBE_TIMEOUT_MS = 3000;
 
 // Server preference cache
 const serverPreference = {
-  preferred: null,   // URL of the fastest responding server
-  cachedAt: 0,       // Timestamp when the preference was last updated
-  probing: false,    // Whether a background probe is currently running
+  preferred: null, // URL of the fastest responding server
+  cachedAt: 0, // Timestamp when the preference was last updated
+  probing: false, // Whether a background probe is currently running
 };
 
 /**
@@ -84,7 +84,7 @@ async function updateServerPreference() {
       CLASSWORKS_CLOUD_SERVERS.map(async (url) => ({
         url,
         latency: await probeServer(url),
-      }))
+      })),
     );
     const reachable = results
       .filter((r) => r.latency < Infinity)
@@ -186,7 +186,12 @@ export async function tryWithRotation(operation, options = {}) {
       if (!shouldRotateOnError(error)) {
         triedServers[triedServers.length - 1].status = "client-error";
         if (hasCallback) {
-          onServerTried({ url: serverUrl, status: "client-error", error, tried: [...triedServers] });
+          onServerTried({
+            url: serverUrl,
+            status: "client-error",
+            error,
+            tried: [...triedServers],
+          });
         }
         throw error;
       }

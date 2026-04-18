@@ -4,7 +4,7 @@
     position: relative;
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       inset: -2px;
       border: 2px solid rgb(var(--v-theme-warning));
@@ -16,7 +16,8 @@
 }
 
 @keyframes pulse-warning {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {
@@ -25,7 +26,8 @@
 }
 
 @keyframes pulse-border {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

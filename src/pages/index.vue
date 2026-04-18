@@ -39,11 +39,7 @@
       >
         发送通知
       </v-btn>
-      <v-btn
-        icon="mdi-chat"
-        variant="text"
-        @click="isChatOpen = true"
-      />
+      <v-btn icon="mdi-chat" variant="text" @click="isChatOpen = true" />
       <v-btn
         :badge="unreadCount || undefined"
         :badge-color="unreadCount ? 'error' : undefined"
@@ -51,19 +47,11 @@
         variant="text"
         @click="$refs.messageLog.drawer = true"
       />
-      <v-btn
-        icon="mdi-cog"
-        variant="text"
-        @click="$router.push('/settings')"
-      />
+      <v-btn icon="mdi-cog" variant="text" @click="$router.push('/settings')" />
     </template>
   </v-app-bar>
   <!-- 初始化选择卡片，仅在首页且需要授权时显示；不影响顶栏 -->
-  <init-service-chooser
-    v-if="shouldShowInit"
-    :preconfig="preconfigData"
-    @done="settingsTick++"
-  />
+  <init-service-chooser v-if="shouldShowInit" :preconfig="preconfigData" @done="settingsTick++" />
 
   <!-- 学生姓名管理组件 -->
   <StudentNameManager
@@ -75,20 +63,11 @@
   <!-- 首屏骨架屏（数据加载中显示） -->
   <HomeSkeleton v-if="!shouldShowInit && !dataReady" />
 
-  <div
-    v-if="!shouldShowInit && dataReady"
-    class="d-flex"
-  >
+  <div v-if="!shouldShowInit && dataReady" class="d-flex">
     <!-- 主要内容区域 -->
-    <v-container
-      class="main-window flex-grow-1 no-select bloom-container"
-      fluid
-    >
+    <v-container class="main-window flex-grow-1 no-select bloom-container" fluid>
       <!-- 常驻通知区域 -->
-      <v-row
-        v-if="persistentNotifications.length > 0"
-        class="mb-4"
-      >
+      <v-row v-if="persistentNotifications.length > 0" class="mb-4">
         <v-col cols="12">
           <v-card
             v-for="notification in persistentNotifications"
@@ -101,47 +80,30 @@
             <v-card-text class="d-flex align-center py-3">
               <span class="text-h6 text-truncate font-weight-bold">{{ notification.message }}</span>
               <v-spacer />
-              <v-btn
-                icon="mdi-chevron-right"
-                variant="text"
-              />
+              <v-btn icon="mdi-chevron-right" variant="text" />
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
 
       <!-- 通知详情对话框 -->
-      <v-dialog
-        v-model="notificationDetailDialog"
-        max-width="700"
-        scrollable
-      >
-        <v-card
-          v-if="currentNotification"
-          class="rounded-xl"
-        >
+      <v-dialog v-model="notificationDetailDialog" max-width="700" scrollable>
+        <v-card v-if="currentNotification" class="rounded-xl">
           <v-card-title class="d-flex align-center pa-4 text-h5">
             <span
               :class="currentNotification.isUrgent ? 'text-error' : ''"
               class="font-weight-bold"
             >
-              {{ currentNotification.isUrgent ? '强调通知' : '通知详情' }}
+              {{ currentNotification.isUrgent ? "强调通知" : "通知详情" }}
             </span>
             <v-spacer />
-            <v-btn
-              icon="mdi-close"
-              variant="text"
-              @click="notificationDetailDialog = false"
-            />
+            <v-btn icon="mdi-close" variant="text" @click="notificationDetailDialog = false" />
           </v-card-title>
 
           <v-divider />
 
           <v-card-text class="pa-6">
-            <div
-              class="text-h4 font-weight-medium mb-4"
-              style="line-height: 1.5;"
-            >
+            <div class="text-h4 font-weight-medium mb-4" style="line-height: 1.5">
               {{ currentNotification.message }}
             </div>
             <div class="text-subtitle-1 text-grey">
@@ -233,13 +195,7 @@
           </v-chip>
         </div>
         <template #append>
-          <v-btn
-            color="primary"
-            variant="text"
-            @click="addAllUpcomingExams"
-          >
-            一键添加
-          </v-btn>
+          <v-btn color="primary" variant="text" @click="addAllUpcomingExams"> 一键添加 </v-btn>
         </template>
       </v-alert>
     </v-container>
@@ -265,10 +221,7 @@
     @save="handleHomeworkSave"
   />
 
-  <v-snackbar
-    v-model="state.snackbar"
-    :timeout="2000"
-  >
+  <v-snackbar v-model="state.snackbar" :timeout="2000">
     {{ state.snackbarText }}
   </v-snackbar>
 
@@ -304,41 +257,20 @@
   <FloatingICP />
 
   <!-- 设备聊天室（右下角浮窗） -->
-  <ChatWidget
-    v-model="isChatOpen"
-    :show-button="false"
-  />
+  <ChatWidget v-model="isChatOpen" :show-button="false" />
 
   <!-- 紧急通知测试对话框 -->
   <UrgentTestDialog v-model="urgentTestDialog" />
 
   <!-- 添加确认对话框 -->
-  <v-dialog
-    v-model="confirmDialog.show"
-    max-width="400"
-  >
+  <v-dialog v-model="confirmDialog.show" max-width="400">
     <v-card>
-      <v-card-title class="text-h6">
-        确认保存
-      </v-card-title>
-      <v-card-text>
-        您正在修改 {{ state.dateString }} 的数据，确定要保存吗？
-      </v-card-text>
+      <v-card-title class="text-h6"> 确认保存 </v-card-title>
+      <v-card-text> 您正在修改 {{ state.dateString }} 的数据，确定要保存吗？ </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          color="grey"
-          variant="text"
-          @click="confirmDialog.reject"
-        >
-          取消
-        </v-btn>
-        <v-btn
-          color="primary"
-          @click="confirmDialog.resolve"
-        >
-          确认保存
-        </v-btn>
+        <v-btn color="grey" variant="text" @click="confirmDialog.reject"> 取消 </v-btn>
+        <v-btn color="primary" @click="confirmDialog.resolve"> 确认保存 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -351,90 +283,47 @@
   />
 
   <!-- 添加URL配置确认对话框 -->
-  <v-dialog
-    v-model="urlConfigDialog.show"
-    max-width="500"
-  >
+  <v-dialog v-model="urlConfigDialog.show" max-width="500">
     <v-card>
-      <v-card-title class="text-h6">
-        确认应用URL配置
-      </v-card-title>
+      <v-card-title class="text-h6"> 确认应用URL配置 </v-card-title>
       <v-card-text>
         <p>以下配置将应用于当前班级：</p>
         <v-list density="compact">
-          <v-list-item
-            v-for="change in urlConfigDialog.changes"
-            :key="change.key"
-          >
+          <v-list-item v-for="change in urlConfigDialog.changes" :key="change.key">
             <template #prepend>
-              <v-icon
-                :icon="change.icon"
-                class="mr-2"
-                size="small"
-              />
+              <v-icon :icon="change.icon" class="mr-2" size="small" />
             </template>
             <v-list-item-title class="d-flex align-center">
               <span class="text-subtitle-1">{{ change.name }}</span>
-              <v-tooltip
-                activator="parent"
-                location="top"
-              >
+              <v-tooltip activator="parent" location="top">
                 {{ change.description || change.key }}
               </v-tooltip>
             </v-list-item-title>
             <v-list-item-subtitle>
               <span class="text-grey-darken-1">{{ change.oldValue }}</span>
-              <v-icon
-                class="mx-1"
-                icon="mdi-arrow-right"
-                size="small"
-              />
-              <span class="text-primary font-weight-medium">{{
-                change.newValue
-              }}</span>
+              <v-icon class="mx-1" icon="mdi-arrow-right" size="small" />
+              <span class="text-primary font-weight-medium">{{ change.newValue }}</span>
             </v-list-item-subtitle>
           </v-list-item>
         </v-list>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          color="grey"
-          variant="text"
-          @click="urlConfigDialog.cancelHandler"
-        >
-          取消
-        </v-btn>
-        <v-btn
-          color="primary"
-          @click="urlConfigDialog.confirmHandler"
-        >
-          确认应用
-        </v-btn>
+        <v-btn color="grey" variant="text" @click="urlConfigDialog.cancelHandler"> 取消 </v-btn>
+        <v-btn color="primary" @click="urlConfigDialog.confirmHandler"> 确认应用 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <!-- 考试详情/编辑对话框 -->
-  <v-dialog
-    v-model="showExamDetailDialog"
-    persistent
-    fullscreen
-  >
+  <v-dialog v-model="showExamDetailDialog" persistent fullscreen>
     <v-card v-if="selectedExamId">
       <v-card-title class="d-flex align-center pa-4">
         编辑考试配置
         <v-spacer />
-        <v-btn
-          icon="mdi-close"
-          variant="text"
-          @click="showExamDetailDialog = false"
-        />
+        <v-btn icon="mdi-close" variant="text" @click="showExamDetailDialog = false" />
       </v-card-title>
-      <v-card-text
-        class="pa-4"
-        style="max-height: 70vh; overflow-y: auto;"
-      >
+      <v-card-text class="pa-4" style="max-height: 70vh; overflow-y: auto">
         <exam-config-editor
           :config-id="selectedExamId"
           :dialog-mode="true"
@@ -453,26 +342,15 @@
           移除卡片
         </v-btn>
         <v-spacer />
-        <v-btn
-          color="primary"
-          variant="text"
-          @click="showExamDetailDialog = false"
-        >
-          关闭
-        </v-btn>
+        <v-btn color="primary" variant="text" @click="showExamDetailDialog = false"> 关闭 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
   <!-- 添加考试卡片对话框 -->
-  <v-dialog
-    v-model="showAddExamDialog"
-    max-width="500"
-  >
+  <v-dialog v-model="showAddExamDialog" max-width="500">
     <v-card>
-      <v-card-title class="text-h6">
-        预览考试看板
-      </v-card-title>
+      <v-card-title class="text-h6"> 预览考试看板 </v-card-title>
       <v-card-text>
         <v-list v-if="examStore.examList.length > 0">
           <v-list-item
@@ -483,9 +361,7 @@
             @click="addExamCard(exam.id)"
           >
             <template #prepend>
-              <v-icon color="primary">
-                mdi-calendar-text
-              </v-icon>
+              <v-icon color="primary"> mdi-calendar-text </v-icon>
             </template>
             <template #append>
               <v-btn
@@ -496,36 +372,22 @@
             </template>
           </v-list-item>
         </v-list>
-        <div
-          v-else
-          class="text-center py-4 text-grey"
-        >
-          暂无考试配置
-        </div>
+        <div v-else class="text-center py-4 text-grey">暂无考试配置</div>
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          color="primary"
-          variant="text"
-          @click="showAddExamDialog = false"
-        >
-          关闭
-        </v-btn>
+        <v-btn color="primary" variant="text" @click="showAddExamDialog = false"> 关闭 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
   <!-- 通知详情对话框 -->
-  <v-dialog
-    v-model="notificationDetailDialog"
-    max-width="600"
-  >
+  <v-dialog v-model="notificationDetailDialog" max-width="600">
     <v-card v-if="currentNotification">
       <v-card-title
         class="headline"
         :class="currentNotification.isUrgent ? 'text-error' : 'text-primary'"
       >
-        {{ currentNotification.isUrgent ? '强调通知' : '通知详情' }}
+        {{ currentNotification.isUrgent ? "强调通知" : "通知详情" }}
       </v-card-title>
       <v-card-text class="text-h5 py-4">
         {{ currentNotification.message }}
@@ -539,16 +401,11 @@
           删除
         </v-btn>
         <v-spacer />
-        <v-btn
-          color="primary"
-          @click="notificationDetailDialog = false"
-        >
-          关闭
-        </v-btn>
+        <v-btn color="primary" @click="notificationDetailDialog = false"> 关闭 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <br><br><br>
+  <br /><br /><br />
 </template>
 
 <script>
@@ -621,12 +478,7 @@ const ExamConfigEditor = defineAsyncComponent({
 });
 import dataProvider from "@/utils/dataProvider";
 import { useExamStore } from "@/stores/examStore";
-import {
-  getSetting,
-  watchSettings,
-  setSetting,
-  settingsDefinitions,
-} from "@/utils/settings";
+import { getSetting, watchSettings, setSetting, settingsDefinitions } from "@/utils/settings";
 import { kvServerProvider } from "@/utils/providers/kvServerProvider";
 import { useDisplay } from "vuetify";
 import { debounce, throttle } from "@/utils/debounce";
@@ -799,7 +651,7 @@ export default {
   computed: {
     isMobile() {
       // 如果启用了强制一体机UI模式，返回false（使用桌面UI）
-      const forceDesktopMode = getSetting('display.forceDesktopMode');
+      const forceDesktopMode = getSetting("display.forceDesktopMode");
       if (forceDesktopMode) {
         return false;
       }
@@ -844,31 +696,31 @@ export default {
       // 如果是移动端，添加出勤卡片
       if (this.isMobile) {
         items.push({
-          key: 'attendance-card',
-          name: '出勤统计',
-          type: 'attendance',
+          key: "attendance-card",
+          name: "出勤统计",
+          type: "attendance",
           data: {
             total: this.state.studentList.length,
             absent: this.state.boardData.attendance.absent,
             late: this.state.boardData.attendance.late,
-            exclude: this.state.boardData.attendance.exclude
-          }
+            exclude: this.state.boardData.attendance.exclude,
+          },
         });
       }
 
       // 添加考试卡片
       for (const key in this.state.boardData.homework) {
-        if (key.startsWith('exam-')) {
+        if (key.startsWith("exam-")) {
           const card = this.state.boardData.homework[key];
           items.push({
             key: key,
-            name: '考试安排',
-            type: 'exam',
+            name: "考试安排",
+            type: "exam",
             data: {
               examId: card.examId,
             },
             order: -100, // Ensure they appear at the top
-            rowSpan: 200 // Estimated height
+            rowSpan: 200, // Estimated height
           });
         }
       }
@@ -886,7 +738,7 @@ export default {
           items.push({
             key: subjectKey,
             name: subjectKey,
-            type: 'homework',
+            type: "homework",
             content: subjectData.content,
             order: subject.order,
             rowSpan: estimatedHeight, // Used for sorting only
@@ -918,7 +770,7 @@ export default {
 
       // 添加自定义卡片
       for (const key in this.state.boardData.homework) {
-        if (key.startsWith('custom-')) {
+        if (key.startsWith("custom-")) {
           const card = this.state.boardData.homework[key];
           const lineCount = card.content.split("\n").filter((line) => line.trim()).length;
           const estimatedHeight = 100 + lineCount * 24;
@@ -926,7 +778,7 @@ export default {
           items.push({
             key: key,
             name: card.name,
-            type: 'custom',
+            type: "custom",
             content: card.content,
             order: 9999, // Put at the end
             rowSpan: estimatedHeight, // Used for sorting only
@@ -940,8 +792,8 @@ export default {
       return items;
     },
     unusedSubjects() {
-      const usedKeys = Object.keys(this.state.boardData.homework).filter(
-        (key) => this.state.boardData.homework[key].content?.trim()
+      const usedKeys = Object.keys(this.state.boardData.homework).filter((key) =>
+        this.state.boardData.homework[key].content?.trim(),
       );
       return this.state.availableSubjects
         .filter((subject) => !usedKeys.includes(subject.name))
@@ -1054,7 +906,7 @@ export default {
     // 是否显示紧急通知测试按钮（仅教师和课堂令牌）
     hasExamCard() {
       for (const key in this.state.boardData.homework) {
-        if (key.startsWith('exam-')) return true;
+        if (key.startsWith("exam-")) return true;
       }
       return false;
     },
@@ -1073,12 +925,8 @@ export default {
       if (!this.tokenInfo) return false;
 
       // 只有 teacher 或 classroom 类型的令牌才显示
-      return (
-        this.tokenInfo.deviceType === "teacher" ||
-        this.tokenInfo.deviceType === "classroom"
-      );
+      return this.tokenInfo.deviceType === "teacher" || this.tokenInfo.deviceType === "classroom";
     },
-
 
     subjectOrder() {
       return [...this.state.availableSubjects]
@@ -1142,11 +990,11 @@ export default {
         const studentNameManager = this.$refs.studentNameManager;
         if (studentNameManager) {
           // 优先使用学生名称，如果不是学生则使用教师名称
-          this.studentNameInfo.name = studentNameManager.currentStudentName || studentNameManager.currentTeacherName || '';
+          this.studentNameInfo.name =
+            studentNameManager.currentStudentName || studentNameManager.currentTeacherName || "";
           this.studentNameInfo.isStudent = studentNameManager.isStudentToken;
           this.studentNameInfo.isTeacher = studentNameManager.isTeacherToken;
-          this.studentNameInfo.openDialog = () =>
-            studentNameManager.openDialog();
+          this.studentNameInfo.openDialog = () => studentNameManager.openDialog();
 
           // 监听学生姓名变化
           this.$watch(
@@ -1154,7 +1002,7 @@ export default {
             (newName) => {
               this.studentNameInfo.name = newName;
               this.updateTokenDisplayInfo();
-            }
+            },
           );
           // 监听教师姓名变化
           this.$watch(
@@ -1164,41 +1012,29 @@ export default {
                 this.studentNameInfo.name = newName;
                 this.updateTokenDisplayInfo();
               }
-            }
+            },
           );
           this.$watch(
             () => studentNameManager.isStudentToken,
             (isStudent) => {
               this.studentNameInfo.isStudent = isStudent;
               this.updateTokenDisplayInfo();
-            }
+            },
           );
           this.$watch(
             () => studentNameManager.isTeacherToken,
             (isTeacher) => {
               this.studentNameInfo.isTeacher = isTeacher;
               this.updateTokenDisplayInfo();
-            }
+            },
           );
         }
       });
 
-      document.addEventListener(
-        "fullscreenchange",
-        this.fullscreenChangeHandler
-      );
-      document.addEventListener(
-        "webkitfullscreenchange",
-        this.fullscreenChangeHandler
-      );
-      document.addEventListener(
-        "mozfullscreenchange",
-        this.fullscreenChangeHandler
-      );
-      document.addEventListener(
-        "MSFullscreenChange",
-        this.fullscreenChangeHandler
-      );
+      document.addEventListener("fullscreenchange", this.fullscreenChangeHandler);
+      document.addEventListener("webkitfullscreenchange", this.fullscreenChangeHandler);
+      document.addEventListener("mozfullscreenchange", this.fullscreenChangeHandler);
+      document.addEventListener("MSFullscreenChange", this.fullscreenChangeHandler);
 
       this.checkHashForRandomPicker();
 
@@ -1231,22 +1067,10 @@ export default {
       clearInterval(this.state.refreshInterval);
     }
 
-    document.removeEventListener(
-      "fullscreenchange",
-      this.fullscreenChangeHandler
-    );
-    document.removeEventListener(
-      "webkitfullscreenchange",
-      this.fullscreenChangeHandler
-    );
-    document.removeEventListener(
-      "mozfullscreenchange",
-      this.fullscreenChangeHandler
-    );
-    document.removeEventListener(
-      "MSFullscreenChange",
-      this.fullscreenChangeHandler
-    );
+    document.removeEventListener("fullscreenchange", this.fullscreenChangeHandler);
+    document.removeEventListener("webkitfullscreenchange", this.fullscreenChangeHandler);
+    document.removeEventListener("mozfullscreenchange", this.fullscreenChangeHandler);
+    document.removeEventListener("MSFullscreenChange", this.fullscreenChangeHandler);
 
     window.removeEventListener("hashchange", this.checkHashForRandomPicker);
 
@@ -1275,8 +1099,7 @@ export default {
     async loadDeviceInfo() {
       try {
         const provider = getSetting("server.provider");
-        const useServer =
-          provider === "kv-server" || provider === "classworkscloud";
+        const useServer = provider === "kv-server" || provider === "classworkscloud";
         if (!useServer) return;
 
         const res = await kvServerProvider.loadNamespaceInfo();
@@ -1388,7 +1211,7 @@ export default {
     },
 
     formatTime(timestamp) {
-      if (!timestamp) return '';
+      if (!timestamp) return "";
       return new Date(timestamp).toLocaleString();
     },
 
@@ -1424,8 +1247,7 @@ export default {
       this.state.dateString = this.formatDate(currentDate);
       this.state.selectedDate = this.state.dateString;
       this.state.selectedDateObj = currentDate;
-      this.state.isToday =
-        this.formatDate(currentDate) === this.formatDate(today);
+      this.state.isToday = this.formatDate(currentDate) === this.formatDate(today);
       if (!configApplied) {
         this.provider = getSetting("server.provider");
         const classNum = getSetting("server.classNumber");
@@ -1463,10 +1285,10 @@ export default {
         delete this.state.boardData.homework[key];
       } else {
         this.state.boardData.homework[key] = {
-          type: 'exam',
+          type: "exam",
           examId: examId,
-          name: '考试安排',
-          content: '' // Placeholder
+          name: "考试安排",
+          content: "", // Placeholder
         };
       }
       this.state.synced = false;
@@ -1512,7 +1334,7 @@ export default {
     },
 
     removeExamCard(index) {
-       // Deprecated
+      // Deprecated
     },
 
     addAllUpcomingExams() {
@@ -1525,9 +1347,9 @@ export default {
       }
       if (addedCount > 0) {
         this.trySave(true); // 统一保存一次
-        this.$message.success('添加成功', `已添加 ${addedCount} 个考试安排`);
+        this.$message.success("添加成功", `已添加 ${addedCount} 个考试安排`);
       } else {
-        this.$message.info('提示', '所有考试已添加');
+        this.$message.info("提示", "所有考试已添加");
       }
     },
 
@@ -1536,9 +1358,7 @@ export default {
 
       try {
         this.loading.download = true;
-        const response = await dataProvider.loadData(
-          "classworks-data-" + this.state.dateString
-        );
+        const response = await dataProvider.loadData("classworks-data-" + this.state.dateString);
 
         if (response.success == false) {
           if (response.error.code === "NOT_FOUND") {
@@ -1548,8 +1368,7 @@ export default {
             if (
               forceClear ||
               !this.state.boardData ||
-              (!this.state.boardData.homework &&
-                !this.state.boardData.attendance)
+              (!this.state.boardData.homework && !this.state.boardData.attendance)
             ) {
               this.state.boardData = {
                 homework: {},
@@ -1595,11 +1414,7 @@ export default {
     async trySave(isAutoSave = false) {
       if (isAutoSave && !this.canAutoSave) {
         if (this.shouldShowBlockedMessage) {
-          this.showMessage(
-            "需要手动保存",
-            "已禁止自动保存非当天数据",
-            "warning"
-          );
+          this.showMessage("需要手动保存", "已禁止自动保存非当天数据", "warning");
         }
         return false;
       }
@@ -1625,12 +1440,11 @@ export default {
       if (!this.currentEditSubject) return;
 
       const content = this.state.textarea.trim();
-      const originalContent =
-        this.state.boardData.homework[this.currentEditSubject]?.content || "";
+      const originalContent = this.state.boardData.homework[this.currentEditSubject]?.content || "";
 
       if (content !== originalContent.trim()) {
-          // 如果内容为空且是自定义卡片，则删除该卡片
-        if (!content && this.currentEditSubject.startsWith('custom-')) {
+        // 如果内容为空且是自定义卡片，则删除该卡片
+        if (!content && this.currentEditSubject.startsWith("custom-")) {
           delete this.state.boardData.homework[this.currentEditSubject];
           this.state.synced = false;
           if (this.autoSave) {
@@ -1640,7 +1454,7 @@ export default {
           return;
         }
         // 如果是自定义卡片，保留其他属性
-        if (this.state.boardData.homework[this.currentEditSubject].type === 'custom') {
+        if (this.state.boardData.homework[this.currentEditSubject].type === "custom") {
           this.state.boardData.homework[this.currentEditSubject].content = content;
         } else {
           this.state.boardData.homework[this.currentEditSubject] = {
@@ -1665,7 +1479,7 @@ export default {
         this.loading.upload = true;
         const response = await dataProvider.saveData(
           "classworks-data-" + this.state.dateString,
-          this.state.boardData
+          this.state.boardData,
         );
         if (response.success == false) {
           throw new Error(response.error.message);
@@ -1690,7 +1504,7 @@ export default {
         } catch (error) {
           console.warn(
             "Failed to load student list from dedicated key, falling back to config",
-            error
+            error,
           );
         }
 
@@ -1703,9 +1517,7 @@ export default {
 
     async loadSubjects() {
       try {
-        const subjectsResponse = await dataProvider.loadData(
-          "classworks-config-subject"
-        );
+        const subjectsResponse = await dataProvider.loadData("classworks-config-subject");
         if (subjectsResponse && Array.isArray(subjectsResponse)) {
           // 更新科目列表
           this.state.availableSubjects = subjectsResponse;
@@ -1735,7 +1547,7 @@ export default {
       }
 
       // 如果是自定义卡片
-      if (subject.startsWith('custom-')) {
+      if (subject.startsWith("custom-")) {
         this.currentEditSubject = subject;
         this.state.dialogTitle = this.state.boardData.homework[subject].name;
         this.state.textarea = this.state.boardData.homework[subject].content;
@@ -1759,8 +1571,7 @@ export default {
         };
       }
       this.state.dialogTitle =
-        this.state.availableSubjects.find((s) => s.name === subject)?.name ||
-        subject;
+        this.state.availableSubjects.find((s) => s.name === subject)?.name || subject;
       this.state.textarea = this.state.boardData.homework[subject].content;
       this.state.dialogVisible = true;
     },
@@ -1769,7 +1580,7 @@ export default {
       if (!this.currentEditSubject) return;
 
       // 如果是自定义卡片，保留其他属性
-      if (this.state.boardData.homework[this.currentEditSubject].type === 'custom') {
+      if (this.state.boardData.homework[this.currentEditSubject].type === "custom") {
         this.state.boardData.homework[this.currentEditSubject].content = content;
       } else {
         this.state.boardData.homework[this.currentEditSubject] = {
@@ -1884,8 +1695,7 @@ export default {
         this.state.dateString = dateStr;
         this.state.selectedDate = dateStr;
         this.state.selectedDateObj = selectedDate;
-        this.state.isToday =
-          dateStr === this.formatDate(this.getToday());
+        this.state.isToday = dateStr === this.formatDate(this.getToday());
 
         // Load both data and subjects in parallel, force clear data when switching dates
         await Promise.all([this.downloadData(true), this.loadSubjects()]);
@@ -1914,9 +1724,7 @@ export default {
         // Debounce refresh to avoid storms
         if (!this.debouncedRealtimeRefresh) {
           this.debouncedRealtimeRefresh = debounce(async () => {
-            const oldHomework = JSON.parse(
-              JSON.stringify(this.state.boardData.homework)
-            );
+            const oldHomework = JSON.parse(JSON.stringify(this.state.boardData.homework));
             await this.downloadData();
             const now = new Date();
             const hh = String(now.getHours()).padStart(2, "0");
@@ -1924,15 +1732,11 @@ export default {
             const ss = String(now.getSeconds()).padStart(2, "0");
 
             // 使用消息记录工具发送通知
-            this.$message?.info(
-              "数据已更新",
-              `已于 ${hh}:${mm}:${ss} 自动刷新`
-            ); // 检测哪些科目发生了变化
+            this.$message?.info("数据已更新", `已于 ${hh}:${mm}:${ss} 自动刷新`); // 检测哪些科目发生了变化
             const changed = {};
             for (const key in this.state.boardData.homework) {
               const oldContent = oldHomework[key]?.content || "";
-              const newContent =
-                this.state.boardData.homework[key]?.content || "";
+              const newContent = this.state.boardData.homework[key]?.content || "";
               if (oldContent !== newContent) {
                 changed[key] = true;
               }
@@ -1958,9 +1762,9 @@ export default {
           if (!msg) return;
 
           // 检查是否是通知列表更新
-          if (msg.key === 'notification-list') {
-             this.loadPersistentNotifications();
-             return;
+          if (msg.key === "notification-list") {
+            this.loadPersistentNotifications();
+            return;
           }
 
           // We only care about current date key changes
@@ -1998,16 +1802,11 @@ export default {
           onKvChanged: handler,
           enableLegacySupport: true,
         });
-        this.$offDeviceEvent = socketOn(
-          "device-event",
-          this.deviceEventHandler
-        );
+        this.$offDeviceEvent = socketOn("device-event", this.deviceEventHandler);
       } catch (e) {
         console.warn("实时频道初始化失败", e);
       }
     },
-
-
 
     async saveAttendance() {
       try {
@@ -2128,8 +1927,6 @@ export default {
       );
     },
 
-
-
     openRandomPicker() {
       if (this.$refs.randomPicker) {
         this.$refs.randomPicker.open();
@@ -2166,12 +1963,7 @@ export default {
 
           this.processSpecialSettings(decodedConfig, changes, validSettings);
 
-          this.processStandardSettings(
-            decodedConfig,
-            changes,
-            validSettings,
-            icons
-          );
+          this.processStandardSettings(decodedConfig, changes, validSettings, icons);
 
           if (Object.keys(validSettings).length === 0) {
             console.log("URL配置与当前配置相同，无需应用");
@@ -2216,12 +2008,8 @@ export default {
             name: "班级",
             oldValue: current,
             newValue: decodedConfig.classNumber,
-            description:
-              settingsDefinitions["server.classNumber"]?.description ||
-              "班级编号",
-            icon:
-              settingsDefinitions["server.classNumber"]?.icon ||
-              "mdi-account-group",
+            description: settingsDefinitions["server.classNumber"]?.description || "班级编号",
+            icon: settingsDefinitions["server.classNumber"]?.icon || "mdi-account-group",
           });
           validSettings["server.classNumber"] = decodedConfig.classNumber;
         }
@@ -2284,10 +2072,7 @@ export default {
         }
 
         if (definition) {
-          let typedValue = this.convertValueToCorrectType(
-            value,
-            definition.type
-          );
+          let typedValue = this.convertValueToCorrectType(value, definition.type);
 
           if (definition.validate && !definition.validate(typedValue)) {
             console.warn(`URL配置项 ${settingKey} 的值无效: ${value}`);
@@ -2437,12 +2222,12 @@ export default {
         for (const key in sourceHomework) {
           if (sourceHomework[key] && sourceHomework[key].content) {
             // 如果是自定义卡片，保留完整结构
-            if (sourceHomework[key].type === 'custom') {
+            if (sourceHomework[key].type === "custom") {
               newHomework[key] = JSON.parse(JSON.stringify(sourceHomework[key]));
             } else {
               // 普通作业，只复制内容
               newHomework[key] = {
-                content: sourceHomework[key].content
+                content: sourceHomework[key].content,
               };
             }
           }
@@ -2462,10 +2247,13 @@ export default {
 
         // 6. 更新URL
         const url = new URL(window.location);
-        url.searchParams.delete('date');
-        window.history.pushState({}, '', url);
+        url.searchParams.delete("date");
+        window.history.pushState({}, "", url);
 
-        this.$message.success("复制成功", `已将 ${sourceDate} 的作业内容复制到今天（已替换原有作业）`);
+        this.$message.success(
+          "复制成功",
+          `已将 ${sourceDate} 的作业内容复制到今天（已替换原有作业）`,
+        );
       } catch (error) {
         console.error("复制作业失败:", error);
         this.$message.error("复制失败", error.message || "请重试");
@@ -2479,10 +2267,8 @@ export default {
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const namespace = urlParams.get("namespace");
-        const authCode =
-          urlParams.get("authCode") || urlParams.get("auth_code");
-        const autoExecute =
-          urlParams.get("autoExecute") || urlParams.get("auto_execute");
+        const authCode = urlParams.get("authCode") || urlParams.get("auth_code");
+        const autoExecute = urlParams.get("autoExecute") || urlParams.get("auto_execute");
 
         if (namespace) {
           this.preconfigData.namespace = namespace;
@@ -2515,9 +2301,7 @@ export default {
     parseBoolean(value) {
       if (!value) return false;
       const lowerValue = value.toLowerCase();
-      return (
-        lowerValue === "true" || lowerValue === "1" || lowerValue === "yes"
-      );
+      return lowerValue === "true" || lowerValue === "1" || lowerValue === "yes";
     },
 
     // 清理URL参数
@@ -2544,7 +2328,7 @@ export default {
 
     async loadPersistentNotifications() {
       try {
-        const res = await dataProvider.loadData('notification-list');
+        const res = await dataProvider.loadData("notification-list");
         if (res && Array.isArray(res)) {
           this.persistentNotifications = res;
         } else if (res && res.success !== false && Array.isArray(res.data)) {
@@ -2553,7 +2337,7 @@ export default {
           this.persistentNotifications = [];
         }
       } catch (e) {
-        console.error('加载常驻通知失败', e);
+        console.error("加载常驻通知失败", e);
       }
     },
     showNotificationDetail(notification) {
@@ -2561,10 +2345,11 @@ export default {
       this.notificationDetailDialog = true;
     },
     async removePersistentNotification(id) {
-      this.persistentNotifications = this.persistentNotifications.filter(n => n.id !== id);
+      this.persistentNotifications = this.persistentNotifications.filter((n) => n.id !== id);
       // 当通知列表为空时，保存空对象 {} 而不是空数组 []，因为后端不接受空数组
-      const dataToSave = this.persistentNotifications.length > 0 ? this.persistentNotifications : {};
-      await dataProvider.saveData('notification-list', dataToSave);
+      const dataToSave =
+        this.persistentNotifications.length > 0 ? this.persistentNotifications : {};
+      await dataProvider.saveData("notification-list", dataToSave);
       this.notificationDetailDialog = false;
     },
   },

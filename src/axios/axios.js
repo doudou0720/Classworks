@@ -1,8 +1,8 @@
 import axios from "axios";
-import {getSetting} from "@/utils/settings";
-import {parseRateLimit} from "ratelimit-header-parser";
+import { getSetting } from "@/utils/settings";
+import { parseRateLimit } from "ratelimit-header-parser";
 import RateLimitModal from "@/components/RateLimitModal.vue";
-import {Base64} from "js-base64";
+import { Base64 } from "js-base64";
 
 // 基本配置
 const axiosInstance = axios.create({
@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use(
   (error) => {
     console.log(error);
     return Promise.reject(error);
-  }
+  },
 );
 
 // 响应拦截器
@@ -55,7 +55,7 @@ axiosInstance.interceptors.response.use(
           RateLimitModal.show(
             rateLimitInfo.reset,
             error.config.url,
-            error.config.method.toUpperCase()
+            error.config.method.toUpperCase(),
           );
         }
       } catch (parseError) {
@@ -64,7 +64,7 @@ axiosInstance.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosInstance;

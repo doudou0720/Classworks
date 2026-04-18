@@ -1,16 +1,9 @@
 <template>
   <div>
     <!-- 统一链接生成器卡片 -->
-    <v-card
-      border
-      class="unified-link-generator"
-    >
+    <v-card border class="unified-link-generator">
       <v-card-title class="text-h6">
-        <v-icon
-          class="mr-2"
-          icon="mdi-link-variant"
-          start
-        />
+        <v-icon class="mr-2" icon="mdi-link-variant" start />
         统一链接生成器
       </v-card-title>
 
@@ -20,23 +13,15 @@
         </div>
 
         <!-- 预配置认证信息部分 -->
-        <v-card
-          class="mb-4"
-          variant="tonal"
-        >
+        <v-card class="mb-4" variant="tonal">
           <v-card-title class="text-subtitle-1">
-            <v-icon start>
-              mdi-account-key
-            </v-icon>
+            <v-icon start> mdi-account-key </v-icon>
             预配置认证信息
           </v-card-title>
 
           <v-card-text>
             <v-row>
-              <v-col
-                cols="12"
-                md="6"
-              >
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="preconfigForm.namespace"
                   hint="设备的命名空间标识符"
@@ -47,10 +32,7 @@
                   variant="outlined"
                 />
               </v-col>
-              <v-col
-                cols="12"
-                md="6"
-              >
+              <v-col cols="12" md="6">
                 <v-text-field
                   v-model="preconfigForm.authCode"
                   hint="留空则需要用户手动输入"
@@ -76,54 +58,23 @@
             </v-row>
 
             <!-- 预配置信息预览 -->
-            <v-alert
-              v-if="preconfigForm.namespace"
-              class="mt-3"
-              type="info"
-              variant="tonal"
-            >
-              <div class="text-subtitle-2 mb-2">
-                预配置信息：
-              </div>
-              <v-chip
-                class="mr-2 mb-1"
-                size="small"
-              >
-                <v-icon
-                  size="small"
-                  start
-                >
-                  mdi-identifier
-                </v-icon>
+            <v-alert v-if="preconfigForm.namespace" class="mt-3" type="info" variant="tonal">
+              <div class="text-subtitle-2 mb-2">预配置信息：</div>
+              <v-chip class="mr-2 mb-1" size="small">
+                <v-icon size="small" start> mdi-identifier </v-icon>
                 命名空间: {{ preconfigForm.namespace }}
               </v-chip>
-              <v-chip
-                v-if="preconfigForm.authCode"
-                class="mr-2 mb-1"
-                color="warning"
-                size="small"
-              >
-                <v-icon
-                  size="small"
-                  start
-                >
-                  mdi-lock
-                </v-icon>
-                认证码: {{ preconfigForm.authCode.length > 8 ? preconfigForm.authCode.substring(0, 8) + "..." :
-                  preconfigForm.authCode }}
+              <v-chip v-if="preconfigForm.authCode" class="mr-2 mb-1" color="warning" size="small">
+                <v-icon size="small" start> mdi-lock </v-icon>
+                认证码:
+                {{
+                  preconfigForm.authCode.length > 8
+                    ? preconfigForm.authCode.substring(0, 8) + "..."
+                    : preconfigForm.authCode
+                }}
               </v-chip>
-              <v-chip
-                v-else
-                class="mr-2 mb-1"
-                color="grey"
-                size="small"
-              >
-                <v-icon
-                  size="small"
-                  start
-                >
-                  mdi-lock-open
-                </v-icon>
+              <v-chip v-else class="mr-2 mb-1" color="grey" size="small">
+                <v-icon size="small" start> mdi-lock-open </v-icon>
                 无认证码
               </v-chip>
               <v-chip
@@ -131,13 +82,8 @@
                 class="mr-2 mb-1"
                 size="small"
               >
-                <v-icon
-                  size="small"
-                  start
-                >
-                  {{
-                    preconfigForm.autoExecute ? "mdi-play-circle" : "mdi-hand-back-left"
-                  }}
+                <v-icon size="small" start>
+                  {{ preconfigForm.autoExecute ? "mdi-play-circle" : "mdi-hand-back-left" }}
                 </v-icon>
                 {{ preconfigForm.autoExecute ? "自动认证" : "手动认证" }}
               </v-chip>
@@ -146,14 +92,9 @@
         </v-card>
 
         <!-- 设置分享部分 -->
-        <v-card
-          class="mb-4"
-          variant="tonal"
-        >
+        <v-card class="mb-4" variant="tonal">
           <v-card-title class="text-subtitle-1">
-            <v-icon start>
-              mdi-cog-transfer
-            </v-icon>
+            <v-icon start> mdi-cog-transfer </v-icon>
             设置分享（可选）
           </v-card-title>
 
@@ -204,12 +145,7 @@
 
             <!-- 选择摘要 -->
             <div class="d-flex align-center mb-3 flex-wrap gap-2">
-              <v-chip
-                class="mr-2"
-                color="primary"
-              >
-                已选 {{ selectedItems.length }} 项设置
-              </v-chip>
+              <v-chip class="mr-2" color="primary"> 已选 {{ selectedItems.length }} 项设置 </v-chip>
 
               <template v-if="selectedItems.length > 0">
                 <v-chip
@@ -221,12 +157,7 @@
                 >
                   {{ getSettingDescription(item) }}
                 </v-chip>
-                <v-chip
-                  v-if="selectedItems.length > 3"
-                  color="grey"
-                  size="small"
-                  variant="text"
-                >
+                <v-chip v-if="selectedItems.length > 3" color="grey" size="small" variant="text">
                   +{{ selectedItems.length - 3 }} 更多
                 </v-chip>
               </template>
@@ -239,7 +170,7 @@
                   <template #default="{ expanded }">
                     <div class="d-flex align-center">
                       <v-icon class="mr-2">
-                        {{ expanded ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+                        {{ expanded ? "mdi-chevron-up" : "mdi-chevron-down" }}
                       </v-icon>
                       显示设置列表详情
                     </div>
@@ -271,11 +202,7 @@
                   >
                     <template #[`item.description`]="{ item }">
                       <div class="d-flex align-center">
-                        <v-icon
-                          :icon="item.icon"
-                          class="mr-2"
-                          size="small"
-                        />
+                        <v-icon :icon="item.icon" class="mr-2" size="small" />
                         {{ item.description }}
                         <v-chip
                           v-if="item.key === 'server.kvToken'"
@@ -318,14 +245,9 @@
         </v-card>
 
         <!-- 链接生成和操作部分 -->
-        <v-card
-          class="mb-4"
-          variant="outlined"
-        >
+        <v-card class="mb-4" variant="outlined">
           <v-card-title class="text-subtitle-1">
-            <v-icon start>
-              mdi-link
-            </v-icon>
+            <v-icon start> mdi-link </v-icon>
             生成的统一链接
           </v-card-title>
 
@@ -350,12 +272,7 @@
               >
                 测试链接
               </v-btn>
-              <v-btn
-                color="error"
-                prepend-icon="mdi-delete"
-                variant="tonal"
-                @click="clearAll"
-              >
+              <v-btn color="error" prepend-icon="mdi-delete" variant="tonal" @click="clearAll">
                 清空所有
               </v-btn>
             </div>
@@ -364,7 +281,9 @@
             <v-text-field
               v-model="unifiedLink"
               :append-inner-icon="linkCopied ? 'mdi-check' : 'mdi-content-copy'"
-              :placeholder="preconfigForm.namespace ? '点击「生成统一链接」按钮' : '请先输入命名空间'"
+              :placeholder="
+                preconfigForm.namespace ? '点击「生成统一链接」按钮' : '请先输入命名空间'
+              "
               class="mb-3"
               label="统一链接"
               readonly
@@ -373,52 +292,19 @@
             />
 
             <!-- 链接内容预览 -->
-            <v-alert
-              v-if="unifiedLink"
-              class="mb-3"
-              type="success"
-              variant="tonal"
-            >
-              <div class="text-subtitle-2 mb-2">
-                链接包含内容：
-              </div>
+            <v-alert v-if="unifiedLink" class="mb-3" type="success" variant="tonal">
+              <div class="text-subtitle-2 mb-2">链接包含内容：</div>
               <div class="d-flex flex-wrap gap-1">
-                <v-chip
-                  color="primary"
-                  size="small"
-                >
-                  <v-icon
-                    size="small"
-                    start
-                  >
-                    mdi-account-key
-                  </v-icon>
+                <v-chip color="primary" size="small">
+                  <v-icon size="small" start> mdi-account-key </v-icon>
                   预配置认证
                 </v-chip>
-                <v-chip
-                  v-if="selectedItems.length > 0"
-                  color="secondary"
-                  size="small"
-                >
-                  <v-icon
-                    size="small"
-                    start
-                  >
-                    mdi-cog
-                  </v-icon>
+                <v-chip v-if="selectedItems.length > 0" color="secondary" size="small">
+                  <v-icon size="small" start> mdi-cog </v-icon>
                   {{ selectedItems.length }} 项设置
                 </v-chip>
-                <v-chip
-                  v-else
-                  color="grey"
-                  size="small"
-                >
-                  <v-icon
-                    size="small"
-                    start
-                  >
-                    mdi-cog-off
-                  </v-icon>
+                <v-chip v-else color="grey" size="small">
+                  <v-icon size="small" start> mdi-cog-off </v-icon>
                   无额外设置
                 </v-chip>
               </div>
@@ -427,13 +313,8 @@
         </v-card>
 
         <!-- 安全提醒 -->
-        <v-alert
-          type="warning"
-          variant="tonal"
-        >
-          <div class="text-subtitle-2 mb-2">
-            ⚠️ 安全提醒
-          </div>
+        <v-alert type="warning" variant="tonal">
+          <div class="text-subtitle-2 mb-2">⚠️ 安全提醒</div>
           <ul class="text-body-2 pl-4">
             <li>认证码和设置信息会在URL中传输，请谨慎分发</li>
             <li>建议仅在受信任的网络环境中使用</li>
@@ -447,10 +328,7 @@
 </template>
 
 <script>
-import {
-  exportSettingsAsKeyValue,
-  settingsDefinitions,
-} from "@/utils/settings";
+import { exportSettingsAsKeyValue, settingsDefinitions } from "@/utils/settings";
 
 /**
  * 设置链接生成器组件
@@ -482,16 +360,16 @@ export default {
       unifiedLink: "",
 
       headers: [
-        {title: "", key: "data-table-select"},
-        {title: "设置项", key: "description", sortable: true},
-        {title: "当前值", key: "value", sortable: true},
+        { title: "", key: "data-table-select" },
+        { title: "设置项", key: "description", sortable: true },
+        { title: "当前值", key: "value", sortable: true },
         {
           title: "键名",
           key: "key",
           class: "d-none d-sm-table-cell",
           sortable: true,
         },
-        {title: "状态", key: "isChanged", sortable: true},
+        { title: "状态", key: "isChanged", sortable: true },
       ],
     };
   },
@@ -506,10 +384,7 @@ export default {
 
       for (const [key, definition] of Object.entries(settingsDefinitions)) {
         // 如果是需要开发者模式的设置且未启用开发者模式，则跳过
-        if (
-          definition.requireDeveloper &&
-          !currentSettings["developer.enabled"]
-        ) {
+        if (definition.requireDeveloper && !currentSettings["developer.enabled"]) {
           continue;
         }
 
@@ -545,8 +420,7 @@ export default {
       if (searchText === "是" || searchText === "否") {
         return this.settingItems.filter(
           (item) =>
-            typeof item.value === "boolean" &&
-            (searchText === "是" ? item.value : !item.value)
+            typeof item.value === "boolean" && (searchText === "是" ? item.value : !item.value),
         );
       }
 
@@ -678,11 +552,11 @@ export default {
         const base64String = btoa(
           Array.from(utf8Bytes)
             .map((byte) => String.fromCharCode(byte))
-            .join("")
+            .join(""),
         );
 
         // 构建查询参数
-        const queryParams = {config: base64String};
+        const queryParams = { config: base64String };
 
         // 添加当前日期到查询参数，如果URL中存在
         const urlParams = new URLSearchParams(window.location.search);
@@ -748,9 +622,8 @@ export default {
      */
     selectDataSourceSettings() {
       const dataSourceKeys = this.settingItems
-        .filter((item) =>
-          item.key.startsWith("server.") &&
-          item.key !== "server.kvToken" // 默认排除敏感的Token
+        .filter(
+          (item) => item.key.startsWith("server.") && item.key !== "server.kvToken", // 默认排除敏感的Token
         )
         .map((item) => item.key);
 
@@ -763,9 +636,8 @@ export default {
      */
     selectChangedSettings() {
       const changedKeys = this.settingItems
-        .filter((item) =>
-          item.isChanged &&
-          item.key !== "server.kvToken" // 默认排除敏感的Token
+        .filter(
+          (item) => item.isChanged && item.key !== "server.kvToken", // 默认排除敏感的Token
         )
         .map((item) => item.key);
 
@@ -844,7 +716,7 @@ export default {
           const base64String = btoa(
             Array.from(utf8Bytes)
               .map((byte) => String.fromCharCode(byte))
-              .join("")
+              .join(""),
           );
 
           params.append("config", base64String);

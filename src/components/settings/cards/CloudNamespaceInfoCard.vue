@@ -1,38 +1,18 @@
 <template>
-  <v-card
-    :disabled="!hasNamespaceInfo"
-    :loading="loading"
-    class="my-4"
-  >
+  <v-card :disabled="!hasNamespaceInfo" :loading="loading" class="my-4">
     <template #loader>
-      <v-progress-linear
-        v-if="loading"
-        color="primary"
-        indeterminate
-      />
+      <v-progress-linear v-if="loading" color="primary" indeterminate />
     </template>
 
-
     <v-card-title>
-      <v-icon
-        class="me-2"
-      >
-        mdi-cloud-check
-      </v-icon>
+      <v-icon class="me-2"> mdi-cloud-check </v-icon>
       设备信息
     </v-card-title>
 
     <v-card-text v-if="hasNamespaceInfo">
       <!-- 未绑定账号时的提示卡片 -->
-      <div
-        v-if="namespaceInfo.hasAccount === false"
-        class="mb-4"
-      >
-        <v-alert
-          border
-          type="warning"
-          variant="tonal"
-        >
+      <div v-if="namespaceInfo.hasAccount === false" class="mb-4">
+        <v-alert border type="warning" variant="tonal">
           <v-alert-title>设备未绑定账号</v-alert-title>
           <div>当前设备尚未绑定账号,部分功能可能受限。请前往绑定账号以获得完整体验。</div>
           <v-btn
@@ -68,35 +48,17 @@
       </div>
 
       <!-- 设备信息卡片 -->
-      <v-card
-        v-if="namespaceInfo.device"
-        border
-        class="mb-4"
-        hover
-        variant="tonal"
-      >
-        <v-card-title class="pb-1">
-          设备信息
-        </v-card-title>
+      <v-card v-if="namespaceInfo.device" border class="mb-4" hover variant="tonal">
+        <v-card-title class="pb-1"> 设备信息 </v-card-title>
         <v-card-text>
           <div class="d-flex flex-column gap-1">
             <div class="d-flex align-center">
-              <v-icon
-                class="me-2"
-                size="small"
-              >
-                mdi-tag
-              </v-icon>
+              <v-icon class="me-2" size="small"> mdi-tag </v-icon>
               <span class="font-weight-medium me-2">设备名称:</span>
-              <span>{{ namespaceInfo.device.name || '未命名设备' }}</span>
+              <span>{{ namespaceInfo.device.name || "未命名设备" }}</span>
             </div>
             <div class="d-flex align-center">
-              <v-icon
-                class="me-2"
-                size="small"
-              >
-                mdi-identifier
-              </v-icon>
+              <v-icon class="me-2" size="small"> mdi-identifier </v-icon>
               <span class="font-weight-medium me-2">设备 ID:</span>
               <span>{{ namespaceInfo.device.id }}</span>
             </div>
@@ -105,35 +67,17 @@
               v-if="namespaceInfo.hasAccount === false && namespaceInfo.device.uuid"
               class="d-flex align-center"
             >
-              <v-icon
-                class="me-2"
-                size="small"
-              >
-                mdi-uuid
-              </v-icon>
+              <v-icon class="me-2" size="small"> mdi-uuid </v-icon>
               <span class="font-weight-medium me-2">UUID:</span>
               <span class="text-truncate">{{ namespaceInfo.device.uuid }}</span>
             </div>
             <div class="d-flex align-center">
-              <v-icon
-                class="me-2"
-                size="small"
-              >
-                mdi-calendar
-              </v-icon>
+              <v-icon class="me-2" size="small"> mdi-calendar </v-icon>
               <span class="font-weight-medium me-2">创建时间:</span>
               <span>{{ formatDate(namespaceInfo.device.createdAt) }}</span>
             </div>
-            <div
-              v-if="namespaceInfo.device.updatedAt"
-              class="d-flex align-center"
-            >
-              <v-icon
-                class="me-2"
-                size="small"
-              >
-                mdi-calendar-clock
-              </v-icon>
+            <div v-if="namespaceInfo.device.updatedAt" class="d-flex align-center">
+              <v-icon class="me-2" size="small"> mdi-calendar-clock </v-icon>
               <span class="font-weight-medium me-2">更新时间:</span>
               <span>{{ formatDate(namespaceInfo.device.updatedAt) }}</span>
             </div>
@@ -141,23 +85,14 @@
         </v-card-text>
       </v-card>
 
-      <v-card
-        border
-        hover
-        subtitle="文档形键值数据库"
-        title="Classworks KV"
-      >
+      <v-card border hover subtitle="文档形键值数据库" title="Classworks KV">
         <v-card-text>
-          Classworks KV 是厚浪云推出的文档形键值数据库，其是一个开放的云应用平台，为各种应用提供存储服务。此设备正在使用其服务，如果您希望管理设备信息，请前往
+          Classworks KV
+          是厚浪云推出的文档形键值数据库，其是一个开放的云应用平台，为各种应用提供存储服务。此设备正在使用其服务，如果您希望管理设备信息，请前往
           Classworks KV 的网站，如果您在服务推出前就在使用 Classworks，您的数据已被自动迁移。
-          <br><br>
+          <br /><br />
           Classworks KV 的全域管理员是
-          <a
-            href="https://wuyuan.dev"
-            target="_blank"
-          >
-            孙悟元
-          </a>
+          <a href="https://wuyuan.dev" target="_blank"> 孙悟元 </a>
         </v-card-text>
         <v-card-actions>
           <v-btn
@@ -173,10 +108,7 @@
     </v-card-text>
 
     <v-card-text v-else>
-      <v-alert
-        type="info"
-        variant="tonal"
-      >
+      <v-alert type="info" variant="tonal">
         <v-alert-title>未获取到设备信息</v-alert-title>
         <p>您尚未完成云端存储授权或连接失败，请点击下方按钮进行初始化。</p>
       </v-alert>
@@ -184,37 +116,21 @@
 
     <v-card-actions>
       <v-spacer />
-      <v-btn
-        :loading="loading"
-        color="primary"
-        variant="outlined"
-        @click="reloadInfo"
-      >
+      <v-btn :loading="loading" color="primary" variant="outlined" @click="reloadInfo">
         刷新设备信息
       </v-btn>
 
-      <v-btn
-        color="error"
-        variant="outlined"
-        @click="showReinitDialog = true"
-      >
+      <v-btn color="error" variant="outlined" @click="showReinitDialog = true">
         重新初始化云端存储
       </v-btn>
     </v-card-actions>
 
     <!-- 重新初始化确认对话框 -->
-    <v-dialog
-      v-model="showReinitDialog"
-      max-width="500"
-    >
+    <v-dialog v-model="showReinitDialog" max-width="500">
       <v-card>
         <v-card-title>确认重新初始化</v-card-title>
         <v-card-text>
-          <v-alert
-            class="mb-3"
-            type="warning"
-            variant="tonal"
-          >
+          <v-alert class="mb-3" type="warning" variant="tonal">
             <v-alert-title>警告</v-alert-title>
             此操作将清除当前的云端存储配置（包括 Token），您需要重新进行授权。
           </v-alert>
@@ -222,18 +138,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            variant="text"
-            @click="showReinitDialog = false"
-          >
-            取消
-          </v-btn>
-          <v-btn
-            color="error"
-            @click="confirmReinitialize"
-          >
-            确认
-          </v-btn>
+          <v-btn variant="text" @click="showReinitDialog = false"> 取消 </v-btn>
+          <v-btn color="error" @click="confirmReinitialize"> 确认 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -241,8 +147,8 @@
 </template>
 
 <script>
-import {kvServerProvider} from "@/utils/providers/kvServerProvider";
-import {setSetting, getSetting} from "@/utils/settings";
+import { kvServerProvider } from "@/utils/providers/kvServerProvider";
+import { setSetting, getSetting } from "@/utils/settings";
 
 export default {
   name: "CloudNamespaceInfoCard",
@@ -258,7 +164,7 @@ export default {
       loading: false,
       hasNamespaceInfo: false,
       showReinitDialog: false, // 确认对话框显示状态
-      defaultAuthServer: getSetting('server.authDomain'),
+      defaultAuthServer: getSetting("server.authDomain"),
     };
   },
   watch: {
@@ -311,14 +217,14 @@ export default {
     },
     confirmReinitialize() {
       // 删除 token 配置（设置为空字符串以触发 shouldShowInit）
-      setSetting('server.kvToken', '');
-      setSetting('device.uuid', '');
+      setSetting("server.kvToken", "");
+      setSetting("device.uuid", "");
 
       // 关闭对话框
       this.showReinitDialog = false;
 
       // 返回主页（将触发 InitServiceChooser 组件显示）
-      this.$router.push('/');
+      this.$router.push("/");
     },
   },
 };

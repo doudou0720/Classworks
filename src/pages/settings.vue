@@ -2,28 +2,14 @@
   <div class="settings-page">
     <v-app-bar elevation="1">
       <template #prepend>
-        <v-btn
-          icon="mdi-arrow-left"
-          variant="text"
-          @click="$router.push('/')"
-        />
-        <v-btn
-          icon="mdi-menu"
-          variant="text"
-          @click="drawer = !drawer"
-        />
+        <v-btn icon="mdi-arrow-left" variant="text" @click="$router.push('/')" />
+        <v-btn icon="mdi-menu" variant="text" @click="drawer = !drawer" />
       </template>
-      <v-app-bar-title class="text-h6">
-        设置
-      </v-app-bar-title>
+      <v-app-bar-title class="text-h6"> 设置 </v-app-bar-title>
     </v-app-bar>
 
     <v-container fluid>
-      <v-navigation-drawer
-        v-model="drawer"
-        :permanent="!isMobile"
-        :temporary="isMobile"
-      >
+      <v-navigation-drawer v-model="drawer" :permanent="!isMobile" :temporary="isMobile">
         <v-list>
           <v-list-item
             v-for="tab in settingsTabs"
@@ -39,11 +25,7 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-tabs-window
-        v-model="settingsTab"
-        direction="vertical"
-        style="width: 100%"
-      >
+      <v-tabs-window v-model="settingsTab" direction="vertical" style="width: 100%">
         <v-tabs-window-item value="index">
           <v-card
             border
@@ -58,12 +40,8 @@
             <v-card-item>
               <div class="card-title">
                 <div>
-                  <div class="text-h6">
-                    在寻找 Classworks KV ？
-                  </div>
-                  <div class="text-caption text-medium-emphasis">
-                    文档形键值数据库
-                  </div>
+                  <div class="text-h6">在寻找 Classworks KV ？</div>
+                  <div class="text-caption text-medium-emphasis">文档形键值数据库</div>
                 </div>
               </div>
             </v-card-item>
@@ -81,35 +59,17 @@
               </div>
             </v-card-text>
           </v-card>
-          <v-card
-            border
-            class="rounded-xl mb-4"
-            subtitle="设置"
-            title="Classworks"
-          >
+          <v-card border class="rounded-xl mb-4" subtitle="设置" title="Classworks">
             <v-card-text>
-              <v-alert
-                class="rounded-xl"
-                color="error"
-                icon="mdi-alert-circle"
-                variant="tonal"
-              >
-                Classworks
-                是开源免费的软件，官方没有提供任何形式的付费支持服务，源代码仓库地址在
-                <a
-                  href="https://github.com/ZeroCatDev/Classworks"
-                  target="_blank"
-                >https://github.com/ZeroCatDev/Classworks</a>。如果您通过有偿协助等付费方式取得本应用，在遇到问题时请在与卖家约定的服务框架下，优先向卖家求助。如果卖家没有提供您预期的服务，请退款或通过其它形式积极维护您的合法权益。
+              <v-alert class="rounded-xl" color="error" icon="mdi-alert-circle" variant="tonal">
+                Classworks 是开源免费的软件，官方没有提供任何形式的付费支持服务，源代码仓库地址在
+                <a href="https://github.com/ZeroCatDev/Classworks" target="_blank"
+                  >https://github.com/ZeroCatDev/Classworks</a
+                >。如果您通过有偿协助等付费方式取得本应用，在遇到问题时请在与卖家约定的服务框架下，优先向卖家求助。如果卖家没有提供您预期的服务，请退款或通过其它形式积极维护您的合法权益。
               </v-alert>
-              <v-alert
-                class="mt-4 rounded-xl"
-                color="info"
-                icon="mdi-information"
-                variant="tonal"
-              >
+              <v-alert class="mt-4 rounded-xl" color="info" icon="mdi-information" variant="tonal">
                 请不要使用浏览器清除缓存功能，否则会导致配置丢失。
-                <del>恶意的操作可能导致您受到贵校教师的处理
-                </del>
+                <del>恶意的操作可能导致您受到贵校教师的处理 </del>
               </v-alert>
               <v-alert
                 class="mt-4 rounded-xl"
@@ -119,15 +79,13 @@
               >
                 <p>
                   请不要使用包括但不限于360极速浏览器、360安全浏览器、夸克浏览器、QQ浏览器等浏览器使用
-                  Classworks
-                  ，这些浏览器过时且存在严重的一致性问题。在Windows上，使用新版
-                  Microsoft Edge 浏览器是最推荐的选择。
+                  Classworks ，这些浏览器过时且存在严重的一致性问题。在Windows上，使用新版 Microsoft
+                  Edge 浏览器是最推荐的选择。
                 </p>
                 <p style="color: #666">
-                  上述浏览器商标为其所属公司所有，Classworks™
-                  与上述浏览器所属公司无竞争关系。
+                  上述浏览器商标为其所属公司所有，Classworks™ 与上述浏览器所属公司无竞争关系。
                 </p>
-                <br>
+                <br />
                 <v-btn
                   append-icon="mdi-open-in-new"
                   class="text-none rounded-xl"
@@ -145,61 +103,29 @@
         </v-tabs-window-item>
 
         <v-tabs-window-item value="server">
-          <server-settings-card
-            :loading="loading.server"
-            border
-            @saved="onSettingsSaved"
-          />
-          <data-provider-settings-card
-            border
-            class="mt-4"
-          />
-          <kv-database-card
-            border
-            class="mt-4"
-          />
+          <server-settings-card :loading="loading.server" border @saved="onSettingsSaved" />
+          <data-provider-settings-card border class="mt-4" />
+          <kv-database-card border class="mt-4" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="student">
-          <student-list-card
-            :is-mobile="isMobile"
-            border
-          />
-          <teacher-list-card
-            :is-mobile="isMobile"
-            border
-            class="mt-4"
-          />
+          <student-list-card :is-mobile="isMobile" border />
+          <teacher-list-card :is-mobile="isMobile" border class="mt-4" />
         </v-tabs-window-item>
         <v-tabs-window-item value="share">
-          <settings-link-generator
-            border
-            class="mt-4"
-          />
+          <settings-link-generator border class="mt-4" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="refresh">
-          <refresh-settings-card
-            :loading="loading.refresh"
-            border
-            @saved="onSettingsSaved"
-          />
+          <refresh-settings-card :loading="loading.refresh" border @saved="onSettingsSaved" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="edit">
-          <edit-settings-card
-            :loading="loading.edit"
-            border
-            @saved="onSettingsSaved"
-          />
+          <edit-settings-card :loading="loading.edit" border @saved="onSettingsSaved" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="display">
-          <display-settings-card
-            :loading="loading.display"
-            border
-            @saved="onSettingsSaved"
-          />
+          <display-settings-card :loading="loading.display" border @saved="onSettingsSaved" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="noise">
@@ -215,14 +141,11 @@
         </v-tabs-window-item>
 
         <v-tabs-window-item value="randomPicker">
-          <random-picker-card
-            :is-mobile="isMobile"
-            border
-          />
+          <random-picker-card :is-mobile="isMobile" border />
         </v-tabs-window-item>
         <v-tabs-window-item value="subject">
           <subject-management-card border />
-          <br>
+          <br />
           <homework-template-card border />
         </v-tabs-window-item>
 
@@ -231,23 +154,14 @@
         </v-tabs-window-item>
 
         <v-tabs-window-item value="developer">
-          <settings-card
-            border
-            icon="mdi-developer-board"
-            title="开发者选项"
-          >
+          <settings-card border icon="mdi-developer-board" title="开发者选项">
             <v-list>
               <v-list-item>
                 <template #prepend>
-                  <v-icon
-                    class="mr-3"
-                    icon="mdi-code-tags"
-                  />
+                  <v-icon class="mr-3" icon="mdi-code-tags" />
                 </template>
                 <v-list-item-title>启用开发者选项</v-list-item-title>
-                <v-list-item-subtitle>
-                  启用后可以查看和修改开发者设置
-                </v-list-item-subtitle>
+                <v-list-item-subtitle> 启用后可以查看和修改开发者设置 </v-list-item-subtitle>
                 <template #append>
                   <v-switch
                     v-model="settings.developer.enabled"
@@ -259,21 +173,11 @@
               </v-list-item>
             </v-list>
           </settings-card>
-          <developer-settings-card
-            :loading="loading.developer"
-            border
-            @saved="onSettingsSaved"
-          />
+          <developer-settings-card :loading="loading.developer" border @saved="onSettingsSaved" />
           <template v-if="settings.developer.enabled">
-            <v-card
-              border
-              class="mt-4 rounded-lg"
-            >
+            <v-card border class="mt-4 rounded-lg">
               <v-card-title class="d-flex align-center">
-                <v-icon
-                  class="mr-2"
-                  icon="mdi-cog-outline"
-                />
+                <v-icon class="mr-2" icon="mdi-cog-outline" />
                 所有设置
               </v-card-title>
               <v-card-subtitle> 浏览和修改所有可用设置</v-card-subtitle>
@@ -282,18 +186,12 @@
               </v-card-text>
             </v-card>
           </template>
-          <v-col
-            v-if="settings.developer.enabled"
-            cols="12"
-          />
+          <v-col v-if="settings.developer.enabled" cols="12" />
         </v-tabs-window-item>
 
         <v-tabs-window-item value="about">
           <about-card />
-          <echo-chamber-card
-            border
-            class="mt-4"
-          />
+          <echo-chamber-card border class="mt-4" />
         </v-tabs-window-item>
       </v-tabs-window>
     </v-container>
@@ -304,19 +202,14 @@
 </template>
 
 <script>
-import {useDisplay} from "vuetify";
+import { useDisplay } from "vuetify";
 import ServerSettingsCard from "@/components/settings/cards/ServerSettingsCard.vue";
 import EditSettingsCard from "@/components/settings/cards/EditSettingsCard.vue";
 import RefreshSettingsCard from "@/components/settings/cards/RefreshSettingsCard.vue";
 import DisplaySettingsCard from "@/components/settings/cards/DisplaySettingsCard.vue";
 import DataProviderSettingsCard from "@/components/settings/cards/DataProviderSettingsCard.vue";
 import EchoChamberCard from "@/components/settings/cards/EchoChamberCard.vue";
-import {
-  getSetting,
-  setSetting,
-  resetSetting,
-  watchSettings,
-} from "@/utils/settings";
+import { getSetting, setSetting, resetSetting, watchSettings } from "@/utils/settings";
 import MessageLog from "@/components/MessageLog.vue";
 import SettingsCard from "@/components/SettingsCard.vue";
 import StudentListCard from "@/components/settings/StudentListCard.vue";
@@ -360,8 +253,8 @@ export default {
     BackgroundSettingsCard,
   },
   setup() {
-    const {mobile} = useDisplay();
-    return {isMobile: mobile};
+    const { mobile } = useDisplay();
+    return { isMobile: mobile };
   },
   data() {
     const provider = getSetting("server.provider");
@@ -405,8 +298,8 @@ export default {
     return {
       settings,
       dataProviders: [
-        {title: "服务器", value: "server"},
-        {title: "本地数据库", value: "indexedDB"},
+        { title: "服务器", value: "server" },
+        { title: "本地数据库", value: "indexedDB" },
       ],
       studentData: {
         list: [],
@@ -736,7 +629,9 @@ export default {
 <style lang="scss">
 .settings-page {
   .v-card {
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
 
     &:hover {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;

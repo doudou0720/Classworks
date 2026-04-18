@@ -1,45 +1,22 @@
 <template>
-  <settings-card
-    border
-    icon="mdi-image"
-    title="背景设置"
-  >
+  <settings-card border icon="mdi-image" title="背景设置">
     <v-list>
-      <setting-item
-        :key="settingItemKey"
-        :setting-key="'background.enabled'"
-      />
+      <setting-item :key="settingItemKey" :setting-key="'background.enabled'" />
     </v-list>
 
     <v-divider class="mb-4" />
 
     <div class="px-4 pb-4">
       <!-- 预览区域 -->
-      <div
-        class="preview-area mb-6"
-        :style="previewContainerStyle"
-      >
-        <div
-          class="preview-bg"
-          :style="previewBgStyle"
-        />
-        <div
-          class="preview-overlay"
-          :style="previewOverlayStyle"
-        />
-        <div class="preview-text">
-          背景预览
-        </div>
+      <div class="preview-area mb-6" :style="previewContainerStyle">
+        <div class="preview-bg" :style="previewBgStyle" />
+        <div class="preview-overlay" :style="previewOverlayStyle" />
+        <div class="preview-text">背景预览</div>
       </div>
 
       <!-- 图片来源 -->
       <div class="d-flex align-center mb-4">
-        <v-icon
-          class="mr-2"
-          color="primary"
-        >
-          mdi-image-search
-        </v-icon>
+        <v-icon class="mr-2" color="primary"> mdi-image-search </v-icon>
         <span class="text-subtitle-1 font-weight-bold">图片来源</span>
       </div>
 
@@ -52,25 +29,12 @@
         mandatory
         rounded="xl"
       >
-        <v-btn
-          value="url"
-          prepend-icon="mdi-link-variant"
-        >
-          网络地址
-        </v-btn>
-        <v-btn
-          value="upload"
-          prepend-icon="mdi-upload"
-        >
-          本地上传
-        </v-btn>
+        <v-btn value="url" prepend-icon="mdi-link-variant"> 网络地址 </v-btn>
+        <v-btn value="upload" prepend-icon="mdi-upload"> 本地上传 </v-btn>
       </v-btn-toggle>
 
       <!-- URL 输入 -->
-      <div
-        v-if="imageSource === 'url'"
-        class="mb-4"
-      >
+      <div v-if="imageSource === 'url'" class="mb-4">
         <v-text-field
           v-model="localUrl"
           label="图片地址"
@@ -99,10 +63,7 @@
       </div>
 
       <!-- 本地上传 -->
-      <div
-        v-if="imageSource === 'upload'"
-        class="mb-4"
-      >
+      <div v-if="imageSource === 'upload'" class="mb-4">
         <div
           class="upload-area rounded-xl pa-6 text-center mb-3"
           :class="{ 'upload-hover': isDragging }"
@@ -111,16 +72,8 @@
           @drop.prevent="handleDrop"
           @click="triggerFileInput"
         >
-          <v-icon
-            size="40"
-            color="primary"
-            class="mb-2"
-          >
-            mdi-image-plus
-          </v-icon>
-          <div class="text-body-2">
-            点击或拖拽图片到此处上传
-          </div>
+          <v-icon size="40" color="primary" class="mb-2"> mdi-image-plus </v-icon>
+          <div class="text-body-2">点击或拖拽图片到此处上传</div>
           <div class="text-caption text-medium-emphasis mt-1">
             支持 JPG、PNG、WebP、GIF（建议小于 {{ maxImageSizeMB }}MB）
           </div>
@@ -130,7 +83,7 @@
             accept="image/*"
             style="display: none"
             @change="handleFileChange"
-          >
+          />
         </div>
 
         <v-alert
@@ -144,15 +97,8 @@
           {{ uploadWarning }}
         </v-alert>
 
-        <div
-          v-if="localImageData"
-          class="d-flex align-center ga-2"
-        >
-          <v-chip
-            color="success"
-            prepend-icon="mdi-check-circle"
-            size="small"
-          >
+        <div v-if="localImageData" class="d-flex align-center ga-2">
+          <v-chip color="success" prepend-icon="mdi-check-circle" size="small">
             已上传本地图片
           </v-chip>
           <v-btn
@@ -171,12 +117,7 @@
 
       <!-- 毛玻璃效果设置 -->
       <div class="d-flex align-center mb-4">
-        <v-icon
-          class="mr-2"
-          color="blue"
-        >
-          mdi-blur
-        </v-icon>
+        <v-icon class="mr-2" color="blue"> mdi-blur </v-icon>
         <span class="text-subtitle-1 font-weight-bold">毛玻璃效果</span>
       </div>
 
@@ -197,20 +138,10 @@
           @update:model-value="onBlurChange"
         >
           <template #prepend>
-            <v-icon
-              size="small"
-              color="grey"
-            >
-              mdi-blur-off
-            </v-icon>
+            <v-icon size="small" color="grey"> mdi-blur-off </v-icon>
           </template>
           <template #append>
-            <v-icon
-              size="small"
-              color="primary"
-            >
-              mdi-blur
-            </v-icon>
+            <v-icon size="small" color="primary"> mdi-blur </v-icon>
           </template>
         </v-slider>
       </div>
@@ -232,20 +163,10 @@
           @update:model-value="onOpacityChange"
         >
           <template #prepend>
-            <v-icon
-              size="small"
-              color="grey"
-            >
-              mdi-brightness-7
-            </v-icon>
+            <v-icon size="small" color="grey"> mdi-brightness-7 </v-icon>
           </template>
           <template #append>
-            <v-icon
-              size="small"
-              color="blue-grey"
-            >
-              mdi-brightness-2
-            </v-icon>
+            <v-icon size="small" color="blue-grey"> mdi-brightness-2 </v-icon>
           </template>
         </v-slider>
       </div>
@@ -254,13 +175,7 @@
 
       <!-- 保存按钮 -->
       <div class="d-flex justify-end ga-3">
-        <v-btn
-          variant="text"
-          prepend-icon="mdi-restore"
-          @click="resetAll"
-        >
-          重置
-        </v-btn>
+        <v-btn variant="text" prepend-icon="mdi-restore" @click="resetAll"> 重置 </v-btn>
         <v-btn
           color="primary"
           variant="elevated"
@@ -276,36 +191,36 @@
 </template>
 
 <script>
-import SettingsCard from '@/components/SettingsCard.vue';
-import SettingItem from '@/components/settings/SettingItem.vue';
-import { getSetting, setSetting, resetSetting } from '@/utils/settings';
+import SettingsCard from "@/components/SettingsCard.vue";
+import SettingItem from "@/components/settings/SettingItem.vue";
+import { getSetting, setSetting, resetSetting } from "@/utils/settings";
 
 const URL_PRESETS = [
-  { label: 'Bing 随机壁纸', url: 'https://bing.img.run/rand.php' },
-  { label: 'Bing 每日壁纸', url: 'https://bing.img.run/1920x1080.php' },
-  { label: '随机风景', url: 'https://picsum.photos/1920/1080?random=1' },
-  { label: '随机二次元', url: 'https://uapis.cn/api/v1/random/image?category=acg&type=pc' },
+  { label: "Bing 随机壁纸", url: "https://bing.img.run/rand.php" },
+  { label: "Bing 每日壁纸", url: "https://bing.img.run/1920x1080.php" },
+  { label: "随机风景", url: "https://picsum.photos/1920/1080?random=1" },
+  { label: "随机二次元", url: "https://uapis.cn/api/v1/random/image?category=acg&type=pc" },
 ];
 
 const MAX_IMAGE_SIZE_MB = 10;
 
 export default {
-  name: 'BackgroundSettingsCard',
+  name: "BackgroundSettingsCard",
   components: { SettingsCard, SettingItem },
 
   data() {
-    const imageData = getSetting('background.imageData') || '';
-    const url = getSetting('background.url') || '';
+    const imageData = getSetting("background.imageData") || "";
+    const url = getSetting("background.url") || "";
 
     return {
-      imageSource: imageData ? 'upload' : 'url',
+      imageSource: imageData ? "upload" : "url",
       localUrl: url,
       localImageData: imageData,
-      localBlur: getSetting('background.blur') ?? 10,
-      localOpacity: getSetting('background.opacity') ?? 30,
+      localBlur: getSetting("background.blur") ?? 10,
+      localOpacity: getSetting("background.opacity") ?? 30,
       isDragging: false,
       saving: false,
-      uploadWarning: '',
+      uploadWarning: "",
       urlPresets: URL_PRESETS,
       settingItemKey: 0,
       maxImageSizeMB: MAX_IMAGE_SIZE_MB,
@@ -315,51 +230,51 @@ export default {
   computed: {
     /** The active image src for preview */
     activeImageSrc() {
-      if (this.imageSource === 'upload' && this.localImageData) {
+      if (this.imageSource === "upload" && this.localImageData) {
         return this.localImageData;
       }
-      if (this.imageSource === 'url' && this.localUrl) {
+      if (this.imageSource === "url" && this.localUrl) {
         return this.localUrl;
       }
-      return '';
+      return "";
     },
 
     previewContainerStyle() {
       return {
-        position: 'relative',
-        width: '100%',
-        height: '160px',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        border: '1px solid rgba(128,128,128,0.3)',
+        position: "relative",
+        width: "100%",
+        height: "160px",
+        borderRadius: "12px",
+        overflow: "hidden",
+        border: "1px solid rgba(128,128,128,0.3)",
       };
     },
 
     previewBgStyle() {
       if (!this.activeImageSrc) {
         return {
-          position: 'absolute',
-          inset: '0',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          position: "absolute",
+          inset: "0",
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
           filter: `blur(${this.localBlur}px)`,
-          transform: 'scale(1.1)',
+          transform: "scale(1.1)",
         };
       }
       return {
-        position: 'absolute',
-        inset: '0',
+        position: "absolute",
+        inset: "0",
         backgroundImage: `url(${this.activeImageSrc})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         filter: `blur(${this.localBlur}px)`,
-        transform: 'scale(1.1)',
+        transform: "scale(1.1)",
       };
     },
 
     previewOverlayStyle() {
       return {
-        position: 'absolute',
-        inset: '0',
+        position: "absolute",
+        inset: "0",
         background: `rgba(0, 0, 0, ${this.localOpacity / 100})`,
       };
     },
@@ -372,12 +287,12 @@ export default {
         new URL(val);
         return true;
       } catch {
-        return '请输入有效的图片地址';
+        return "请输入有效的图片地址";
       }
     },
 
     onUrlChange(val) {
-      this.localUrl = val || '';
+      this.localUrl = val || "";
     },
 
     onBlurChange(val) {
@@ -390,7 +305,7 @@ export default {
 
     applyPreset(url) {
       this.localUrl = url;
-      this.imageSource = 'url';
+      this.imageSource = "url";
     },
 
     triggerFileInput() {
@@ -407,14 +322,14 @@ export default {
       const file = event.target.files?.[0];
       if (file) this.processFile(file);
       // Reset input so same file can be re-selected
-      event.target.value = '';
+      event.target.value = "";
     },
 
     processFile(file) {
-      this.uploadWarning = '';
+      this.uploadWarning = "";
 
-      if (!file.type.startsWith('image/')) {
-        this.uploadWarning = '请选择图片文件';
+      if (!file.type.startsWith("image/")) {
+        this.uploadWarning = "请选择图片文件";
         return;
       }
 
@@ -432,42 +347,42 @@ export default {
     },
 
     clearUploadedImage() {
-      this.localImageData = '';
-      this.uploadWarning = '';
+      this.localImageData = "";
+      this.uploadWarning = "";
     },
 
     async saveAll() {
       this.saving = true;
       try {
         // Determine which image source to persist
-        if (this.imageSource === 'upload') {
-          setSetting('background.imageData', this.localImageData || '');
-          setSetting('background.url', '');
+        if (this.imageSource === "upload") {
+          setSetting("background.imageData", this.localImageData || "");
+          setSetting("background.url", "");
         } else {
-          setSetting('background.url', this.localUrl || '');
-          setSetting('background.imageData', '');
+          setSetting("background.url", this.localUrl || "");
+          setSetting("background.imageData", "");
         }
 
-        setSetting('background.blur', this.localBlur);
-        setSetting('background.opacity', this.localOpacity);
+        setSetting("background.blur", this.localBlur);
+        setSetting("background.opacity", this.localOpacity);
       } finally {
         this.saving = false;
       }
     },
 
     resetAll() {
-      resetSetting('background.enabled');
-      resetSetting('background.url');
-      resetSetting('background.imageData');
-      resetSetting('background.blur');
-      resetSetting('background.opacity');
+      resetSetting("background.enabled");
+      resetSetting("background.url");
+      resetSetting("background.imageData");
+      resetSetting("background.blur");
+      resetSetting("background.opacity");
 
-      this.localUrl = getSetting('background.url') || '';
-      this.localImageData = getSetting('background.imageData') || '';
-      this.localBlur = getSetting('background.blur') ?? 10;
-      this.localOpacity = getSetting('background.opacity') ?? 30;
-      this.imageSource = 'url';
-      this.uploadWarning = '';
+      this.localUrl = getSetting("background.url") || "";
+      this.localImageData = getSetting("background.imageData") || "";
+      this.localBlur = getSetting("background.blur") ?? 10;
+      this.localOpacity = getSetting("background.opacity") ?? 30;
+      this.imageSource = "url";
+      this.uploadWarning = "";
       // Force re-render of SettingItem to reflect reset enabled state
       this.settingItemKey++;
     },

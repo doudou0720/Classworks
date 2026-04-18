@@ -32,7 +32,7 @@ export default {
         return {
           success: true,
           eventId: content?.eventId || null,
-          notificationId: content?.notificationId || null
+          notificationId: content?.notificationId || null,
         };
       } catch (error) {
         console.error("发送事件失败:", error);
@@ -62,12 +62,10 @@ export default {
       isUrgent = false,
       targetDevices = [],
       senderInfo = {},
-      notificationId = null
+      notificationId = null,
     ) {
       // 生成一个客户端事件 ID，便于在接收回执时进行映射
-      const eventId = `evt-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 8)}`;
+      const eventId = `evt-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       return this.sendEvent("notification", {
         eventId,
         notificationId,
@@ -86,9 +84,7 @@ export default {
      * @param {string} notificationId - 原通知ID（可选）
      */
     async sendReceipt(originalEventId, status, deviceInfo = {}, notificationId = null) {
-      const eventId = `rcpt-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 6)}`;
+      const eventId = `rcpt-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
       return this.sendEvent("notification-receipt", {
         eventId,
         originalEventId,
@@ -104,9 +100,7 @@ export default {
      * @param {string} notificationId 原通知ID
      */
     async sendDisplayedReceipt(deviceInfo = {}, notificationId = null) {
-      const eventId = `disp-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 6)}`;
+      const eventId = `disp-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
       return this.sendEvent("notification-displayed", {
         eventId,
         notificationId,
@@ -119,9 +113,7 @@ export default {
      * @param {string} notificationId 原通知ID
      */
     async sendReadReceipt(deviceInfo = {}, notificationId = null) {
-      const eventId = `read-${Date.now()}-${Math.random()
-        .toString(36)
-        .slice(2, 6)}`;
+      const eventId = `read-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
       return this.sendEvent("notification-read", {
         eventId,
         notificationId,

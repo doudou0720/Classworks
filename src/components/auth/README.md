@@ -26,16 +26,12 @@
 ```vue
 <template>
   <v-dialog v-model="dialog">
-    <DeviceAuthDialog
-      :show-cancel="true"
-      @success="handleSuccess"
-      @cancel="dialog = false"
-    />
+    <DeviceAuthDialog :show-cancel="true" @success="handleSuccess" @cancel="dialog = false" />
   </v-dialog>
 </template>
 
 <script setup>
-import DeviceAuthDialog from '@/components/auth/DeviceAuthDialog.vue'
+import DeviceAuthDialog from "@/components/auth/DeviceAuthDialog.vue";
 </script>
 ```
 
@@ -63,16 +59,12 @@ Token 输入对话框,用于手动输入 KV 授权 Token。
 ```vue
 <template>
   <v-dialog v-model="dialog">
-    <TokenInputDialog
-      :show-cancel="true"
-      @success="handleSuccess"
-      @cancel="dialog = false"
-    />
+    <TokenInputDialog :show-cancel="true" @success="handleSuccess" @cancel="dialog = false" />
   </v-dialog>
 </template>
 
 <script setup>
-import TokenInputDialog from '@/components/auth/TokenInputDialog.vue'
+import TokenInputDialog from "@/components/auth/TokenInputDialog.vue";
 </script>
 ```
 
@@ -100,16 +92,12 @@ import TokenInputDialog from '@/components/auth/TokenInputDialog.vue'
 ```vue
 <template>
   <v-dialog v-model="dialog">
-    <AlternativeCodeDialog
-      :show-cancel="true"
-      @submit="handleSubmit"
-      @cancel="dialog = false"
-    />
+    <AlternativeCodeDialog :show-cancel="true" @submit="handleSubmit" @cancel="dialog = false" />
   </v-dialog>
 </template>
 
 <script setup>
-import AlternativeCodeDialog from '@/components/auth/AlternativeCodeDialog.vue'
+import AlternativeCodeDialog from "@/components/auth/AlternativeCodeDialog.vue";
 </script>
 ```
 
@@ -133,7 +121,7 @@ import AlternativeCodeDialog from '@/components/auth/AlternativeCodeDialog.vue'
 </template>
 
 <script setup>
-import FirstTimeGuide from '@/components/auth/FirstTimeGuide.vue'
+import FirstTimeGuide from "@/components/auth/FirstTimeGuide.vue";
 </script>
 ```
 

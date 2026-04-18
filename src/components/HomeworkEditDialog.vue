@@ -11,11 +11,7 @@
       <v-card-title class="d-flex align-center">
         {{ title }}
         <v-spacer />
-        <v-btn
-          icon="mdi-close"
-          variant="text"
-          @click="handleClose"
-        />
+        <v-btn icon="mdi-close" variant="text" @click="handleClose" />
       </v-card-title>
       <v-card-subtitle>
         {{ autoSave ? autoSavePromptText : manualSavePromptText }}
@@ -35,21 +31,11 @@
             />
 
             <!-- Template Buttons Section -->
-            <div
-              v-if="templateData"
-              class="mt-4"
-            >
-              <div
-                v-if="hasTemplates"
-                class="template-buttons"
-              >
+            <div v-if="templateData" class="mt-4">
+              <div v-if="hasTemplates" class="template-buttons">
                 <!-- Subject specific books -->
                 <template v-if="subjectBooks">
-                  <div
-                    v-for="(pages, book) in subjectBooks"
-                    :key="book"
-                    class="button-group"
-                  >
+                  <div v-for="(pages, book) in subjectBooks" :key="book" class="button-group">
                     <v-chip
                       :color="isBookSelected(book) ? 'success' : 'default'"
                       :variant="isBookSelected(book) ? 'elevated' : 'flat'"
@@ -60,10 +46,7 @@
                     </v-chip>
 
                     <!-- Show pages only if book is selected -->
-                    <div
-                      v-if="isBookSelected(book)"
-                      class="pages-container mt-2"
-                    >
+                    <div v-if="isBookSelected(book)" class="pages-container mt-2">
                       <v-chip
                         v-for="page in pages"
                         :key="page"
@@ -80,11 +63,7 @@
 
                 <!-- Common books -->
                 <template v-if="commonBooks">
-                  <div
-                    v-for="(pages, book) in commonBooks"
-                    :key="book"
-                    class="button-group"
-                  >
+                  <div v-for="(pages, book) in commonBooks" :key="book" class="button-group">
                     <v-chip
                       :color="isBookSelected(book) ? 'success' : 'default'"
                       :variant="isBookSelected(book) ? 'elevated' : 'flat'"
@@ -95,10 +74,7 @@
                     </v-chip>
 
                     <!-- Show pages only if book is selected -->
-                    <div
-                      v-if="isBookSelected(book)"
-                      class="pages-container mt-2"
-                    >
+                    <div v-if="isBookSelected(book)" class="pages-container mt-2">
                       <v-chip
                         v-for="page in pages"
                         :key="page"
@@ -114,10 +90,7 @@
                 </template>
 
                 <!-- Actions -->
-                <div
-                  v-if="templateData.actions?.length"
-                  class="button-group"
-                >
+                <div v-if="templateData.actions?.length" class="button-group">
                   <v-chip
                     v-for="action in templateData.actions"
                     :key="action"
@@ -130,21 +103,12 @@
                   </v-chip>
                 </div>
               </div>
-              <div
-                v-else
-                class="text-center text-body-2 text-disabled mt-2"
-              >
-                暂无可用的模板
-              </div>
+              <div v-else class="text-center text-body-2 text-disabled mt-2">暂无可用的模板</div>
             </div>
           </div>
 
           <!-- Quick Tools Section -->
-          <div
-            v-if="showQuickTools && !isMobile"
-            class="quick-tools ml-4"
-            style="min-width: 180px;"
-          >
+          <div v-if="showQuickTools && !isMobile" class="quick-tools ml-4" style="min-width: 180px">
             <!-- Numeric Keypad -->
             <div class="numeric-keypad mb-4">
               <div class="keypad-row">
@@ -184,20 +148,10 @@
                 </v-btn>
               </div>
               <div class="keypad-row">
-                <v-btn
-                  class="keypad-btn"
-                  size="small"
-                  variant="tonal"
-                  @click="insertAtCursor('-')"
-                >
+                <v-btn class="keypad-btn" size="small" variant="tonal" @click="insertAtCursor('-')">
                   -
                 </v-btn>
-                <v-btn
-                  class="keypad-btn"
-                  size="small"
-                  variant="tonal"
-                  @click="insertAtCursor('0')"
-                >
+                <v-btn class="keypad-btn" size="small" variant="tonal" @click="insertAtCursor('0')">
                   0
                 </v-btn>
                 <v-btn
@@ -257,25 +211,29 @@
       >
         <template #prepend />
         <div class="d-flex flex-column">
-          <div class="text-h6 mb-1">
-            你打算修改历史？
-          </div>
+          <div class="text-h6 mb-1">你打算修改历史？</div>
           <div class="text-body-2">
-            这是 {{ new Date(currentDateString.slice(0,4), currentDateString.slice(4,6)-1, currentDateString.slice(6,8)).toLocaleDateString() }} 的作业 • 请谨慎操作，确保不会覆盖重要数据
+            这是
+            {{
+              new Date(
+                currentDateString.slice(0, 4),
+                currentDateString.slice(4, 6) - 1,
+                currentDateString.slice(6, 8),
+              ).toLocaleDateString()
+            }}
+            的作业 • 请谨慎操作，确保不会覆盖重要数据
           </div>
         </div>
       </v-alert>
 
-      <div class="text-center text-body-2 text-disabled mb-5">
-        点击空白处完成编辑
-      </div>
+      <div class="text-center text-body-2 text-disabled mb-5">点击空白处完成编辑</div>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
 import dataProvider from "@/utils/dataProvider";
-import {getSetting} from "@/utils/settings";
+import { getSetting } from "@/utils/settings";
 import { useDisplay } from "vuetify";
 
 export default {
@@ -283,28 +241,28 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      required: true
+      required: true,
     },
     initialContent: {
       type: String,
-      default: ""
+      default: "",
     },
     autoSave: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isEditingPastData: {
       type: Boolean,
-      default: false
+      default: false,
     },
     currentDateString: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   emits: ["update:modelValue", "save"],
   setup() {
@@ -318,13 +276,13 @@ export default {
       currentLine: "",
       currentLineStart: 0,
       currentLineEnd: 0,
-      quickTexts: ["课", "题", "例", "变", "T", "P"]
+      quickTexts: ["课", "题", "例", "变", "T", "P"],
     };
   },
   computed: {
     isMobile() {
       // 如果启用了强制一体机UI模式，返回false（使用桌面UI）
-      const forceDesktopMode = getSetting('display.forceDesktopMode');
+      const forceDesktopMode = getSetting("display.forceDesktopMode");
       if (forceDesktopMode) {
         return false;
       }
@@ -336,18 +294,14 @@ export default {
       },
       set(value) {
         this.$emit("update:modelValue", value);
-      }
+      },
     },
     subject() {
       // 标题直接就是科目名称
       return this.title;
     },
     hasTemplates() {
-      return !!(
-        (this.templateData?.actions?.length) ||
-        this.subjectBooks ||
-        this.commonBooks
-      );
+      return !!(this.templateData?.actions?.length || this.subjectBooks || this.commonBooks);
     },
     subjectBooks() {
       if (!this.subject || !this.templateData?.subjects?.[this.subject]?.books) {
@@ -369,7 +323,7 @@ export default {
     },
     manualSavePromptText() {
       return getSetting("edit.manualSavePromptText");
-    }
+    },
   },
   watch: {
     async modelValue(newValue) {
@@ -390,7 +344,7 @@ export default {
           }
         });
       }
-    }
+    },
   },
   methods: {
     handleClose() {
@@ -401,12 +355,12 @@ export default {
       this.dialogVisible = false;
     },
     updateCurrentLine() {
-      const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+      const textarea = this.$refs.inputRef.$el.querySelector("textarea");
       const cursorPosition = textarea.selectionStart;
       const content = this.content;
 
       let currentPos = 0;
-      const lines = content.split('\n');
+      const lines = content.split("\n");
 
       for (let i = 0; i < lines.length; i++) {
         const lineLength = lines[i].length;
@@ -438,24 +392,24 @@ export default {
     handleBookClick(book) {
       if (this.isBookSelected(book)) {
         // 删除包含该作业本的整行
-        const lines = this.content.split('\n');
-        const lineToDelete = lines.findIndex(line => line.includes(book));
+        const lines = this.content.split("\n");
+        const lineToDelete = lines.findIndex((line) => line.includes(book));
         if (lineToDelete !== -1) {
           lines.splice(lineToDelete, 1);
-          this.content = lines.join('\n');
+          this.content = lines.join("\n");
         }
       } else {
         // 在末尾插入新行
         const hasContent = this.content.trim().length > 0;
-        this.content = (hasContent ? this.content.trim() + '\n' : '') + book;
+        this.content = (hasContent ? this.content.trim() + "\n" : "") + book;
       }
       this.$nextTick(() => {
-        const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+        const textarea = this.$refs.inputRef.$el.querySelector("textarea");
         textarea.focus();
 
         if (!this.isBookSelected(book)) {
           // 找到新插入的行的末尾位置
-          const lines = this.content.split('\n');
+          const lines = this.content.split("\n");
           let position = 0;
           for (let i = 0; i < lines.length; i++) {
             if (lines[i].includes(book)) {
@@ -480,27 +434,27 @@ export default {
           const newLineContent =
             currentLineContent.slice(0, lastIndex) +
             currentLineContent.slice(lastIndex + page.length);
-          this.content = this.content.slice(0, start) +
-            newLineContent.trim() +
-            this.content.slice(end);
+          this.content =
+            this.content.slice(0, start) + newLineContent.trim() + this.content.slice(end);
         }
       } else {
         // 在当前行末尾插入
         const start = this.currentLineStart;
         const end = this.currentLineEnd;
         const currentLineContent = this.content.slice(start, end);
-        this.content = this.content.slice(0, start) +
+        this.content =
+          this.content.slice(0, start) +
           currentLineContent.trim() +
-          (currentLineContent.trim().length > 0 ? ' ' : '') +
+          (currentLineContent.trim().length > 0 ? " " : "") +
           page +
           this.content.slice(end);
       }
       this.$nextTick(() => {
-        const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+        const textarea = this.$refs.inputRef.$el.querySelector("textarea");
         textarea.focus();
 
         // 将光标移动到当前行末尾
-        const lines = this.content.split('\n');
+        const lines = this.content.split("\n");
         let position = 0;
         for (let i = 0; i < lines.length; i++) {
           position += lines[i].length;
@@ -514,13 +468,15 @@ export default {
       });
     },
     insertTemplate(text) {
-      const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+      const textarea = this.$refs.inputRef.$el.querySelector("textarea");
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
 
       // 在快捷操作前添加空格
-      const needsSpace = start > 0 && this.content[start - 1] !== ' ' && this.content[start - 1] !== '\n';
-      this.content = this.content.slice(0, start) + (needsSpace ? ' ' : '') + text + this.content.slice(end);
+      const needsSpace =
+        start > 0 && this.content[start - 1] !== " " && this.content[start - 1] !== "\n";
+      this.content =
+        this.content.slice(0, start) + (needsSpace ? " " : "") + text + this.content.slice(end);
 
       this.$nextTick(() => {
         textarea.focus();
@@ -532,7 +488,7 @@ export default {
     insertAtCursor(text) {
       if (!text) return;
 
-      const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+      const textarea = this.$refs.inputRef.$el.querySelector("textarea");
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
 
@@ -546,7 +502,7 @@ export default {
       });
     },
     deleteLastChar() {
-      const textarea = this.$refs.inputRef.$el.querySelector('textarea');
+      const textarea = this.$refs.inputRef.$el.querySelector("textarea");
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
 
@@ -569,8 +525,8 @@ export default {
           this.updateCurrentLine();
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -580,7 +536,6 @@ export default {
   flex-direction: column;
   gap: 12px;
 }
-
 
 .book-chip {
   align-self: flex-start;

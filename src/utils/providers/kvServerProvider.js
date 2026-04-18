@@ -1,11 +1,11 @@
 import axios from "@/axios/axios";
-import {formatResponse, formatError} from "../dataProvider";
-import {getSetting} from "../settings";
-import {tryWithRotation, isRotationEnabled} from "../serverRotation";
+import { formatResponse, formatError } from "../dataProvider";
+import { getSetting } from "../settings";
+import { tryWithRotation, isRotationEnabled } from "../serverRotation";
 
 // Helper function to get request headers with kvtoken
 const getHeaders = () => {
-  const headers = {Accept: "application/json"};
+  const headers = { Accept: "application/json" };
   const kvToken = getSetting("server.kvToken");
   const siteKey = getSetting("server.siteKey");
 
@@ -45,7 +45,7 @@ export const kvServerProvider = {
       console.error("获取命名空间信息失败:", error);
       return formatError(
         error.response?.data?.message || "获取命名空间信息失败",
-        "NAMESPACE_ERROR"
+        "NAMESPACE_ERROR",
       );
     }
   },
@@ -71,7 +71,7 @@ export const kvServerProvider = {
     } catch (error) {
       return formatError(
         error.response?.data?.message || "更新命名空间信息失败",
-        "NAMESPACE_ERROR"
+        "NAMESPACE_ERROR",
       );
     }
   },
@@ -99,10 +99,7 @@ export const kvServerProvider = {
         return formatError("数据不存在", "NOT_FOUND");
       }
       console.log(error);
-      return formatError(
-        error.response?.data?.message || "服务器连接失败",
-        "NETWORK_ERROR"
-      );
+      return formatError(error.response?.data?.message || "服务器连接失败", "NETWORK_ERROR");
     }
   },
 
@@ -125,10 +122,7 @@ export const kvServerProvider = {
       return formatResponse(true);
     } catch (error) {
       console.log(error);
-      return formatError(
-        error.response?.data?.message || "保存失败",
-        "SAVE_ERROR"
-      );
+      return formatError(error.response?.data?.message || "保存失败", "SAVE_ERROR");
     }
   },
 
@@ -156,19 +150,14 @@ export const kvServerProvider = {
   async loadKeys(options = {}) {
     try {
       // 设置默认参数
-      const {
-        sortBy = "key",
-        sortDir = "asc",
-        limit = 100,
-        skip = 0
-      } = options;
+      const { sortBy = "key", sortDir = "asc", limit = 100, skip = 0 } = options;
 
       // 构建查询参数
       const params = new URLSearchParams({
         sortBy,
         sortDir,
         limit: limit.toString(),
-        skip: skip.toString()
+        skip: skip.toString(),
       });
 
       // Use rotation for classworkscloud provider
@@ -198,10 +187,7 @@ export const kvServerProvider = {
         return formatError("认证失败", "UNAUTHORIZED");
       }
       console.log(error);
-      return formatError(
-        error.response?.data?.message || "获取键名列表失败",
-        "NETWORK_ERROR"
-      );
+      return formatError(error.response?.data?.message || "获取键名列表失败", "NETWORK_ERROR");
     }
   },
 };

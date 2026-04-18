@@ -1,26 +1,14 @@
 <template>
   <v-app-bar elevation="1">
     <template #prepend>
-      <v-btn
-        icon="mdi-arrow-left"
-        variant="text"
-        @click="$router.push('/')"
-      />
+      <v-btn icon="mdi-arrow-left" variant="text" @click="$router.push('/')" />
     </template>
-    <v-app-bar-title class="text-h6">
-      列表
-    </v-app-bar-title>
+    <v-app-bar-title class="text-h6"> 列表 </v-app-bar-title>
   </v-app-bar>
   <v-container>
-    <v-card
-      border
-      class="mb-5"
-      rounded="xl"
-    >
+    <v-card border class="mb-5" rounded="xl">
       <v-card-title>现有列表</v-card-title>
-      <v-card-text v-if="lists.length === 0">
-        暂无列表，请创建新列表
-      </v-card-text>
+      <v-card-text v-if="lists.length === 0"> 暂无列表，请创建新列表 </v-card-text>
       <v-list v-else>
         <v-list-item
           v-for="list in lists"
@@ -31,10 +19,7 @@
           <div v-if="list.id !== editingListId">
             <v-list-item-title>{{ list.name }}</v-list-item-title>
           </div>
-          <div
-            v-else
-            class="d-flex align-center w-100"
-          >
+          <div v-else class="d-flex align-center w-100">
             <v-text-field
               v-model="editListName"
               autofocus
@@ -44,40 +29,20 @@
               label="列表名称"
               @keyup.enter="saveListName"
             />
-            <v-btn
-              border
-              class="mr-2"
-              color="primary"
-              icon
-              @click.stop.prevent="saveListName"
-            >
+            <v-btn border class="mr-2" color="primary" icon @click.stop.prevent="saveListName">
               <v-icon>mdi-check</v-icon>
             </v-btn>
-            <v-btn
-              border
-              color="error"
-              icon
-              @click.stop.prevent="cancelEditing"
-            >
+            <v-btn border color="error" icon @click.stop.prevent="cancelEditing">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </div>
 
           <template #append>
             <div v-if="list.id !== editingListId">
-              <v-btn
-                border
-                class="mr-2"
-                icon
-                @click.stop.prevent="startEditing(list.id)"
-              >
+              <v-btn border class="mr-2" icon @click.stop.prevent="startEditing(list.id)">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn
-                border
-                icon
-                @click.stop.prevent="confirmDeleteList(list.id)"
-              >
+              <v-btn border icon @click.stop.prevent="confirmDeleteList(list.id)">
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </div>
@@ -85,51 +50,26 @@
         </v-list-item>
       </v-list>
     </v-card>
-    <v-card
-      border
-      class="mb-5"
-      rounded="xl"
-    >
+    <v-card border class="mb-5" rounded="xl">
       <v-card-title>创建新列表</v-card-title>
       <v-card-text>
         <v-text-field
           v-model="newListName"
-          :rules="[v => !!v || '名称不能为空']"
+          :rules="[(v) => !!v || '名称不能为空']"
           label="列表名称"
         />
-        <v-btn
-          :disabled="!newListName"
-          color="primary"
-          @click="createNewList"
-        >
-          创建列表
-        </v-btn>
+        <v-btn :disabled="!newListName" color="primary" @click="createNewList"> 创建列表 </v-btn>
       </v-card-text>
     </v-card>
     <!-- 确认删除对话框 -->
-    <v-dialog
-      v-model="deleteDialog.show"
-      max-width="500"
-    >
+    <v-dialog v-model="deleteDialog.show" max-width="500">
       <v-card border>
         <v-card-title>删除列表</v-card-title>
         <v-card-text>{{ deleteDialog.text }}</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="primary"
-            variant="text"
-            @click="deleteDialog.show = false"
-          >
-            取消
-          </v-btn>
-          <v-btn
-            color="error"
-            variant="text"
-            @click="confirmDelete"
-          >
-            确认删除
-          </v-btn>
+          <v-btn color="primary" variant="text" @click="deleteDialog.show = false"> 取消 </v-btn>
+          <v-btn color="error" variant="text" @click="confirmDelete"> 确认删除 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -148,17 +88,14 @@ export default {
       deleteDialog: {
         show: false,
         text: "",
-        listId: null
+        listId: null,
       },
       editingListId: null,
-      editListName: ""
+      editListName: "",
     };
   },
   async created() {
-    await Promise.all([
-      this.loadLists(),
-      this.loadStudentList()
-    ]);
+    await Promise.all([this.loadLists(), this.loadStudentList()]);
   },
   methods: {
     async loadLists() {
@@ -209,7 +146,7 @@ export default {
 
       // 如果有学生列表数据，则填充
       if (this.studentList && this.studentList.length > 0) {
-        this.studentList.forEach(student => {
+        this.studentList.forEach((student) => {
           newListData.push({
             id: student.id || Date.now() + Math.floor(Math.random() * 1000),
             name: student.name,
@@ -227,7 +164,7 @@ export default {
     },
 
     startEditing(listId) {
-      const list = this.lists.find(list => list.id === listId);
+      const list = this.lists.find((list) => list.id === listId);
       if (list) {
         this.editingListId = listId;
         this.editListName = list.name;
@@ -246,7 +183,7 @@ export default {
 
       try {
         // 找到当前编辑的列表并更新名称
-        const listIndex = this.lists.findIndex(list => list.id === this.editingListId);
+        const listIndex = this.lists.findIndex((list) => list.id === this.editingListId);
         if (listIndex !== -1) {
           this.lists[listIndex].name = this.editListName.trim();
           // 保存更新后的列表信息
@@ -261,12 +198,12 @@ export default {
     },
 
     confirmDeleteList(listId) {
-      const list = this.lists.find(list => list.id === listId);
+      const list = this.lists.find((list) => list.id === listId);
       if (list) {
         this.deleteDialog = {
           show: true,
           text: `确定要删除列表 "${list.name}" 吗？`,
-          listId: listId
+          listId: listId,
         };
       }
     },
@@ -279,11 +216,11 @@ export default {
     },
 
     async deleteList(listId) {
-      this.lists = this.lists.filter(list => list.id !== listId);
+      this.lists = this.lists.filter((list) => list.id !== listId);
       await dataProvider.saveData("classworks-list-info", this.lists);
       // We don't need to delete the actual list data as it will just remain unused
-    }
-  }
+    },
+  },
 };
 </script>
 

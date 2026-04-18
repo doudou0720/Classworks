@@ -6,11 +6,7 @@
     transition="dialog-transition"
     class="urgent-notification-dialog"
   >
-    <v-card
-      class="urgent-notification-card"
-      :color="urgencyColor"
-      elevation="24"
-    >
+    <v-card class="urgent-notification-card" :color="urgencyColor" elevation="24">
       <v-card-text>
         <div class="urgent-title mb-6">
           {{ currentNotification?.content?.message || "无内容" }}
@@ -19,24 +15,12 @@
           {{ senderName }} {{ deviceType }} {{ formatTime(currentNotification?.timestamp) }}
         </div>
 
-
-
         <!-- 多通知导航 -->
-        <div
-          v-if="hasMultipleNotifications"
-          class="navigation-controls mt-6"
-        >
-          <v-card
-            variant="flat"
-            color="rgba(255,255,255,0.1)"
-          >
+        <div v-if="hasMultipleNotifications" class="navigation-controls mt-6">
+          <v-card variant="flat" color="rgba(255,255,255,0.1)">
             <v-card-text class="text-center">
               <div class="notification-counter mb-3">
-                <v-chip
-                  color="white"
-                  variant="flat"
-                  size="small"
-                >
+                <v-chip color="white" variant="flat" size="small">
                   {{ notificationCountText }}
                 </v-chip>
               </div>
@@ -69,15 +53,8 @@
 
         <!-- 操作按钮 -->
         <div class="mt-8">
-          <v-btn
-            color="white"
-            size="large"
-            variant="flat"
-            @click="close"
-          >
-            <v-icon left>
-              mdi-check
-            </v-icon>
+          <v-btn color="white" size="large" variant="flat" @click="close">
+            <v-icon left> mdi-check </v-icon>
             我知道了
           </v-btn>
         </div>
@@ -137,28 +114,24 @@ export default {
       return "white";
     },
     urgencyIcon() {
-      return this.isUrgent
-        ? "mdi-alert-circle-outline"
-        : "mdi-information-outline";
+      return this.isUrgent ? "mdi-alert-circle-outline" : "mdi-information-outline";
     },
     urgencyTitle() {
       return this.isUrgent ? "🚨 紧急通知" : "📢 通知消息";
     },
     senderName() {
       const senderInfo =
-        this.currentNotification?.senderInfo ||
-        this.currentNotification?.content?.senderInfo;
+        this.currentNotification?.senderInfo || this.currentNotification?.content?.senderInfo;
       if (!senderInfo) return "未知发送者";
 
       return senderInfo.deviceName || senderInfo.deviceType || "未知设备";
     },
     deviceType() {
       const senderInfo =
-        this.currentNotification?.senderInfo ||
-        this.currentNotification?.content?.senderInfo;
-      if(senderInfo?.deviceType=='teacher') return "教师";
-      if(senderInfo?.deviceType=='student') return "学生";
-      if(senderInfo?.deviceType=='classroom') return "教室";
+        this.currentNotification?.senderInfo || this.currentNotification?.content?.senderInfo;
+      if (senderInfo?.deviceType == "teacher") return "教师";
+      if (senderInfo?.deviceType == "student") return "学生";
+      if (senderInfo?.deviceType == "classroom") return "教室";
       return senderInfo?.deviceType || "未知类型";
     },
     targetDevices() {
@@ -179,8 +152,7 @@ export default {
     show(notificationData) {
       // 检查是否已存在相同的通知（避免重复）
       const existingIndex = this.notificationQueue.findIndex(
-        (n) =>
-          n.content?.notificationId === notificationData.content?.notificationId
+        (n) => n.content?.notificationId === notificationData.content?.notificationId,
       );
 
       if (existingIndex !== -1) {
@@ -232,15 +204,9 @@ export default {
       if (this.currentNotification?.content?.message) {
         const notificationType = this.isUrgent ? "紧急通知" : "通知";
         if (this.isUrgent) {
-          this.$message?.error(
-            notificationType,
-            `${this.currentNotification.content.message}`
-          );
+          this.$message?.error(notificationType, `${this.currentNotification.content.message}`);
         } else {
-          this.$message?.info(
-            notificationType,
-            `${this.currentNotification.content.message}`
-          );
+          this.$message?.info(notificationType, `${this.currentNotification.content.message}`);
         }
       }
 
@@ -321,8 +287,8 @@ export default {
 
         // 根据通知类型选择铃声
         const soundFile = this.isUrgent
-          ? getSetting('notification.urgentSound')
-          : getSetting('notification.singleSound');
+          ? getSetting("notification.urgentSound")
+          : getSetting("notification.singleSound");
 
         // 使用配置的铃声文件
         this.currentAudio = playSound(soundFile, false);
@@ -339,8 +305,7 @@ export default {
     // 备用蜂鸣音（原有的实现）
     playFallbackSound() {
       try {
-        const audioContext = new (window.AudioContext ||
-          window.webkitAudioContext)();
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
 
@@ -371,7 +336,7 @@ export default {
         if (this.$refs.eventSender && this.currentNotification?.eventId) {
           this.$refs.eventSender.sendDisplayedReceipt(
             {},
-            this.currentNotification.content.notificationId
+            this.currentNotification.content.notificationId,
           );
           console.log("已发送显示回执:", this.currentNotification.eventId);
         }
@@ -385,7 +350,7 @@ export default {
         if (this.$refs.eventSender && this.currentNotification?.eventId) {
           this.$refs.eventSender.sendReadReceipt(
             {},
-            this.currentNotification.content.notificationId
+            this.currentNotification.content.notificationId,
           );
           console.log("已发送已读回执:", this.currentNotification.eventId);
         }
@@ -429,7 +394,7 @@ export default {
       this.stopNotificationSound();
 
       // 播放循环铃声
-      const soundFile = getSetting('notification.urgentSound');
+      const soundFile = getSetting("notification.urgentSound");
       this.currentAudio = playSound(soundFile, true); // 循环播放
 
       if (!this.currentAudio) {
@@ -454,8 +419,8 @@ export default {
     // 发送浏览器通知
     async sendBrowserNotification(notificationData) {
       // 检查浏览器是否支持通知API
-      if (!('Notification' in window)) {
-        console.warn('浏览器不支持通知API');
+      if (!("Notification" in window)) {
+        console.warn("浏览器不支持通知API");
         return;
       }
 
@@ -463,35 +428,32 @@ export default {
       try {
         let permission = Notification.permission;
 
-        if (permission === 'default') {
+        if (permission === "default") {
           permission = await Notification.requestPermission();
         }
 
-        if (permission !== 'granted') {
-          console.warn('用户未授予通知权限');
+        if (permission !== "granted") {
+          console.warn("用户未授予通知权限");
           return;
         }
 
         // 构建通知内容
-        const message = notificationData.content?.message || '新通知';
+        const message = notificationData.content?.message || "新通知";
         const senderInfo = notificationData.senderInfo || notificationData.content?.senderInfo;
-        const senderName = senderInfo?.deviceName || senderInfo?.deviceType || '未知发送者';
+        const senderName = senderInfo?.deviceName || senderInfo?.deviceType || "未知发送者";
         const isUrgent = notificationData.content?.isUrgent || false;
 
         // 创建浏览器通知
-        const notification = new Notification(
-          isUrgent ? '🚨 紧急通知' : '📢 通知消息',
-          {
-            body: `${message}\n\n来自: ${senderName}`,
-            icon: '/pwa/image/icon-192.png', // 使用应用图标
-            badge: '/pwa/image/icon-192.png',
-            tag: notificationData.content?.notificationId || `notification-${Date.now()}`,
-            requireInteraction: isUrgent, // 紧急通知需要用户交互
-            silent: false, // 使用系统默认声音
-            vibrate: isUrgent ? [200, 100, 200, 100, 200] : [200], // 震动模式
-            timestamp: notificationData.timestamp || Date.now(),
-          }
-        );
+        const notification = new Notification(isUrgent ? "🚨 紧急通知" : "📢 通知消息", {
+          body: `${message}\n\n来自: ${senderName}`,
+          icon: "/pwa/image/icon-192.png", // 使用应用图标
+          badge: "/pwa/image/icon-192.png",
+          tag: notificationData.content?.notificationId || `notification-${Date.now()}`,
+          requireInteraction: isUrgent, // 紧急通知需要用户交互
+          silent: false, // 使用系统默认声音
+          vibrate: isUrgent ? [200, 100, 200, 100, 200] : [200], // 震动模式
+          timestamp: notificationData.timestamp || Date.now(),
+        });
 
         // 点击通知时聚焦到窗口
         notification.onclick = () => {
@@ -506,7 +468,7 @@ export default {
           }, 10000); // 10秒后自动关闭
         }
       } catch (error) {
-        console.error('发送浏览器通知失败:', error);
+        console.error("发送浏览器通知失败:", error);
       }
     },
   },
@@ -525,7 +487,9 @@ export default {
 
 .urgent-notification-card {
   position: relative;
-  animation: urgentPulse 2s infinite, slideIn 0.5s ease-out;
+  animation:
+    urgentPulse 2s infinite,
+    slideIn 0.5s ease-out;
   border: 3px solid rgba(255, 255, 255, 0.3);
 }
 

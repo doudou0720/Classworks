@@ -34,12 +34,10 @@ async function requestPersistentStorage() {
 /**
  * 初始化存储权限
  */
+// oxlint-disable-next-line no-unused-vars
 async function initializeStorage() {
   const notificationGranted = await requestNotificationPermission();
-  if (
-    notificationGranted &&
-    SettingsManager.getSetting("storage.persistOnLoad")
-  ) {
+  if (notificationGranted && SettingsManager.getSetting("storage.persistOnLoad")) {
     const persisted = await requestPersistentStorage();
     console.log(`持久性存储状态: ${persisted ? "已启用" : "未启用"}`);
   }
@@ -65,7 +63,6 @@ const SETTINGS_STORAGE_KEY = "Classworks_settings";
 // 同标签页设置变化事件名
 const SETTINGS_CHANGED_EVENT = "classworks:settings:changed";
 
-
 // 新增: Classworks云端存储的默认设置
 const classworksCloudDefaults = {
   "server.domain": import.meta.env.VITE_DEFAULT_KV_SERVER || "https://kv-service.houlang.cloud",
@@ -81,7 +78,7 @@ const settingsDefinitions = {
   // 设备标识
   "device.uuid": {
     type: "string",
-    default: '00000000-0000-4000-8000-000000000000',
+    default: "00000000-0000-4000-8000-000000000000",
     description: "设备唯一标识符",
     icon: "mdi-identifier",
   },
@@ -288,8 +285,7 @@ const settingsDefinitions = {
   "server.provider": {
     type: "string",
     default: "classworkscloud",
-    validate: (value) =>
-      ["kv-local", "kv-server", "classworkscloud"].includes(value),
+    validate: (value) => ["kv-local", "kv-server", "classworkscloud"].includes(value),
     description: "数据提供者",
     icon: "mdi-database",
     // 选择数据存储方式：使用本地存储或远程服务器
@@ -591,9 +587,7 @@ class SettingsManagerClass {
 
     try {
       const stored =
-        typeof localStorage !== "undefined"
-          ? localStorage.getItem(SETTINGS_STORAGE_KEY)
-          : null;
+        typeof localStorage !== "undefined" ? localStorage.getItem(SETTINGS_STORAGE_KEY) : null;
       if (stored) {
         this.settingsCache = JSON.parse(stored);
       }
@@ -619,10 +613,7 @@ class SettingsManagerClass {
     if (typeof localStorage === "undefined") return;
 
     try {
-      localStorage.setItem(
-        SETTINGS_STORAGE_KEY,
-        JSON.stringify(this.settingsCache)
-      );
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settingsCache));
     } catch (error) {
       console.error("保存设置失败:", error);
     }
@@ -681,10 +672,7 @@ class SettingsManagerClass {
     }
 
     // 添加对开发者选项依赖的检查
-    if (
-      definition.requireDeveloper &&
-      !this.settingsCache["developer.enabled"]
-    ) {
+    if (definition.requireDeveloper && !this.settingsCache["developer.enabled"]) {
       console.warn(`设置项 ${key} 需要启用开发者选项`);
       return false;
     }
@@ -713,9 +701,11 @@ class SettingsManagerClass {
 
       // 触发同标签页内的设置变化事件
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent(SETTINGS_CHANGED_EVENT, {
-          detail: { key, value },
-        }));
+        window.dispatchEvent(
+          new CustomEvent(SETTINGS_CHANGED_EVENT, {
+            detail: { key, value },
+          }),
+        );
       }
 
       // 为了保持向后兼容，同时更新旧的localStorage键
@@ -736,8 +726,7 @@ class SettingsManagerClass {
    */
   logSettingsChange(key, oldValue, newValue) {
     const shouldLog =
-      this.settingsCache["developer.enabled"] &&
-      this.settingsCache["developer.showDebugConfig"];
+      this.settingsCache["developer.enabled"] && this.settingsCache["developer.showDebugConfig"];
 
     if (shouldLog) {
       console.log(`[Settings] ${key}:`, {
@@ -768,9 +757,11 @@ class SettingsManagerClass {
 
     // 触发同标签页内的设置变化事件
     if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent(SETTINGS_CHANGED_EVENT, {
-        detail: { key, value: definition.default },
-      }));
+      window.dispatchEvent(
+        new CustomEvent(SETTINGS_CHANGED_EVENT, {
+          detail: { key, value: definition.default },
+        }),
+      );
     }
   }
 
@@ -791,8 +782,7 @@ class SettingsManagerClass {
    * @returns {Function} 取消监听的函数
    */
   watchSettings(callback) {
-    if (typeof window === "undefined") return () => {
-    };
+    if (typeof window === "undefined") return () => {};
 
     const storageHandler = (event) => {
       if (event.key === SETTINGS_STORAGE_KEY) {
@@ -859,8 +849,7 @@ const resetSetting = (key) => SettingsManager.resetSetting(key);
 const resetAllSettings = () => SettingsManager.resetAllSettings();
 const watchSettings = (callback) => SettingsManager.watchSettings(callback);
 const getSettingDefinition = (key) => SettingsManager.getSettingDefinition(key);
-const exportSettingsAsKeyValue = () =>
-  SettingsManager.exportSettingsAsKeyValue();
+const exportSettingsAsKeyValue = () => SettingsManager.exportSettingsAsKeyValue();
 
 // 导出单例和直接方法
 export {

@@ -1,36 +1,15 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    fullscreen-breakpoint="sm"
-    max-width="600"
-    persistent
-  >
-    <v-card
-      border
-      class="random-picker-card"
-      rounded="xl"
-    >
+  <v-dialog v-model="dialog" fullscreen-breakpoint="sm" max-width="600" persistent>
+    <v-card border class="random-picker-card" rounded="xl">
       <v-card-title class="text-h5 d-flex align-center">
-        <v-icon
-          class="mr-2"
-          icon="mdi-account-question"
-        />
+        <v-icon class="mr-2" icon="mdi-account-question" />
         随机点名
         <v-spacer />
-        <v-btn
-          icon="mdi-close"
-          variant="text"
-          @click="dialog = false"
-        />
+        <v-btn icon="mdi-close" variant="text" @click="dialog = false" />
       </v-card-title>
 
-      <v-card-text
-        v-if="!isPickingStarted"
-        class="text-center py-6"
-      >
-        <div class="text-h6 mb-4">
-          请选择抽取人数
-        </div>
+      <v-card-text v-if="!isPickingStarted" class="text-center py-6">
+        <div class="text-h6 mb-4">请选择抽取人数</div>
 
         <div class="d-flex justify-center align-center counter-container">
           <v-btn
@@ -68,29 +47,14 @@
             mandatory
             rounded="pill"
           >
-            <v-btn
-              prepend-icon="mdi-account"
-              value="name"
-            >
-              姓名模式
-            </v-btn>
-            <v-btn
-              prepend-icon="mdi-numeric"
-              value="number"
-            >
-              学号模式
-            </v-btn>
+            <v-btn prepend-icon="mdi-account" value="name"> 姓名模式 </v-btn>
+            <v-btn prepend-icon="mdi-numeric" value="number"> 学号模式 </v-btn>
           </v-btn-toggle>
         </div>
 
         <!-- 学号范围设置 -->
-        <div
-          v-if="pickerMode === 'number'"
-          class="number-range-container mt-4"
-        >
-          <div class="text-subtitle-1 mb-2">
-            学号范围设置
-          </div>
+        <div v-if="pickerMode === 'number'" class="number-range-container mt-4">
+          <div class="text-subtitle-1 mb-2">学号范围设置</div>
           <div class="d-flex justify-center align-center gap-4">
             <v-text-field
               v-model.number="minNumber"
@@ -129,39 +93,20 @@
           </v-btn>
         </div>
 
-        <div
-          v-if="filteredStudents.length === 0"
-          class="mt-4 text-error"
-        >
-          <template v-if="pickerMode === 'name'">
-            没有可抽取的学生，请调整过滤选项
-          </template>
-          <template v-else>
-            请设置有效的学号范围
-          </template>
+        <div v-if="filteredStudents.length === 0" class="mt-4 text-error">
+          <template v-if="pickerMode === 'name'"> 没有可抽取的学生，请调整过滤选项 </template>
+          <template v-else> 请设置有效的学号范围 </template>
         </div>
 
         <div class="mt-4 text-caption">
           当前可抽取学生: {{ filteredStudents.length }}人
-          <v-tooltip
-            v-if="pickerMode === 'name'"
-            location="bottom"
-          >
+          <v-tooltip v-if="pickerMode === 'name'" location="bottom">
             <template #activator="{ props }">
-              <v-icon
-                class="ml-1"
-                icon="mdi-information-outline"
-                size="small"
-                v-bind="props"
-              />
+              <v-icon class="ml-1" icon="mdi-information-outline" size="small" v-bind="props" />
             </template>
             <div class="pa-2">
-              <div v-if="tempFilters.excludeAbsent">
-                • 已排除请假学生 ({{ absentCount }}人)
-              </div>
-              <div v-if="tempFilters.excludeLate">
-                • 已排除迟到学生 ({{ lateCount }}人)
-              </div>
+              <div v-if="tempFilters.excludeAbsent">• 已排除请假学生 ({{ absentCount }}人)</div>
+              <div v-if="tempFilters.excludeLate">• 已排除迟到学生 ({{ lateCount }}人)</div>
               <div v-if="tempFilters.excludeExcluded">
                 • 已排除不参与学生 ({{ excludedCount }}人)
               </div>
@@ -169,10 +114,7 @@
           </v-tooltip>
 
           <!-- 添加临时过滤选项 -->
-          <div
-            v-if="pickerMode === 'name'"
-            class="d-flex flex-wrap justify-center gap-2 mt-4"
-          >
+          <div v-if="pickerMode === 'name'" class="d-flex flex-wrap justify-center gap-2 mt-4">
             <v-chip
               :color="tempFilters.excludeLate ? 'warning' : 'default'"
               :variant="tempFilters.excludeLate ? 'elevated' : 'text'"
@@ -205,20 +147,10 @@
         </div>
       </v-card-text>
 
-      <v-card-text
-        v-else
-        class="text-center py-6"
-      >
-        <div
-          v-if="isAnimating"
-          class="animation-container"
-        >
+      <v-card-text v-else class="text-center py-6">
+        <div v-if="isAnimating" class="animation-container">
           <div class="animation-wrapper">
-            <transition-group
-              class="shuffle-container"
-              name="shuffle"
-              tag="div"
-            >
+            <transition-group class="shuffle-container" name="shuffle" tag="div">
               <div
                 v-for="(student, index) in animationStudents"
                 :key="student.id"
@@ -231,13 +163,8 @@
           </div>
         </div>
 
-        <div
-          v-else
-          class="result-container"
-        >
-          <div class="text-h6 mb-4">
-            抽取结果
-          </div>
+        <div v-else class="result-container">
+          <div class="text-h6 mb-4">抽取结果</div>
           <v-card
             v-for="(student, index) in pickedStudents"
             :key="index"
@@ -245,17 +172,11 @@
             color="primary"
             variant="outlined"
           >
-            <v-card-text
-              class="text-h4 text-center py-4 d-flex align-center justify-center"
-            >
+            <v-card-text class="text-h4 text-center py-4 d-flex align-center justify-center">
               {{ student }}
               <v-btn
                 :disabled="remainingStudents.length === 0"
-                :title="
-                  remainingStudents.length === 0
-                    ? '没有更多可用学生'
-                    : '重新抽取此学生'
-                "
+                :title="remainingStudents.length === 0 ? '没有更多可用学生' : '重新抽取此学生'"
                 class="ml-2 refresh-btn"
                 icon="mdi-refresh"
                 size="small"
@@ -292,7 +213,7 @@
 </template>
 
 <script>
-import {getSetting, setSetting} from "@/utils/settings";
+import { getSetting, setSetting } from "@/utils/settings";
 
 export default {
   name: "RandomPicker",
@@ -304,7 +225,7 @@ export default {
     attendance: {
       type: Object,
       required: true,
-      default: () => ({absent: [], late: [], exclude: []}),
+      default: () => ({ absent: [], late: [], exclude: [] }),
     },
   },
   data() {
@@ -360,22 +281,13 @@ export default {
       if (!this.studentList || !this.studentList.length) return [];
 
       return this.studentList.filter((student) => {
-        if (
-          this.tempFilters.excludeAbsent &&
-          this.attendance.absent.includes(student)
-        ) {
+        if (this.tempFilters.excludeAbsent && this.attendance.absent.includes(student)) {
           return false;
         }
-        if (
-          this.tempFilters.excludeLate &&
-          this.attendance.late.includes(student)
-        ) {
+        if (this.tempFilters.excludeLate && this.attendance.late.includes(student)) {
           return false;
         }
-        if (
-          this.tempFilters.excludeExcluded &&
-          this.attendance.exclude.includes(student)
-        ) {
+        if (this.tempFilters.excludeExcluded && this.attendance.exclude.includes(student)) {
           return false;
         }
         return true;
@@ -393,9 +305,7 @@ export default {
 
     // 计算剩余可用学生（排除已抽取的学生）
     remainingStudents() {
-      return this.filteredStudents.filter(
-        (student) => !this.pickedStudents.includes(student)
-      );
+      return this.filteredStudents.filter((student) => !this.pickedStudents.includes(student));
     },
   },
   watch: {
@@ -512,9 +422,7 @@ export default {
         for (let i = 0; i < this.count; i++) {
           let randomIndex;
           do {
-            randomIndex = Math.floor(
-              Math.random() * this.animationStudents.length
-            );
+            randomIndex = Math.floor(Math.random() * this.animationStudents.length);
           } while (indices.includes(randomIndex));
           indices.push(randomIndex);
         }
@@ -543,9 +451,7 @@ export default {
       this.isAnimating = false;
 
       // 随机选择学生
-      const shuffled = [...this.filteredStudents].sort(
-        () => 0.5 - Math.random()
-      );
+      const shuffled = [...this.filteredStudents].sort(() => 0.5 - Math.random());
       this.pickedStudents = shuffled.slice(0, this.count);
     },
     resetPicker() {
@@ -562,9 +468,7 @@ export default {
       if (this.remainingStudents.length === 0) return;
 
       // 从剩余学生中随机选择一个
-      const randomIndex = Math.floor(
-        Math.random() * this.remainingStudents.length
-      );
+      const randomIndex = Math.floor(Math.random() * this.remainingStudents.length);
       const newStudent = this.remainingStudents[randomIndex];
 
       // 替换指定位置的学生

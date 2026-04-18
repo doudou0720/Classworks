@@ -6,20 +6,11 @@
   >
     <v-card-item>
       <template #prepend>
-        <v-icon
-          class="mr-2"
-          icon="mdi-account-tie"
-          size="large"
-        />
+        <v-icon class="mr-2" icon="mdi-account-tie" size="large" />
       </template>
-      <v-card-title class="text-h6">
-        教师列表
-      </v-card-title>
+      <v-card-title class="text-h6"> 教师列表 </v-card-title>
       <template #append>
-        <unsaved-warning
-          :show="unsavedChanges"
-          message="有未保存的更改"
-        />
+        <unsaved-warning :show="unsavedChanges" message="有未保存的更改" />
         <v-btn
           :color="modelValue.advanced ? 'primary' : undefined"
           prepend-icon="mdi-code-braces"
@@ -32,20 +23,9 @@
     </v-card-item>
 
     <v-card-text>
-      <v-progress-linear
-        v-if="loading"
-        class="mb-4"
-        color="primary"
-        indeterminate
-      />
+      <v-progress-linear v-if="loading" class="mb-4" color="primary" indeterminate />
 
-      <v-alert
-        v-if="error"
-        class="mb-4"
-        closable
-        type="error"
-        variant="tonal"
-      >
+      <v-alert v-if="error" class="mb-4" closable type="error" variant="tonal">
         {{ error }}
       </v-alert>
 
@@ -53,16 +33,10 @@
         <!-- 普通编辑模式 -->
         <div v-if="!modelValue.advanced">
           <!-- 添加教师表单 -->
-          <v-card
-            class="mb-6"
-            variant="outlined"
-          >
+          <v-card class="mb-6" variant="outlined">
             <v-card-text>
               <v-row>
-                <v-col
-                  cols="12"
-                  md="4"
-                >
+                <v-col cols="12" md="4">
                   <v-text-field
                     v-model="newTeacher.name"
                     density="comfortable"
@@ -73,10 +47,7 @@
                     variant="outlined"
                   />
                 </v-col>
-                <v-col
-                  cols="12"
-                  md="5"
-                >
+                <v-col cols="12" md="5">
                   <v-combobox
                     v-model="newTeacher.subjects"
                     :items="commonSubjects"
@@ -92,11 +63,7 @@
                     variant="outlined"
                   />
                 </v-col>
-                <v-col
-                  cols="12"
-                  md="3"
-                  class="d-flex align-center gap-2"
-                >
+                <v-col cols="12" md="3" class="d-flex align-center gap-2">
                   <v-checkbox
                     v-model="newTeacher.isHeadTeacher"
                     density="comfortable"
@@ -119,23 +86,12 @@
           <!-- 教师列表 -->
           <v-row v-if="modelValue.list.length === 0">
             <v-col cols="12">
-              <v-alert
-                type="info"
-                variant="tonal"
-              >
-                暂无教师信息，请添加教师
-              </v-alert>
+              <v-alert type="info" variant="tonal"> 暂无教师信息，请添加教师 </v-alert>
             </v-col>
           </v-row>
 
           <v-row v-else>
-            <v-col
-              v-for="(teacher, index) in modelValue.list"
-              :key="index"
-              cols="12"
-              lg="6"
-              xl="4"
-            >
+            <v-col v-for="(teacher, index) in modelValue.list" :key="index" cols="12" lg="6" xl="4">
               <v-hover v-slot="{ isHovering, props }">
                 <v-card
                   :elevation="isMobile ? 1 : isHovering ? 4 : 1"
@@ -186,10 +142,7 @@
                           </v-chip>
                         </div>
 
-                        <div
-                          v-if="editState.index === index"
-                          class="mt-2"
-                        >
+                        <div v-if="editState.index === index" class="mt-2">
                           <v-combobox
                             v-model="editState.teacher.subjects"
                             :items="commonSubjects"
@@ -209,10 +162,7 @@
                             label="班主任"
                           />
                         </div>
-                        <div
-                          v-else
-                          class="mt-1"
-                        >
+                        <div v-else class="mt-1">
                           <v-chip
                             v-for="(subject, sIndex) in teacher.subjects"
                             :key="sIndex"
@@ -227,7 +177,9 @@
                       </div>
 
                       <div
-                        :class="{ 'opacity-100': isHovering || isMobile || editState.index === index }"
+                        :class="{
+                          'opacity-100': isHovering || isMobile || editState.index === index,
+                        }"
                         class="d-flex gap-1 action-buttons ml-2"
                       >
                         <v-btn
@@ -272,16 +224,13 @@
         </div>
 
         <!-- 高级编辑模式 -->
-        <div
-          v-else
-          class="pt-2"
-        >
+        <div v-else class="pt-2">
           <v-textarea
             v-model="modelValue.text"
             hint="JSON 格式编辑教师列表。每个教师需包含 name、subjects（数组）、isHeadTeacher（布尔值）"
             label="批量编辑教师列表 (JSON)"
             persistent-hint
-            placeholder="[{&quot;name&quot;:&quot;教师姓名&quot;,&quot;subjects&quot;:[&quot;语文&quot;,&quot;数学&quot;],&quot;isHeadTeacher&quot;:true}]"
+            placeholder='[{"name":"教师姓名","subjects":["语文","数学"],"isHeadTeacher":true}]'
             rows="15"
             variant="outlined"
             @update:model-value="handleTextInput"
@@ -290,10 +239,7 @@
       </v-expand-transition>
 
       <v-row class="mt-6">
-        <v-col
-          class="d-flex gap-2"
-          cols="12"
-        >
+        <v-col class="d-flex gap-2" cols="12">
           <v-btn
             :disabled="loading"
             :loading="loading"
@@ -325,7 +271,7 @@
 import UnsavedWarning from "../common/UnsavedWarning.vue";
 import "@/styles/warnings.scss";
 import dataProvider from "@/utils/dataProvider";
-import {getSetting} from "@/utils/settings";
+import { getSetting } from "@/utils/settings";
 
 export default {
   name: "TeacherListCard",
@@ -446,10 +392,7 @@ export default {
           isHeadTeacher: Boolean(teacher.isHeadTeacher),
         }));
 
-        const response = await dataProvider.saveData(
-          "classworks-list-teacher",
-          formattedList
-        );
+        const response = await dataProvider.saveData("classworks-list-teacher", formattedList);
 
         if (response.success === false) {
           throw new Error(response.error?.message || "保存失败");

@@ -17,12 +17,8 @@
     </div>
     <template v-if="tokenInfo">
       <div class="mt-2 text-caption">
-        <div>
-          <strong>设备类型：</strong>{{ deviceTypeLabel }}
-        </div>
-        <div v-if="tokenInfo.note">
-          <strong>备注：</strong>{{ tokenInfo.note }}
-        </div>
+        <div><strong>设备类型：</strong>{{ deviceTypeLabel }}</div>
+        <div v-if="tokenInfo.note"><strong>备注：</strong>{{ tokenInfo.note }}</div>
         <div v-if="tokenInfo.device">
           <strong>设备：</strong>{{ tokenInfo.device.name }} ({{ tokenInfo.device.namespace }})
         </div>
@@ -32,89 +28,89 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch} from 'vue'
-import {getSetting} from '@/utils/settings'
-import axios from '@/axios/axios'
+import { ref, computed, onMounted, watch } from "vue";
+import { getSetting } from "@/utils/settings";
+import axios from "@/axios/axios";
 
 const props = defineProps({
   autoCheck: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-const tokenInfo = ref(null)
-const loading = ref(false)
-const dismissed = ref(false)
+const tokenInfo = ref(null);
+const loading = ref(false);
+const dismissed = ref(false);
 
 const isReadOnly = computed(() => {
-  return !dismissed.value && tokenInfo.value?.isReadOnly === true
-})
+  return !dismissed.value && tokenInfo.value?.isReadOnly === true;
+});
 
 const deviceTypeLabel = computed(() => {
   const typeMap = {
-    student: '学生',
-    teacher: '教师',
-    admin: '管理员',
-    readonly: '只读',
-  }
-  return typeMap[tokenInfo.value?.deviceType] || tokenInfo.value?.deviceType || '未知'
-})
+    student: "学生",
+    teacher: "教师",
+    admin: "管理员",
+    readonly: "只读",
+  };
+  return typeMap[tokenInfo.value?.deviceType] || tokenInfo.value?.deviceType || "未知";
+});
 
 const checkTokenPermission = async () => {
-  const provider = getSetting('server.provider')
-  const isKvProvider = provider === 'kv-server' || provider === 'classworkscloud'
+  const provider = getSetting("server.provider");
+  const isKvProvider = provider === "kv-server" || provider === "classworkscloud";
 
   if (!isKvProvider) {
-    return
+    return;
   }
 
-  const kvToken = getSetting('server.kvToken')
+  const kvToken = getSetting("server.kvToken");
   if (!kvToken) {
-    return
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
   try {
-    const serverUrl = getSetting('server.domain')
-    if (!serverUrl) return
+    const serverUrl = getSetting("server.domain");
+    if (!serverUrl) return;
 
     const response = await axios.get(`${serverUrl}/kv/_token`, {
       headers: {
-        Authorization: `Bearer ${kvToken}`
-      }
-    })
+        Authorization: `Bearer ${kvToken}`,
+      },
+    });
 
     if (response.data) {
-      tokenInfo.value = response.data
+      tokenInfo.value = response.data;
     }
   } catch (err) {
-    console.error('获取 Token 信息失败:', err)
+    console.error("获取 Token 信息失败:", err);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 // 监听设置变化
-const kvToken = computed(() => getSetting('server.kvToken'))
+const kvToken = computed(() => getSetting("server.kvToken"));
 watch(kvToken, () => {
   if (props.autoCheck) {
-    checkTokenPermission()
+    checkTokenPermission();
   }
-})
+});
 
 onMounted(() => {
   if (props.autoCheck) {
-    checkTokenPermission()
+    checkTokenPermission();
   }
-})
+});
 
 // 暴露方法供外部调用
 defineExpose({
   checkTokenPermission,
   tokenInfo,
-  isReadOnly
-})
+  isReadOnly,
+});
 </script>
 
 <style scoped>

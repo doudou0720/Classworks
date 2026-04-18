@@ -1,8 +1,5 @@
 <template>
-  <v-list-item
-    :disabled="disabled"
-    class="setting-item"
-  >
+  <v-list-item :disabled="disabled" class="setting-item">
     <template #prepend>
       <v-icon :icon="settingIcon" />
     </template>
@@ -17,10 +14,7 @@
 
     <template #append>
       <div class="d-flex flex-column flex-sm-row align-center">
-        <div
-          v-if="type !== 'string' || hasOptions"
-          class="me-2"
-        >
+        <div v-if="type !== 'string' || hasOptions" class="me-2">
           <!-- 根据设置类型渲染不同的控件 -->
           <v-switch
             v-if="type === 'boolean'"
@@ -46,10 +40,7 @@
             @update:model-value="updateSetting"
           />
 
-          <div
-            v-else-if="type === 'number'"
-            class="d-flex align-center"
-          >
+          <div v-else-if="type === 'number'" class="d-flex align-center">
             <v-btn
               :disabled="disabled || localValue <= minValue"
               icon="mdi-minus"
@@ -98,35 +89,23 @@
           <v-list density="compact">
             <v-list-item @click="copySettingId">
               <template #prepend>
-                <v-icon
-                  icon="mdi-key"
-                  size="small"
-                />
+                <v-icon icon="mdi-key" size="small" />
               </template>
               <v-list-item-title>复制设置ID</v-list-item-title>
             </v-list-item>
 
             <v-list-item @click="copySettingValue">
               <template #prepend>
-                <v-icon
-                  icon="mdi-content-copy"
-                  size="small"
-                />
+                <v-icon icon="mdi-content-copy" size="small" />
               </template>
               <v-list-item-title>复制设置值</v-list-item-title>
             </v-list-item>
 
             <v-divider />
 
-            <v-list-item
-              :disabled="isDefaultValue"
-              @click="resetToDefault"
-            >
+            <v-list-item :disabled="isDefaultValue" @click="resetToDefault">
               <template #prepend>
-                <v-icon
-                  icon="mdi-restore"
-                  size="small"
-                />
+                <v-icon icon="mdi-restore" size="small" />
               </template>
               <v-list-item-title>重置为默认值</v-list-item-title>
             </v-list-item>
@@ -137,10 +116,7 @@
   </v-list-item>
 
   <!-- 文本框显示在下方 -->
-  <div
-    v-if="type === 'string' && !hasOptions"
-    class="px-4 pb-2 pt-0"
-  >
+  <div v-if="type === 'string' && !hasOptions" class="px-4 pb-2 pt-0">
     <v-text-field
       v-model="localValue"
       :disabled="disabled"
@@ -154,23 +130,13 @@
   </div>
 
   <!-- 消息提示 -->
-  <v-snackbar
-    v-model="showSnackbar"
-    :timeout="2000"
-    color="success"
-    location="top"
-  >
+  <v-snackbar v-model="showSnackbar" :timeout="2000" color="success" location="top">
     {{ snackbarText }}
   </v-snackbar>
 </template>
 
 <script>
-import {
-  getSetting,
-  setSetting,
-  getSettingDefinition,
-  resetSetting,
-} from "@/utils/settings";
+import { getSetting, setSetting, getSettingDefinition, resetSetting } from "@/utils/settings";
 
 export default {
   name: "SettingItem",
@@ -230,20 +196,20 @@ export default {
       showSnackbar: false,
       snackbarText: "",
       fontFamilies: [
-        {title: "Arial", value: "Arial, sans-serif"},
-        {title: "Calibri", value: "Calibri, sans-serif"},
-        {title: "Cambria", value: "Cambria, serif"},
-        {title: "Consolas", value: "Consolas, monospace"},
-        {title: "Courier New", value: "Courier New, monospace"},
-        {title: "Georgia", value: "Georgia, serif"},
-        {title: "Helvetica", value: "Helvetica, sans-serif"},
-        {title: "Segoe UI", value: "Segoe UI, sans-serif"},
-        {title: "Times New Roman", value: "Times New Roman, serif"},
-        {title: "Trebuchet MS", value: "Trebuchet MS, sans-serif"},
-        {title: "Verdana", value: "Verdana, sans-serif"},
-        {title: "Monospace", value: "monospace"},
-        {title: "Sans-serif", value: "sans-serif"},
-        {title: "Serif", value: "serif"},
+        { title: "Arial", value: "Arial, sans-serif" },
+        { title: "Calibri", value: "Calibri, sans-serif" },
+        { title: "Cambria", value: "Cambria, serif" },
+        { title: "Consolas", value: "Consolas, monospace" },
+        { title: "Courier New", value: "Courier New, monospace" },
+        { title: "Georgia", value: "Georgia, serif" },
+        { title: "Helvetica", value: "Helvetica, sans-serif" },
+        { title: "Segoe UI", value: "Segoe UI, sans-serif" },
+        { title: "Times New Roman", value: "Times New Roman, serif" },
+        { title: "Trebuchet MS", value: "Trebuchet MS, sans-serif" },
+        { title: "Verdana", value: "Verdana, sans-serif" },
+        { title: "Monospace", value: "monospace" },
+        { title: "Sans-serif", value: "sans-serif" },
+        { title: "Serif", value: "serif" },
       ],
       // 设置项的显示名称映射
       displayValueMappings: {
@@ -311,10 +277,7 @@ export default {
 
       // 对于对象或数组，需要进行深度比较
       if (typeof this.localValue === "object" && this.localValue !== null) {
-        return (
-          JSON.stringify(this.localValue) ===
-          JSON.stringify(this.definition.default)
-        );
+        return JSON.stringify(this.localValue) === JSON.stringify(this.definition.default);
       }
 
       return this.localValue === this.definition.default;
@@ -367,12 +330,10 @@ export default {
         // 检查是否有显示值映射
         else if (this.settingKey in this.displayValueMappings) {
           const mapping = this.displayValueMappings[this.settingKey];
-          this.selectOptions = Object.entries(mapping).map(
-            ([value, title]) => ({
-              title,
-              value,
-            })
-          );
+          this.selectOptions = Object.entries(mapping).map(([value, title]) => ({
+            title,
+            value,
+          }));
           this.hasOptions = true;
         }
         // 检查是否有验证函数中的选项

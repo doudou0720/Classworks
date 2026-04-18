@@ -6,20 +6,11 @@
   >
     <v-card-item>
       <template #prepend>
-        <v-icon
-          class="mr-2"
-          icon="mdi-account-group"
-          size="large"
-        />
+        <v-icon class="mr-2" icon="mdi-account-group" size="large" />
       </template>
-      <v-card-title class="text-h6">
-        学生列表
-      </v-card-title>
+      <v-card-title class="text-h6"> 学生列表 </v-card-title>
       <template #append>
-        <unsaved-warning
-          :show="unsavedChanges"
-          message="有未保存的更改"
-        />
+        <unsaved-warning :show="unsavedChanges" message="有未保存的更改" />
         <v-btn
           :disabled="modelValue.list.length === 0"
           class="mr-2"
@@ -41,20 +32,9 @@
     </v-card-item>
 
     <v-card-text>
-      <v-progress-linear
-        v-if="loading"
-        class="mb-4"
-        color="primary"
-        indeterminate
-      />
+      <v-progress-linear v-if="loading" class="mb-4" color="primary" indeterminate />
 
-      <v-alert
-        v-if="error"
-        class="mb-4"
-        closable
-        type="error"
-        variant="tonal"
-      >
+      <v-alert v-if="error" class="mb-4" closable type="error" variant="tonal">
         {{ error }}
       </v-alert>
 
@@ -62,11 +42,7 @@
         <!-- 普通编辑模式 -->
         <div v-if="!modelValue.advanced">
           <v-row class="mb-6">
-            <v-col
-              cols="12"
-              md="4"
-              sm="6"
-            >
+            <v-col cols="12" md="4" sm="6">
               <v-text-field
                 v-model="newStudentName"
                 class="mb-4"
@@ -107,10 +83,7 @@
                   v-bind="props"
                 >
                   <v-card-text class="d-flex align-center pa-3">
-                    <v-menu
-                      :open-on-hover="!isMobile"
-                      location="bottom"
-                    >
+                    <v-menu :open-on-hover="!isMobile" location="bottom">
                       <template #activator="{ props: menuProps }">
                         <v-btn
                           class="mr-3 font-weight-medium"
@@ -122,10 +95,7 @@
                         </v-btn>
                       </template>
 
-                      <v-list
-                        density="compact"
-                        nav
-                      >
+                      <v-list density="compact" nav>
                         <v-list-item
                           :disabled="index === 0"
                           prepend-icon="mdi-arrow-up-bold"
@@ -197,10 +167,7 @@
         </div>
 
         <!-- 高级编辑模式 -->
-        <div
-          v-else
-          class="pt-2"
-        >
+        <div v-else class="pt-2">
           <v-textarea
             v-model="modelValue.text"
             hint="使用文本编辑模式批量编辑学生名单，保存时会自动去除空行"
@@ -215,10 +182,7 @@
       </v-expand-transition>
 
       <v-row class="mt-6">
-        <v-col
-          class="d-flex gap-2"
-          cols="12"
-        >
+        <v-col class="d-flex gap-2" cols="12">
           <v-btn
             :disabled="loading"
             :loading="loading"
@@ -255,11 +219,11 @@ import dataProvider from "@/utils/dataProvider";
 let _pinyin = null;
 async function loadPinyin() {
   if (!_pinyin) {
-    _pinyin = (await import('pinyin-pro')).pinyin;
+    _pinyin = (await import("pinyin-pro")).pinyin;
   }
   return _pinyin;
 }
-import {getSetting} from "@/utils/settings";
+import { getSetting } from "@/utils/settings";
 
 export default {
   name: "StudentListCard",
@@ -299,7 +263,7 @@ export default {
           this.modelValue.text = newData.list
             .slice()
             .sort((a, b) => a.id - b.id)
-            .map(s => s.name)
+            .map((s) => s.name)
             .join("\n");
         }
       },
@@ -327,25 +291,24 @@ export default {
 
           if (response.success != false && Array.isArray(response)) {
             this.modelValue.list = response.map((item, index) => {
-              if (typeof item === 'string') {
-                return {id: index + 1, name: item};
+              if (typeof item === "string") {
+                return { id: index + 1, name: item };
               }
               return {
                 id: item.id || index + 1,
-                name: item.name || item.toString()
+                name: item.name || item.toString(),
               };
             });
 
             this.modelValue.list.sort((a, b) => a.id - b.id);
-            this.modelValue.text = this.modelValue.list.map(s => s.name).join("\n");
+            this.modelValue.text = this.modelValue.list.map((s) => s.name).join("\n");
             this.lastSavedData = JSON.parse(JSON.stringify(this.modelValue.list));
             this.unsavedChanges = false;
-
           }
         } catch (error) {
           console.warn(
             "Failed to load student list from dedicated key, falling back to config",
-            error
+            error,
           );
         }
       } catch (error) {
@@ -370,13 +333,10 @@ export default {
           .sort((a, b) => a.id - b.id)
           .map((student, index) => ({
             id: index + 1,
-            name: student.name
+            name: student.name,
           }));
 
-        const response = await dataProvider.saveData(
-          "classworks-list-main",
-          formattedList
-        );
+        const response = await dataProvider.saveData("classworks-list-main", formattedList);
 
         if (response.success === false) {
           throw new Error(response.error?.message || "保存失败");
@@ -403,16 +363,16 @@ export default {
       const lines = text.split("\n").filter((line) => line.trim());
 
       // Create a map of existing student names to their IDs
-      const currentIds = new Map(this.modelValue.list.map(s => [s.name, s.id]));
-      let maxId = Math.max(0, ...this.modelValue.list.map(s => s.id));
+      const currentIds = new Map(this.modelValue.list.map((s) => [s.name, s.id]));
+      let maxId = Math.max(0, ...this.modelValue.list.map((s) => s.id));
 
       // Create new list preserving IDs for existing names and generating new IDs for new names
-      const newList = lines.map(name => {
+      const newList = lines.map((name) => {
         name = name.trim();
         if (currentIds.has(name)) {
-          return {id: currentIds.get(name), name};
+          return { id: currentIds.get(name), name };
         }
-        return {id: ++maxId, name};
+        return { id: ++maxId, name };
       });
 
       // Update the list
@@ -421,9 +381,9 @@ export default {
 
     addStudent() {
       const name = this.newStudentName.trim();
-      if (name && !this.modelValue.list.some(s => s.name === name)) {
-        const maxId = Math.max(0, ...this.modelValue.list.map(s => s.id));
-        this.modelValue.list.push({id: maxId + 1, name});
+      if (name && !this.modelValue.list.some((s) => s.name === name)) {
+        const maxId = Math.max(0, ...this.modelValue.list.map((s) => s.id));
+        this.modelValue.list.push({ id: maxId + 1, name });
         this.newStudentName = "";
       }
     },
@@ -456,7 +416,7 @@ export default {
           const student = this.modelValue.list[index];
           this.modelValue.list.splice(index, 1);
           this.modelValue.list.unshift(student);
-          this.modelValue.list.forEach((s, i) => s.id = i + 1);
+          this.modelValue.list.forEach((s, i) => (s.id = i + 1));
         }
       } else {
         const newIndex = direction === "up" ? index - 1 : index + 1;
@@ -482,11 +442,11 @@ export default {
     async sortStudentsByPinyin() {
       const pinyinFn = await loadPinyin();
       const sorted = [...this.modelValue.list].sort((a, b) => {
-        const pinyinA = pinyinFn(a.name, {toneType: "none"});
-        const pinyinB = pinyinFn(b.name, {toneType: "none"});
+        const pinyinA = pinyinFn(a.name, { toneType: "none" });
+        const pinyinB = pinyinFn(b.name, { toneType: "none" });
         return pinyinA.localeCompare(pinyinB);
       });
-      sorted.forEach((s, i) => s.id = i + 1);
+      sorted.forEach((s, i) => (s.id = i + 1));
       this.modelValue.list = sorted;
     },
   },

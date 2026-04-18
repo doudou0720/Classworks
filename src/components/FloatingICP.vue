@@ -5,7 +5,7 @@
     href="https://beian.miit.gov.cn/"
     rel="noopener noreferrer"
     target="_blank"
-    style="display: none;"
+    style="display: none"
   >
     xICP备x号
   </a>
@@ -13,9 +13,8 @@
 
 <script>
 export default {
-  name: 'FloatingICP',
-}
-
+  name: "FloatingICP",
+};
 </script>
 
 <style scoped>

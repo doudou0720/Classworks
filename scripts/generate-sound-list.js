@@ -3,30 +3,30 @@
  * 读取 src/assets/sounds 文件夹中的所有音频文件并生成列表
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // 音频文件路径
-const soundsDir = path.join(__dirname, '../public/sounds');
-const outputFile = path.join(__dirname, '../src/utils/soundList.js');
+const soundsDir = path.join(__dirname, "../public/sounds");
+const outputFile = path.join(__dirname, "../src/utils/soundList.js");
 
 // 读取音频文件
 function getSoundFiles() {
   try {
     const files = fs.readdirSync(soundsDir);
     // 过滤出音频文件（.mp3, .wav, .ogg等）
-    const audioFiles = files.filter(file => {
+    const audioFiles = files.filter((file) => {
       const ext = path.extname(file).toLowerCase();
-      return ['.mp3', '.wav', '.ogg', '.m4a', '.aac'].includes(ext);
+      return [".mp3", ".wav", ".ogg", ".m4a", ".aac"].includes(ext);
     });
 
     return audioFiles.sort();
   } catch (error) {
-    console.error('读取音频文件夹失败:', error);
+    console.error("读取音频文件夹失败:", error);
     return [];
   }
 }
@@ -136,11 +136,11 @@ function writeSoundList() {
       fs.mkdirSync(outputDir, { recursive: true });
     }
 
-    fs.writeFileSync(outputFile, content, 'utf-8');
-    console.log('✓ 音频文件列表生成成功:', outputFile);
-    console.log('✓ 共找到', getSoundFiles().length, '个音频文件');
+    fs.writeFileSync(outputFile, content, "utf-8");
+    console.log("✓ 音频文件列表生成成功:", outputFile);
+    console.log("✓ 共找到", getSoundFiles().length, "个音频文件");
   } catch (error) {
-    console.error('✗ 生成音频列表失败:', error);
+    console.error("✗ 生成音频列表失败:", error);
     process.exit(1);
   }
 }

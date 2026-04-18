@@ -2,26 +2,14 @@
   <v-app :style="vAppStyle">
     <!-- 自定义背景层 -->
     <template v-if="bgEnabled">
-      <div
-        class="app-background-image"
-        :style="bgImageStyle"
-      />
-      <div
-        class="app-background-overlay"
-        :style="bgOverlayStyle"
-      />
+      <div class="app-background-image" :style="bgImageStyle" />
+      <div class="app-background-overlay" :style="bgOverlayStyle" />
     </template>
 
     <!-- 正常路由 -->
     <router-view v-slot="{ Component, route }">
-      <transition
-        mode="out-in"
-        name="md3"
-      >
-        <component
-          :is="Component"
-          :key="route.path"
-        />
+      <transition mode="out-in" name="md3">
+        <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
     <global-message />
@@ -88,10 +76,10 @@ onMounted(() => {
     }
   });
 
-  window.addEventListener('beforeinstallprompt', (e) => {
+  window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     window.deferredPwaPrompt = e;
-    window.dispatchEvent(new Event('pwa-prompt-ready'));
+    window.dispatchEvent(new Event("pwa-prompt-ready"));
   });
 });
 
@@ -107,7 +95,8 @@ onUnmounted(() => {
 
 .md3-enter-active,
 .md3-leave-active {
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 

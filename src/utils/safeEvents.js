@@ -12,8 +12,8 @@ export function createSafeEventMixin() {
     data() {
       return {
         _isDestroying: false,
-        _eventCleanupFunctions: []
-      }
+        _eventCleanupFunctions: [],
+      };
     },
 
     methods: {
@@ -23,19 +23,19 @@ export function createSafeEventMixin() {
        * @returns {Function} 清理函数
        */
       $safeOn(registerFn) {
-        if (this._isDestroying) return () => {}
+        if (this._isDestroying) return () => {};
 
         try {
-          const cleanup = registerFn()
-          if (typeof cleanup === 'function') {
-            this._eventCleanupFunctions.push(cleanup)
-            return cleanup
+          const cleanup = registerFn();
+          if (typeof cleanup === "function") {
+            this._eventCleanupFunctions.push(cleanup);
+            return cleanup;
           }
         } catch (error) {
-          console.error('事件注册失败:', error)
+          console.error("事件注册失败:", error);
         }
 
-        return () => {}
+        return () => {};
       },
 
       /**
@@ -45,14 +45,14 @@ export function createSafeEventMixin() {
        */
       $safeHandler(handler) {
         return (...args) => {
-          if (this._isDestroying || !this.$el) return
+          if (this._isDestroying || !this.$el) return;
 
           try {
-            return handler.apply(this, args)
+            return handler.apply(this, args);
           } catch (error) {
-            console.error('事件处理失败:', error)
+            console.error("事件处理失败:", error);
           }
-        }
+        };
       },
 
       /**
@@ -60,16 +60,16 @@ export function createSafeEventMixin() {
        * @param {Function} domOperation - DOM 操作函数
        */
       $safeDom(domOperation) {
-        if (this._isDestroying || !this.$el) return
+        if (this._isDestroying || !this.$el) return;
 
         try {
           requestAnimationFrame(() => {
             if (!this._isDestroying && this.$el) {
-              domOperation()
+              domOperation();
             }
-          })
+          });
         } catch (error) {
-          console.error('DOM 操作失败:', error)
+          console.error("DOM 操作失败:", error);
         }
       },
 
@@ -77,26 +77,26 @@ export function createSafeEventMixin() {
        * 清理所有事件监听器
        */
       $cleanupEvents() {
-        this._isDestroying = true
+        this._isDestroying = true;
 
-        this._eventCleanupFunctions.forEach(cleanup => {
+        this._eventCleanupFunctions.forEach((cleanup) => {
           try {
-            if (typeof cleanup === 'function') {
-              cleanup()
+            if (typeof cleanup === "function") {
+              cleanup();
             }
           } catch (error) {
-            console.warn('事件清理失败:', error)
+            console.warn("事件清理失败:", error);
           }
-        })
+        });
 
-        this._eventCleanupFunctions = []
-      }
+        this._eventCleanupFunctions = [];
+      },
     },
 
     beforeUnmount() {
-      this.$cleanupEvents()
-    }
-  }
+      this.$cleanupEvents();
+    },
+  };
 }
 
 /**
@@ -114,12 +114,12 @@ export const socketEventMixin = {
      */
     $socketOn(event, handler) {
       return this.$safeOn(() => {
-        const { on } = require('@/utils/socketClient')
-        return on(event, this.$safeHandler(handler))
-      })
-    }
-  }
-}
+        const { on } = require("@/utils/socketClient");
+        return on(event, this.$safeHandler(handler));
+      });
+    },
+  },
+};
 
 /**
  * 为现有组件添加安全事件处理
@@ -127,7 +127,7 @@ export const socketEventMixin = {
  * @returns {Object} 增强后的组件选项
  */
 export function withSafeEvents(component) {
-  const safeMixin = createSafeEventMixin()
+  const safeMixin = createSafeEventMixin();
 
   return {
     ...component,
@@ -138,103 +138,103 @@ export function withSafeEvents(component) {
       // 调用原有的 beforeUnmount
       if (component.beforeUnmount) {
         try {
-          component.beforeUnmount.call(this)
+          component.beforeUnmount.call(this);
         } catch (error) {
-          console.error('原 beforeUnmount 执行失败:', error)
+          console.error("原 beforeUnmount 执行失败:", error);
         }
       }
 
       // 调用安全清理
       if (this.$cleanupEvents) {
-        this.$cleanupEvents()
+        this.$cleanupEvents();
       }
-    }
-  }
+    },
+  };
 }
 
 /**
  * Composition API 版本的安全事件处理
  */
 export function useSafeEvents() {
-  const { ref, onBeforeUnmount } = require('vue')
+  const { ref, onBeforeUnmount } = require("vue");
 
-  const isDestroying = ref(false)
-  const cleanupFunctions = ref([])
+  const isDestroying = ref(false);
+  const cleanupFunctions = ref([]);
 
   const safeOn = (registerFn) => {
-    if (isDestroying.value) return () => {}
+    if (isDestroying.value) return () => {};
 
     try {
-      const cleanup = registerFn()
-      if (typeof cleanup === 'function') {
-        cleanupFunctions.value.push(cleanup)
-        return cleanup
+      const cleanup = registerFn();
+      if (typeof cleanup === "function") {
+        cleanupFunctions.value.push(cleanup);
+        return cleanup;
       }
     } catch (error) {
-      console.error('事件注册失败:', error)
+      console.error("事件注册失败:", error);
     }
 
-    return () => {}
-  }
+    return () => {};
+  };
 
   const safeHandler = (handler) => {
     return (...args) => {
-      if (isDestroying.value) return
+      if (isDestroying.value) return;
 
       try {
-        return handler(...args)
+        return handler(...args);
       } catch (error) {
-        console.error('事件处理失败:', error)
+        console.error("事件处理失败:", error);
       }
-    }
-  }
+    };
+  };
 
   const safeDom = (domOperation) => {
-    if (isDestroying.value) return
+    if (isDestroying.value) return;
 
     try {
       requestAnimationFrame(() => {
         if (!isDestroying.value) {
-          domOperation()
+          domOperation();
         }
-      })
+      });
     } catch (error) {
-      console.error('DOM 操作失败:', error)
+      console.error("DOM 操作失败:", error);
     }
-  }
+  };
 
   const cleanup = () => {
-    isDestroying.value = true
+    isDestroying.value = true;
 
-    cleanupFunctions.value.forEach(fn => {
+    cleanupFunctions.value.forEach((fn) => {
       try {
-        if (typeof fn === 'function') {
-          fn()
+        if (typeof fn === "function") {
+          fn();
         }
       } catch (error) {
-        console.warn('事件清理失败:', error)
+        console.warn("事件清理失败:", error);
       }
-    })
+    });
 
-    cleanupFunctions.value = []
-  }
+    cleanupFunctions.value = [];
+  };
 
   onBeforeUnmount(() => {
-    cleanup()
-  })
+    cleanup();
+  });
 
   return {
     isDestroying: isDestroying.value,
     safeOn,
     safeHandler,
     safeDom,
-    cleanup
-  }
+    cleanup,
+  };
 }
 
 export default {
   createSafeEventMixin,
   socketEventMixin,
   withSafeEvents,
-  useSafeEvents
-}
+  useSafeEvents,
+};

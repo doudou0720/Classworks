@@ -1,13 +1,13 @@
-import {kvLocalProvider} from "./providers/kvLocalProvider";
-import {kvServerProvider} from "./providers/kvServerProvider";
-import {getSetting, setSetting} from "./settings";
-import {getEffectiveServerUrl} from "./serverRotation";
+import { kvLocalProvider } from "./providers/kvLocalProvider";
+import { kvServerProvider } from "./providers/kvServerProvider";
+import { getSetting, setSetting } from "./settings";
+import { getEffectiveServerUrl } from "./serverRotation";
 
 export const formatResponse = (data) => data;
 
 export const formatError = (message, code = "UNKNOWN_ERROR") => ({
   success: false,
-  error: {code, message},
+  error: { code, message },
 });
 
 // Main data provider with simplified API
@@ -15,8 +15,7 @@ export default {
   // Provider API methods
   loadData: async (key) => {
     const provider = getSetting("server.provider");
-    const useServer =
-      provider === "kv-server" || provider === "classworkscloud";
+    const useServer = provider === "kv-server" || provider === "classworkscloud";
 
     if (useServer) {
       return kvServerProvider.loadData(key);
@@ -27,8 +26,7 @@ export default {
 
   saveData: async (key, data) => {
     const provider = getSetting("server.provider");
-    const useServer =
-      provider === "kv-server" || provider === "classworkscloud";
+    const useServer = provider === "kv-server" || provider === "classworkscloud";
 
     if (useServer) {
       return kvServerProvider.saveData(key, data);
@@ -78,8 +76,7 @@ export default {
    */
   loadKeys: async (options = {}) => {
     const provider = getSetting("server.provider");
-    const useServer =
-      provider === "kv-server" || provider === "classworkscloud";
+    const useServer = provider === "kv-server" || provider === "classworkscloud";
 
     if (useServer) {
       return kvServerProvider.loadKeys(options);
@@ -168,22 +165,19 @@ export default {
    * ```
    */
   async getKeyCloudUrl(key, options = {}) {
-    const {
-      migrateFromLocal = true,
-      autoConfigureCloud = true
-    } = options;
+    const { migrateFromLocal = true, autoConfigureCloud = true } = options;
 
     try {
       const provider = getSetting("server.provider");
       let serverUrl;
-      
+
       // Use effective server URL for classworkscloud provider
       if (provider === "classworkscloud") {
         serverUrl = getEffectiveServerUrl();
       } else {
         serverUrl = getSetting("server.domain");
       }
-      
+
       let siteKey = getSetting("server.siteKey");
       const machineId = getSetting("device.uuid");
       let configured = false;
@@ -193,7 +187,8 @@ export default {
         if (autoConfigureCloud) {
           // 使用classworksCloudDefaults配置
           const classworksCloudDefaults = {
-            "server.domain": import.meta.env.VITE_DEFAULT_KV_SERVER || "https://kv-service.houlang.cloud",
+            "server.domain":
+              import.meta.env.VITE_DEFAULT_KV_SERVER || "https://kv-service.houlang.cloud",
             "server.siteKey": "",
           };
 
@@ -249,24 +244,18 @@ export default {
       // 构建云端访问URL
       let url = `${serverUrl}/kv/${key}?token=${authtoken}`;
 
-
       return {
         success: true,
         url,
         migrated,
-        configured
+        configured,
       };
-
     } catch (error) {
-      console.error('获取键云端地址时出错:', error);
-      return formatError(
-        error.message || "获取键云端地址失败",
-        "CLOUD_URL_ERROR"
-      );
+      console.error("获取键云端地址时出错:", error);
+      return formatError(error.message || "获取键云端地址失败", "CLOUD_URL_ERROR");
     }
   },
 };
-
 
 export const ErrorCodes = {
   NOT_FOUND: "数据不存在",

@@ -1,50 +1,25 @@
 <template>
   <v-app-bar elevation="1">
     <template #prepend>
-      <v-btn
-        icon="mdi-arrow-left"
-        variant="text"
-        @click="$router.push('/')"
-      />
+      <v-btn icon="mdi-arrow-left" variant="text" @click="$router.push('/')" />
     </template>
-    <v-app-bar-title
-      v-if="list && !isRenaming"
-      class="text-h6"
-    >
+    <v-app-bar-title v-if="list && !isRenaming" class="text-h6">
       {{ list.name }}
     </v-app-bar-title>
-    <v-app-bar-title
-      v-else
-      class="text-h6"
-    >
-      列表
-    </v-app-bar-title>
+    <v-app-bar-title v-else class="text-h6"> 列表 </v-app-bar-title>
   </v-app-bar>
   <v-container>
     <div class="d-flex align-center mb-4">
-      <v-btn
-        border
-        class="mr-2"
-        icon
-        to="/list"
-      >
+      <v-btn border class="mr-2" icon to="/list">
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
       <h1 v-if="list && !isRenaming">
         {{ list.name }}
-        <v-btn
-          border
-          icon
-          size="small"
-          @click="startRenaming"
-        >
+        <v-btn border icon size="small" @click="startRenaming">
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
       </h1>
-      <div
-        v-else-if="list && isRenaming"
-        class="d-flex align-center"
-      >
+      <div v-else-if="list && isRenaming" class="d-flex align-center">
         <v-text-field
           v-model="newListName"
           autofocus
@@ -52,43 +27,24 @@
           density="compact"
           hide-details
           label="列表名称"
-          style="min-width: 200px;"
+          style="min-width: 200px"
           @keyup.enter="saveListName"
         />
-        <v-btn
-          class="mr-2"
-          color="primary"
-          size="small"
-          @click="saveListName"
-        >
+        <v-btn class="mr-2" color="primary" size="small" @click="saveListName">
           <v-icon>mdi-check</v-icon>
         </v-btn>
-        <v-btn
-          color="error"
-          size="small"
-          @click="cancelRenaming"
-        >
+        <v-btn color="error" size="small" @click="cancelRenaming">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </div>
-      <h1 v-else>
-        加载中...
-      </h1>
+      <h1 v-else>加载中...</h1>
     </div>
 
-
-    <v-card
-      border
-      class="mb-5"
-      rounded="xl"
-    >
+    <v-card border class="mb-5" rounded="xl">
       <v-card-title class="d-flex align-center">
         项目列表
         <v-spacer />
-        <v-btn-toggle
-          v-model="sortType"
-          mandatory
-        >
+        <v-btn-toggle v-model="sortType" mandatory>
           <v-btn value="default">
             <v-icon>mdi-sort-alphabetical-ascending</v-icon>
           </v-btn>
@@ -97,13 +53,8 @@
           </v-btn>
         </v-btn-toggle>
       </v-card-title>
-      <v-card-text v-if="sortedItems.length === 0">
-        暂无项目，请添加新项目
-      </v-card-text>
-      <v-list
-        v-else
-        select-strategy="leaf"
-      >
+      <v-card-text v-if="sortedItems.length === 0"> 暂无项目，请添加新项目 </v-card-text>
+      <v-list v-else select-strategy="leaf">
         <v-list-item
           v-for="(item, index) in sortedItems"
           :key="item.id"
@@ -138,11 +89,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    <v-card
-      border
-      class="mb-5"
-      rounded="xl"
-    >
+    <v-card border class="mb-5" rounded="xl">
       <v-card-title>添加新项目</v-card-title>
       <v-card-text>
         <v-text-field
@@ -150,21 +97,11 @@
           :rules="[(v) => !!v || '名称不能为空']"
           label="项目名称"
         />
-        <v-btn
-          :disabled="!newItemName"
-          color="primary"
-          @click="addItem"
-        >
-          添加
-        </v-btn>
+        <v-btn :disabled="!newItemName" color="primary" @click="addItem"> 添加 </v-btn>
       </v-card-text>
     </v-card>
 
-    <v-card
-      border
-      class="mb-5"
-      rounded="xl"
-    >
+    <v-card border class="mb-5" rounded="xl">
       <v-card-title>列表排序</v-card-title>
       <v-card-text>
         <v-text-field
@@ -174,62 +111,27 @@
           label="排序种子 (任意数字或文本)"
           persistent-hint
         />
-        <v-btn
-          class="mr-2"
-          color="primary"
-          @click="randomSort"
-        >
-          随机排序
-        </v-btn>
-        <v-btn
-          variant="text"
-          @click="resetSort"
-        >
-          撤销
-        </v-btn>
+        <v-btn class="mr-2" color="primary" @click="randomSort"> 随机排序 </v-btn>
+        <v-btn variant="text" @click="resetSort"> 撤销 </v-btn>
       </v-card-text>
     </v-card>
 
     <!-- 确认删除对话框 -->
-    <v-dialog
-      v-model="deleteDialog.show"
-      max-width="500"
-    >
-      <v-card
-        border
-        rounded="xl"
-      >
+    <v-dialog v-model="deleteDialog.show" max-width="500">
+      <v-card border rounded="xl">
         <v-card-title>{{ deleteDialog.title }}</v-card-title>
         <v-card-text>{{ deleteDialog.text }}</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="primary"
-            variant="text"
-            @click="deleteDialog.show = false"
-          >
-            取消
-          </v-btn>
-          <v-btn
-            color="error"
-            variant="text"
-            @click="confirmDelete"
-          >
-            确认删除
-          </v-btn>
+          <v-btn color="primary" variant="text" @click="deleteDialog.show = false"> 取消 </v-btn>
+          <v-btn color="error" variant="text" @click="confirmDelete"> 确认删除 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!-- 项目详情对话框 -->
-    <v-dialog
-      v-model="itemDialog.show"
-      max-width="600"
-    >
-      <v-card
-        border
-        rounded="xl"
-      >
+    <v-dialog v-model="itemDialog.show" max-width="600">
+      <v-card border rounded="xl">
         <v-card-title>
           <span v-if="!itemDialog.isEditing">项目详情</span>
           <span v-else>编辑项目</span>
@@ -250,11 +152,8 @@
                   状态
                 </v-list-item-title>
                 <v-list-item-subtitle>
-                  <v-chip
-                    :color="itemDialog.item.completed ? 'success' : 'warning'"
-                    size="small"
-                  >
-                    {{ itemDialog.item.completed ? '已完成' : '未完成' }}
+                  <v-chip :color="itemDialog.item.completed ? 'success' : 'warning'" size="small">
+                    {{ itemDialog.item.completed ? "已完成" : "未完成" }}
                   </v-chip>
                 </v-list-item-subtitle>
               </v-list-item>
@@ -268,10 +167,7 @@
             </v-list>
           </div>
 
-          <div
-            v-else-if="itemDialog.isEditing && itemDialog.item"
-            class="pa-2"
-          >
+          <div v-else-if="itemDialog.isEditing && itemDialog.item" class="pa-2">
             <v-text-field
               v-model="itemDialog.editedItem.name"
               class="mb-3"
@@ -287,7 +183,6 @@
               variant="outlined"
             />
 
-
             <v-switch
               v-model="itemDialog.editedItem.completed"
               color="success"
@@ -301,44 +196,16 @@
           <v-spacer />
 
           <template v-if="!itemDialog.isEditing">
-            <v-btn
-              color="primary"
-              variant="text"
-              @click="startEditingItem"
-            >
-              编辑
-            </v-btn>
-            <v-btn
-              color="error"
-              variant="text"
-              @click="confirmDeleteItem(itemDialog.item?.id)"
-            >
+            <v-btn color="primary" variant="text" @click="startEditingItem"> 编辑 </v-btn>
+            <v-btn color="error" variant="text" @click="confirmDeleteItem(itemDialog.item?.id)">
               删除
             </v-btn>
-            <v-btn
-              color="secondary"
-              variant="text"
-              @click="itemDialog.show = false"
-            >
-              关闭
-            </v-btn>
+            <v-btn color="secondary" variant="text" @click="itemDialog.show = false"> 关闭 </v-btn>
           </template>
 
           <template v-else>
-            <v-btn
-              color="success"
-              variant="text"
-              @click="saveItemChanges"
-            >
-              保存
-            </v-btn>
-            <v-btn
-              color="secondary"
-              variant="text"
-              @click="cancelEditingItem"
-            >
-              取消
-            </v-btn>
+            <v-btn color="success" variant="text" @click="saveItemChanges"> 保存 </v-btn>
+            <v-btn color="secondary" variant="text" @click="cancelEditingItem"> 取消 </v-btn>
           </template>
         </v-card-actions>
       </v-card>
@@ -365,7 +232,7 @@ export default {
         title: "",
         text: "",
         itemId: null,
-        action: null
+        action: null,
       },
       isRenaming: false,
       newListName: "",
@@ -373,8 +240,8 @@ export default {
         show: false,
         item: null,
         isEditing: false,
-        editedItem: null
-      }
+        editedItem: null,
+      },
     };
   },
   computed: {
@@ -390,8 +257,8 @@ export default {
       return this.items;
     },
     hasCompletedItems() {
-      return this.items.some(item => item.completed);
-    }
+      return this.items.some((item) => item.completed);
+    },
   },
   async created() {
     this.listId = this.$route.params.id;
@@ -451,29 +318,27 @@ export default {
     },
     async loadItems() {
       try {
-        let items = await dataProvider.loadData(
-          `classworks-list-${this.listId}`
-        );
+        let items = await dataProvider.loadData(`classworks-list-${this.listId}`);
         if (!items || !Array.isArray(items)) {
           items = [];
           await dataProvider.saveData(`classworks-list-${this.listId}`, items);
         }
 
         // 确保每个项目都有正确的数据结构
-        this.items = items.map(item => {
+        this.items = items.map((item) => {
           // 如果是从学生列表直接复制过来的，可能没有completed属性
-          if (typeof item.completed === 'undefined') {
+          if (typeof item.completed === "undefined") {
             return {
               id: item.id || Date.now() + Math.floor(Math.random() * 1000),
               name: item.name,
               completed: false,
-              description: item.description || '',
+              description: item.description || "",
             };
           }
           // 确保有描述和备注字段
           return {
             ...item,
-            description: item.description || '',
+            description: item.description || "",
           };
         });
 
@@ -492,7 +357,7 @@ export default {
         id: Date.now().toString(),
         name: this.newItemName,
         completed: false,
-        description: '',
+        description: "",
       };
 
       this.items.push(newItem);
@@ -507,7 +372,7 @@ export default {
         show: true,
         item: item,
         isEditing: false,
-        editedItem: null
+        editedItem: null,
       };
     },
     startEditingItem() {
@@ -523,15 +388,17 @@ export default {
     async saveItemChanges() {
       if (!this.itemDialog.editedItem) return;
 
-      const itemIndex = this.items.findIndex(item => item.id === this.itemDialog.item.id);
+      const itemIndex = this.items.findIndex((item) => item.id === this.itemDialog.item.id);
       if (itemIndex !== -1) {
         // 更新项目
         this.items[itemIndex] = {
-          ...this.itemDialog.editedItem
+          ...this.itemDialog.editedItem,
         };
 
         // 同时更新原始列表
-        const originalIndex = this.originalItems.findIndex(item => item.id === this.itemDialog.item.id);
+        const originalIndex = this.originalItems.findIndex(
+          (item) => item.id === this.itemDialog.item.id,
+        );
         if (originalIndex !== -1) {
           this.originalItems[originalIndex] = JSON.parse(JSON.stringify(this.items[itemIndex]));
         }
@@ -545,14 +412,14 @@ export default {
       }
     },
     confirmDeleteItem(itemId) {
-      const item = this.items.find(item => item.id === itemId);
+      const item = this.items.find((item) => item.id === itemId);
       if (item) {
         this.deleteDialog = {
           show: true,
           title: "删除确认",
           text: `确定要删除 "${item.name}" 吗？`,
           itemId: itemId,
-          action: 'deleteItem'
+          action: "deleteItem",
         };
         // 如果是从项目详情对话框中删除，则关闭项目详情对话框
         if (this.itemDialog.show && this.itemDialog.item?.id === itemId) {
@@ -561,42 +428,40 @@ export default {
       }
     },
     confirmDeleteCompleted() {
-      const completedCount = this.items.filter(item => item.completed).length;
+      const completedCount = this.items.filter((item) => item.completed).length;
       this.deleteDialog = {
         show: true,
         title: "删除已完成项目",
         text: `确定要删除所有已完成的项目吗？(共 ${completedCount} 项)`,
-        action: 'deleteCompleted'
+        action: "deleteCompleted",
       };
     },
     confirmDelete() {
-      if (this.deleteDialog.action === 'deleteItem' && this.deleteDialog.itemId) {
+      if (this.deleteDialog.action === "deleteItem" && this.deleteDialog.itemId) {
         this.deleteItem(this.deleteDialog.itemId);
-      } else if (this.deleteDialog.action === 'deleteCompleted') {
+      } else if (this.deleteDialog.action === "deleteCompleted") {
         this.deleteCompletedItems();
       }
       this.deleteDialog.show = false;
     },
     async deleteItem(itemId) {
       this.items = this.items.filter((item) => item.id !== itemId);
-      this.originalItems = this.originalItems.filter(
-        (item) => item.id !== itemId
-      );
+      this.originalItems = this.originalItems.filter((item) => item.id !== itemId);
       await this.saveItems();
     },
     async deleteCompletedItems() {
-      this.items = this.items.filter(item => !item.completed);
-      this.originalItems = this.originalItems.filter(item => !item.completed);
+      this.items = this.items.filter((item) => !item.completed);
+      this.originalItems = this.originalItems.filter((item) => !item.completed);
       await this.saveItems();
     },
     async updateItemStatus(itemId, newStatus) {
       // 更新项目的完成状态
-      const item = this.items.find(item => item.id === itemId);
+      const item = this.items.find((item) => item.id === itemId);
       if (item) {
         item.completed = newStatus;
 
         // 同时更新原始列表中对应项目的状态
-        const originalItem = this.originalItems.find(item => item.id === itemId);
+        const originalItem = this.originalItems.find((item) => item.id === itemId);
         if (originalItem) {
           originalItem.completed = newStatus;
         }
@@ -606,10 +471,7 @@ export default {
     },
     async saveItems() {
       try {
-        await dataProvider.saveData(
-          `classworks-list-${this.listId}`,
-          this.items
-        );
+        await dataProvider.saveData(`classworks-list-${this.listId}`, this.items);
       } catch (error) {
         console.error("Failed to save items", error);
       }
@@ -631,7 +493,7 @@ export default {
 
       // 移除临时的randomValue属性并更新items
       this.items = itemsWithRandom.map((item) => {
-        const newItem = {...item};
+        const newItem = { ...item };
         delete newItem.randomValue;
         return newItem;
       });

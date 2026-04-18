@@ -11,9 +11,7 @@
       @click:close="error = ''"
     >
       <div class="d-flex align-center">
-        <v-icon class="mr-2">
-          mdi-alert-circle
-        </v-icon>
+        <v-icon class="mr-2"> mdi-alert-circle </v-icon>
         {{ error }}
       </div>
     </v-alert>
@@ -29,9 +27,7 @@
       @click:close="success = ''"
     >
       <div class="d-flex align-center">
-        <v-icon class="mr-2">
-          mdi-check-circle
-        </v-icon>
+        <v-icon class="mr-2"> mdi-check-circle </v-icon>
         {{ success }}
       </div>
     </v-alert>
@@ -47,22 +43,10 @@
       <div class="d-flex align-center">
         <span class="font-weight-bold">配置验证失败，请检查以下问题：</span>
       </div>
-      <v-list
-        class="bg-transparent"
-        density="compact"
-      >
-        <v-list-item
-          v-for="(error, index) in validationErrors"
-          :key="index"
-          class="px-0 py-0"
-        >
+      <v-list class="bg-transparent" density="compact">
+        <v-list-item v-for="(error, index) in validationErrors" :key="index" class="px-0 py-0">
           <template #prepend>
-            <v-icon
-              color="warning"
-              size="small"
-            >
-              mdi-circle-small
-            </v-icon>
+            <v-icon color="warning" size="small"> mdi-circle-small </v-icon>
           </template>
           <v-list-item-title class="text-body-2">
             {{ error }}
@@ -72,24 +56,14 @@
     </v-alert>
 
     <!-- 加载状态 -->
-    <v-card
-      v-if="loading"
-      class="my-4"
-      outlined
-    >
+    <v-card v-if="loading" class="my-4" outlined>
       <v-card-text>
-        <v-skeleton-loader
-          class="mx-auto"
-          type="article"
-        />
+        <v-skeleton-loader class="mx-auto" type="article" />
       </v-card-text>
     </v-card>
 
     <!-- 模式切换按钮和操作按钮 -->
-    <div
-      v-if="!loading"
-      class="d-flex justify-space-between align-center mb-4"
-    >
+    <div v-if="!loading" class="d-flex justify-space-between align-center mb-4">
       <div class="d-flex align-center gap-2">
         <v-btn
           :disabled="!isValidConfig"
@@ -146,72 +120,34 @@
           拉起EA2播放器
         </v-btn>
 
-        <v-tooltip
-          v-if="!isValidConfig"
-          activator="parent"
-          location="bottom"
-        >
+        <v-tooltip v-if="!isValidConfig" activator="parent" location="bottom">
           <span>请先完善配置信息后再操作</span>
         </v-tooltip>
       </div>
-      <v-btn-toggle
-        v-model="isEditMode"
-        color="primary"
-        divided
-        variant="outlined"
-      >
-        <v-btn
-          class="text-error"
-          prepend-icon="mdi-delete"
-          @click="confirmDelete"
-        >
+      <v-btn-toggle v-model="isEditMode" color="primary" divided variant="outlined">
+        <v-btn class="text-error" prepend-icon="mdi-delete" @click="confirmDelete">
           删除配置
         </v-btn>
-        <v-btn
-          :value="false"
-          prepend-icon="mdi-eye"
-        >
-          预览
-        </v-btn>
-        <v-btn
-          :value="true"
-          prepend-icon="mdi-pencil"
-        >
-          编辑
-        </v-btn>
+        <v-btn :value="false" prepend-icon="mdi-eye"> 预览 </v-btn>
+        <v-btn :value="true" prepend-icon="mdi-pencil"> 编辑 </v-btn>
       </v-btn-toggle>
     </div>
 
     <!-- 预览模式 -->
     <div v-if="!loading && !isEditMode">
       <div class="mb-8">
-        <div
-          class="text-h3 font-weight-bold"
-          style="line-height: 1.2"
-        >
+        <div class="text-h3 font-weight-bold" style="line-height: 1.2">
           {{ localConfig.examName || "未设置考试名称" }}
         </div>
-        <div
-          class="text-subtitle-1 text-grey"
-          style="white-space: pre-wrap; line-height: 1.8"
-        >
+        <div class="text-subtitle-1 text-grey" style="white-space: pre-wrap; line-height: 1.8">
           {{ localConfig.message || "未设置考试提示" }}
         </div>
-        <v-chip
-          v-if="localConfig.room"
-          class="px-4 py-2"
-          size="large"
-        >
-          <v-icon start>
-            mdi-home
-          </v-icon>
+        <v-chip v-if="localConfig.room" class="px-4 py-2" size="large">
+          <v-icon start> mdi-home </v-icon>
           考场：{{ localConfig.room }}
         </v-chip>
       </div>
-      <div
-        v-if="localConfig.examInfos && localConfig.examInfos.length > 0"
-        class="mb-8"
-      >
+      <div v-if="localConfig.examInfos && localConfig.examInfos.length > 0" class="mb-8">
         <v-row>
           <v-col
             v-for="(examInfo, index) in localConfig.examInfos"
@@ -220,29 +156,17 @@
             lg="4"
             md="6"
           >
-            <v-card
-              class="h-100"
-              hover
-              variant="tonal"
-            >
+            <v-card class="h-100" hover variant="tonal">
               <v-card-title class="bg-primary-lighten-5 pa-4">
                 <div class="d-flex align-center">
-                  <v-icon class="mr-2">
-                    mdi-book-open-page-variant
-                  </v-icon>
+                  <v-icon class="mr-2"> mdi-book-open-page-variant </v-icon>
                   <span class="">{{ examInfo.name || "未设置科目" }}</span>
                 </div>
               </v-card-title>
               <v-card-text class="pa-4">
                 <div class="mb-3">
                   <div class="d-flex align-center mb-1">
-                    <v-icon
-                      class="mr-2"
-                      color="success"
-                      size="small"
-                    >
-                      mdi-clock-start
-                    </v-icon>
+                    <v-icon class="mr-2" color="success" size="small"> mdi-clock-start </v-icon>
                     <span class="text-body-2 text-grey-darken-1">开始时间</span>
                   </div>
                   <div class="text-h6 font-weight-medium text-success">
@@ -251,13 +175,7 @@
                 </div>
                 <div>
                   <div class="d-flex align-center mb-1">
-                    <v-icon
-                      class="mr-2"
-                      color="error"
-                      size="small"
-                    >
-                      mdi-clock-end
-                    </v-icon>
+                    <v-icon class="mr-2" color="error" size="small"> mdi-clock-end </v-icon>
                     <span class="text-body-2 text-grey-darken-1">结束时间</span>
                   </div>
                   <div class="text-h6 font-weight-medium text-error">
@@ -269,48 +187,23 @@
           </v-col>
         </v-row>
       </div>
-      <div
-        v-else
-        class="text-center py-12"
-      >
-        <v-icon
-          class="mb-4"
-          color="grey-lighten-2"
-          size="80"
-        >
-          mdi-calendar-blank
-        </v-icon>
-        <div class="text-h5 text-grey-darken-1 mb-2">
-          暂无考试科目安排
-        </div>
-        <div class="text-body-1 text-grey mb-4">
-          点击上方"添加科目"按钮开始配置考试时间表
-        </div>
-        <v-btn
-          color="primary"
-          variant="outlined"
-          @click="quickEdit"
-        >
-          <v-icon start>
-            mdi-plus
-          </v-icon>
+      <div v-else class="text-center py-12">
+        <v-icon class="mb-4" color="grey-lighten-2" size="80"> mdi-calendar-blank </v-icon>
+        <div class="text-h5 text-grey-darken-1 mb-2">暂无考试科目安排</div>
+        <div class="text-body-1 text-grey mb-4">点击上方"添加科目"按钮开始配置考试时间表</div>
+        <v-btn color="primary" variant="outlined" @click="quickEdit">
+          <v-icon start> mdi-plus </v-icon>
           立即添加
         </v-btn>
       </div>
 
       <!-- JSON预览 -->
-      <v-card
-        border
-        class="mb-4"
-        elevation="2"
-      >
+      <v-card border class="mb-4" elevation="2">
         <v-card-title
           class="d-flex align-center text-white cursor-pointer"
           @click="showJsonPreview = !showJsonPreview"
         >
-          <v-icon class="mr-2">
-            mdi-code-json
-          </v-icon>
+          <v-icon class="mr-2"> mdi-code-json </v-icon>
           配置预览
           <v-spacer />
 
@@ -333,14 +226,8 @@
           />
         </v-card-title>
         <v-expand-transition>
-          <v-card-text
-            v-show="showJsonPreview"
-            class="pa-4"
-          >
-            <v-card
-              class="pa-4"
-              variant="tonal"
-            >
+          <v-card-text v-show="showJsonPreview" class="pa-4">
+            <v-card class="pa-4" variant="tonal">
               <pre class="json-preview"><code>{{ formattedStorageJson }}</code></pre>
             </v-card>
           </v-card-text>
@@ -351,29 +238,20 @@
     <!-- 编辑模式 -->
     <div v-if="!loading && isEditMode">
       <!-- 基本信息 -->
-      <v-card
-        border
-        class="mb-4"
-        elevation="1"
-      >
+      <v-card border class="mb-4" elevation="1">
         <v-card-title class="d-flex align-center bg-primary-lighten-5 pa-4">
-          <v-icon class="mr-2">
-            mdi-information
-          </v-icon>
+          <v-icon class="mr-2"> mdi-information </v-icon>
           <span class="font-weight-bold">基本信息</span>
         </v-card-title>
         <v-card-text class="pa-6">
           <v-row>
-            <v-col
-              cols="12"
-              md="6"
-            >
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="localConfig.examName"
                 :rules="[
                   (v) => !!v || '考试名称不能为空',
                   (v) => (v && v.trim().length > 0) || '考试名称不能为空白字符',
-                  (v) => !v || v.length <= 100 || '考试名称不能超过100个字符'
+                  (v) => !v || v.length <= 100 || '考试名称不能超过100个字符',
                 ]"
                 clearable
                 density="comfortable"
@@ -384,10 +262,7 @@
                 variant="outlined"
               />
             </v-col>
-            <v-col
-              cols="12"
-              md="6"
-            >
+            <v-col cols="12" md="6">
               <v-text-field
                 v-model="localConfig.room"
                 clearable
@@ -402,17 +277,14 @@
           <v-row>
             <v-col cols="12">
               <span class="text-subtitle-2 font-weight-bold d-block mb-2">
-                <v-icon
-                  size="small"
-                  class="mr-1"
-                >mdi-message-text</v-icon>
+                <v-icon size="small" class="mr-1">mdi-message-text</v-icon>
                 考试提示
               </span>
               <v-textarea
                 v-model="localConfig.message"
                 :rules="[
                   (v) => !!v || '考试提示不能为空',
-                  (v) => (v && v.trim().length > 0) || '考试提示不能为空白字符'
+                  (v) => (v && v.trim().length > 0) || '考试提示不能为空白字符',
                 ]"
                 clearable
                 density="comfortable"
@@ -424,14 +296,8 @@
               />
 
               <!-- 默认提示选项 -->
-              <div
-                v-if="!localConfig.message || localConfig.message.trim() === ''"
-                class="mt-3"
-              >
-                <v-chip-group
-                  class="d-flex gap-2"
-                  column
-                >
+              <div v-if="!localConfig.message || localConfig.message.trim() === ''" class="mt-3">
+                <v-chip-group class="d-flex gap-2" column>
                   <v-chip
                     v-for="(tip, index) in defaultExamTips"
                     :key="index"
@@ -441,22 +307,12 @@
                     variant="outlined"
                     @click="selectDefaultTip(tip)"
                   >
-                    <v-icon
-                      size="small"
-                      start
-                    >
-                      mdi-plus
-                    </v-icon>
+                    <v-icon size="small" start> mdi-plus </v-icon>
                     {{ tip.substring(0, 20) }}...
                   </v-chip>
                 </v-chip-group>
                 <div class="text-caption text-medium-emphasis mt-2 ml-2">
-                  <v-icon
-                    class="mr-1"
-                    size="x-small"
-                  >
-                    mdi-lightbulb-outline
-                  </v-icon>
+                  <v-icon class="mr-1" size="x-small"> mdi-lightbulb-outline </v-icon>
                   点击上方选项快速添加常用考试提示
                 </div>
               </div>
@@ -466,15 +322,9 @@
       </v-card>
 
       <!-- 考试科目安排 -->
-      <v-card
-        border
-        class="mb-4"
-        elevation="1"
-      >
+      <v-card border class="mb-4" elevation="1">
         <v-card-title class="d-flex align-center bg-success-lighten-5 pa-4">
-          <v-icon class="mr-2">
-            mdi-format-list-bulleted
-          </v-icon>
+          <v-icon class="mr-2"> mdi-format-list-bulleted </v-icon>
           <span class="font-weight-bold">考试科目安排</span>
           <v-spacer />
 
@@ -504,10 +354,7 @@
           </v-btn>
         </v-card-title>
         <v-card-text class="pa-0">
-          <v-list
-            v-if="localConfig.examInfos && localConfig.examInfos.length > 0"
-            class="py-0"
-          >
+          <v-list v-if="localConfig.examInfos && localConfig.examInfos.length > 0" class="py-0">
             <v-list-item
               v-for="(examInfo, index) in localConfig.examInfos"
               :key="index"
@@ -522,17 +369,11 @@
                     variant="tonal"
                     class="mr-3"
                   >
-                    <v-icon
-                      start
-                      size="small"
-                    >
-                      mdi-numeric-{{ index + 1 }}-circle
-                    </v-icon>
+                    <v-icon start size="small"> mdi-numeric-{{ index + 1 }}-circle </v-icon>
                     第 {{ index + 1 }} 科目
                   </v-chip>
 
                   <!-- 考试时长显示 -->
-
 
                   <v-spacer />
                   <div class="d-flex gap-1">
@@ -544,12 +385,7 @@
                       variant="text"
                       @click="moveExamInfo(index, -1)"
                     >
-                      <v-tooltip
-                        activator="parent"
-                        location="bottom"
-                      >
-                        上移
-                      </v-tooltip>
+                      <v-tooltip activator="parent" location="bottom"> 上移 </v-tooltip>
                     </v-btn>
                     <v-btn
                       v-if="index < localConfig.examInfos.length - 1"
@@ -559,12 +395,7 @@
                       variant="text"
                       @click="moveExamInfo(index, 1)"
                     >
-                      <v-tooltip
-                        activator="parent"
-                        location="bottom"
-                      >
-                        下移
-                      </v-tooltip>
+                      <v-tooltip activator="parent" location="bottom"> 下移 </v-tooltip>
                     </v-btn>
                     <v-btn
                       color="error"
@@ -573,28 +404,20 @@
                       variant="text"
                       @click="removeExamInfo(index)"
                     >
-                      <v-tooltip
-                        activator="parent"
-                        location="bottom"
-                      >
-                        删除
-                      </v-tooltip>
+                      <v-tooltip activator="parent" location="bottom"> 删除 </v-tooltip>
                     </v-btn>
                   </div>
                 </div>
 
                 <v-row class="align-start">
-                  <v-col
-                    cols="12"
-                    md="4"
-                  >
+                  <v-col cols="12" md="4">
                     <!-- 科目名称自动完成选择器 -->
                     <v-autocomplete
                       v-model="examInfo.name"
                       :items="availableSubjects"
                       :rules="[
                         (v) => !!v || '科目名称不能为空',
-                        (v) => (v && v.trim().length > 0) || '科目名称不能为空白字符'
+                        (v) => (v && v.trim().length > 0) || '科目名称不能为空白字符',
                       ]"
                       clearable
                       density="comfortable"
@@ -605,22 +428,18 @@
                       variant="outlined"
                     >
                       <template #prepend-item>
-                        <v-list-item
-                          v-if="customSubjectInput"
-                          title="自定义："
-                        >
+                        <v-list-item v-if="customSubjectInput" title="自定义：">
                           <template #append>
-                            <span class="text-primary font-weight-bold">{{ customSubjectInput }}</span>
+                            <span class="text-primary font-weight-bold">{{
+                              customSubjectInput
+                            }}</span>
                           </template>
                         </v-list-item>
                         <v-divider v-if="customSubjectInput" />
                       </template>
                     </v-autocomplete>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    md="3"
-                  >
+                  <v-col cols="12" md="3">
                     <v-menu
                       v-model="examInfo.startDateMenu"
                       :close-on-content-click="false"
@@ -634,7 +453,7 @@
                           :rules="[
                             (v) => !!v || '开始时间不能为空',
                             (v) => validateTimeFormat(v, '开始时间'),
-                            () => validateNoTimeOverlap(examInfo, index)
+                            () => validateNoTimeOverlap(examInfo, index),
                           ]"
                           density="comfortable"
                           label="开始时间"
@@ -651,20 +470,12 @@
                       </template>
                       <v-card min-width="500">
                         <v-card-title class="text-center py-3 bg-primary-lighten-5">
-                          <v-icon
-                            class="mr-2"
-                            color="primary"
-                          >
-                            mdi-clock-start
-                          </v-icon>
+                          <v-icon class="mr-2" color="primary"> mdi-clock-start </v-icon>
                           选择开始时间
                         </v-card-title>
                         <v-card-text class="pa-0">
                           <v-row no-gutters>
-                            <v-col
-                              class="border-e"
-                              cols="6"
-                            >
+                            <v-col class="border-e" cols="6">
                               <v-date-picker
                                 v-model="examInfo.startDate"
                                 color="primary"
@@ -699,10 +510,7 @@
                       </v-card>
                     </v-menu>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    md="3"
-                  >
+                  <v-col cols="12" md="3">
                     <v-menu
                       v-model="examInfo.endDateMenu"
                       :close-on-content-click="false"
@@ -717,7 +525,7 @@
                             (v) => !!v || '结束时间不能为空',
                             (v) => validateTimeFormat(v, '结束时间'),
                             () => validateEndAfterStart(examInfo),
-                            () => validateNoTimeOverlap(examInfo, index)
+                            () => validateNoTimeOverlap(examInfo, index),
                           ]"
                           density="comfortable"
                           label="结束时间"
@@ -734,20 +542,12 @@
                       </template>
                       <v-card min-width="500">
                         <v-card-title class="text-center py-3 bg-error-lighten-5">
-                          <v-icon
-                            class="mr-2"
-                            color="error"
-                          >
-                            mdi-clock-end
-                          </v-icon>
+                          <v-icon class="mr-2" color="error"> mdi-clock-end </v-icon>
                           选择结束时间
                         </v-card-title>
                         <v-card-text class="pa-0">
                           <v-row no-gutters>
-                            <v-col
-                              class="border-e"
-                              cols="6"
-                            >
+                            <v-col class="border-e" cols="6">
                               <v-date-picker
                                 v-model="examInfo.endDate"
                                 color="error"
@@ -771,28 +571,21 @@
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer />
-                          <v-btn
-                            color="grey"
-                            variant="text"
-                            @click="examInfo.endDateMenu = false"
-                          >
+                          <v-btn color="grey" variant="text" @click="examInfo.endDateMenu = false">
                             关闭
                           </v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-menu>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    md="2"
-                  >
+                  <v-col cols="12" md="2">
                     <v-text-field
                       v-model="examInfo.durationMinutes"
                       :rules="[
                         (v) => !!v || '时长不能为空',
                         (v) => !isNaN(v) || '时长必须是数字',
                         (v) => parseInt(v) > 0 || '时长必须大于0',
-                        (v) => parseInt(v) <= 1440 || '时长不能超过1440分钟（24小时）'
+                        (v) => parseInt(v) <= 1440 || '时长不能超过1440分钟（24小时）',
                       ]"
                       type="number"
                       min="1"
@@ -809,18 +602,14 @@
                   </v-col>
 
                   <!-- 提醒时间输入框（仅在启用自定义时显示） -->
-                  <v-col
-                    v-if="enableCustomAlertTime"
-                    cols="12"
-                    md="2"
-                  >
+                  <v-col v-if="enableCustomAlertTime" cols="12" md="2">
                     <v-text-field
                       v-model="examInfo.alertTime"
                       :rules="[
                         (v) => !!v || '提醒时间不能为空',
                         (v) => !isNaN(v) || '提醒时间必须是数字',
                         (v) => parseInt(v) >= 0 || '提醒时间不能为负数',
-                        (v) => parseInt(v) <= 120 || '提醒时间不能超过120分钟'
+                        (v) => parseInt(v) <= 120 || '提醒时间不能超过120分钟',
                       ]"
                       type="number"
                       min="0"
@@ -838,23 +627,10 @@
               </div>
             </v-list-item>
           </v-list>
-          <div
-            v-else
-            class="text-center py-12"
-          >
-            <v-icon
-              class="mb-4"
-              color="grey-lighten-2"
-              size="80"
-            >
-              mdi-calendar-blank
-            </v-icon>
-            <div class="text-h5 text-grey-darken-1 mb-2">
-              暂无考试科目安排
-            </div>
-            <div class="text-body-1 text-grey mb-4">
-              点击上方"添加科目"按钮开始配置
-            </div>
+          <div v-else class="text-center py-12">
+            <v-icon class="mb-4" color="grey-lighten-2" size="80"> mdi-calendar-blank </v-icon>
+            <div class="text-h5 text-grey-darken-1 mb-2">暂无考试科目安排</div>
+            <div class="text-body-1 text-grey mb-4">点击上方"添加科目"按钮开始配置</div>
             <v-btn
               color="success"
               prepend-icon="mdi-plus"
@@ -870,39 +646,20 @@
     </div>
 
     <!-- 删除确认对话框 -->
-    <v-dialog
-      v-model="deleteDialog"
-      max-width="400"
-    >
+    <v-dialog v-model="deleteDialog" max-width="400">
       <v-card>
         <v-card-title class="d-flex align-center">
-          <v-icon
-            class="mr-2"
-            color="error"
-          >
-            mdi-delete-alert
-          </v-icon>
+          <v-icon class="mr-2" color="error"> mdi-delete-alert </v-icon>
           确认删除配置
         </v-card-title>
         <v-card-text>
           确定要删除配置 <strong>{{ localConfig.examName || `配置 ${configId}` }}</strong> 吗？
-          <br><small class="text-grey">此操作不可撤销，将会删除所有相关数据</small>
+          <br /><small class="text-grey">此操作不可撤销，将会删除所有相关数据</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="grey"
-            variant="text"
-            @click="deleteDialog = false"
-          >
-            取消
-          </v-btn>
-          <v-btn
-            :loading="deleting"
-            color="error"
-            variant="outlined"
-            @click="deleteConfig"
-          >
+          <v-btn color="grey" variant="text" @click="deleteDialog = false"> 取消 </v-btn>
+          <v-btn :loading="deleting" color="error" variant="outlined" @click="deleteConfig">
             删除
           </v-btn>
         </v-card-actions>
@@ -999,9 +756,7 @@ export default {
         this.localConfig.message &&
         this.localConfig.examInfos &&
         this.localConfig.examInfos.length > 0 &&
-        this.localConfig.examInfos.every(
-          (info) => info.name && info.start && info.end
-        )
+        this.localConfig.examInfos.every((info) => info.name && info.start && info.end)
       );
     },
 
@@ -1011,10 +766,7 @@ export default {
     validationErrors() {
       const errors = [];
 
-      if (
-        !this.localConfig.examName ||
-        this.localConfig.examName.trim() === ""
-      ) {
+      if (!this.localConfig.examName || this.localConfig.examName.trim() === "") {
         errors.push("考试名称不能为空");
       }
 
@@ -1022,10 +774,7 @@ export default {
         errors.push("考试提示不能为空");
       }
 
-      if (
-        !this.localConfig.examInfos ||
-        this.localConfig.examInfos.length === 0
-      ) {
+      if (!this.localConfig.examInfos || this.localConfig.examInfos.length === 0) {
         errors.push("至少需要添加一个考试科目");
       } else {
         this.localConfig.examInfos.forEach((info, index) => {
@@ -1131,37 +880,37 @@ export default {
         if (response && Array.isArray(response)) {
           this.availableSubjects = response
             .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
-            .map(subject => ({
+            .map((subject) => ({
               name: subject.name,
-              order: subject.order ?? 0
+              order: subject.order ?? 0,
             }));
         } else {
           // 使用默认科目列表
           this.availableSubjects = [
-            { name: '语文', order: 0 },
-            { name: '数学', order: 1 },
-            { name: '英语', order: 2 },
-            { name: '物理', order: 3 },
-            { name: '化学', order: 4 },
-            { name: '生物', order: 5 },
-            { name: '政治', order: 6 },
-            { name: '历史', order: 7 },
-            { name: '地理', order: 8 },
+            { name: "语文", order: 0 },
+            { name: "数学", order: 1 },
+            { name: "英语", order: 2 },
+            { name: "物理", order: 3 },
+            { name: "化学", order: 4 },
+            { name: "生物", order: 5 },
+            { name: "政治", order: 6 },
+            { name: "历史", order: 7 },
+            { name: "地理", order: 8 },
           ];
         }
       } catch (error) {
-        console.warn('加载科目列表失败，使用默认列表:', error);
+        console.warn("加载科目列表失败，使用默认列表:", error);
         // 使用默认科目列表
         this.availableSubjects = [
-          { name: '语文', order: 0 },
-          { name: '数学', order: 1 },
-          { name: '英语', order: 2 },
-          { name: '物理', order: 3 },
-          { name: '化学', order: 4 },
-          { name: '生物', order: 5 },
-          { name: '政治', order: 6 },
-          { name: '历史', order: 7 },
-          { name: '地理', order: 8 },
+          { name: "语文", order: 0 },
+          { name: "数学", order: 1 },
+          { name: "英语", order: 2 },
+          { name: "物理", order: 3 },
+          { name: "化学", order: 4 },
+          { name: "生物", order: 5 },
+          { name: "政治", order: 6 },
+          { name: "历史", order: 7 },
+          { name: "地理", order: 8 },
         ];
       }
     },
@@ -1215,7 +964,7 @@ export default {
         lastEndTime = endTime;
       }
 
-      this.success = '已自动填充所有科目的时间（间隔10分钟）';
+      this.success = "已自动填充所有科目的时间（间隔10分钟）";
     },
 
     /**
@@ -1225,7 +974,7 @@ export default {
       if (!value) return true; // 空值由必填验证处理
 
       // 匹配格式: YYYY/MM/DD HH:mm 或 YYYY-MM-DD HH:mm
-      const match = value.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
+      const match = value.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
       if (!match) {
         return `${fieldName}格式不正确，请使用格式：2025/01/01 09:00`;
       }
@@ -1264,21 +1013,21 @@ export default {
       if (!examInfo.startFormatted || !examInfo.endFormatted) return true;
 
       try {
-        const start = new Date(examInfo.start || examInfo.startFormatted.replace(/\//g, '-'));
-        const end = new Date(examInfo.end || examInfo.endFormatted.replace(/\//g, '-'));
+        const start = new Date(examInfo.start || examInfo.startFormatted.replace(/\//g, "-"));
+        const end = new Date(examInfo.end || examInfo.endFormatted.replace(/\//g, "-"));
 
         if (isNaN(start.getTime()) || isNaN(end.getTime())) {
           return true; // 格式错误由其他验证处理
         }
 
         if (end <= start) {
-          return '结束时间必须晚于开始时间';
+          return "结束时间必须晚于开始时间";
         }
 
         // 检查时长是否合理（不超过24小时）
         const duration = (end.getTime() - start.getTime()) / (1000 * 60 * 60);
         if (duration > 24) {
-          return '考试时长不能超过24小时';
+          return "考试时长不能超过24小时";
         }
 
         return true;
@@ -1296,8 +1045,12 @@ export default {
       }
 
       try {
-        const currentStart = new Date(currentExamInfo.start || currentExamInfo.startFormatted.replace(/\//g, '-'));
-        const currentEnd = new Date(currentExamInfo.end || currentExamInfo.endFormatted.replace(/\//g, '-'));
+        const currentStart = new Date(
+          currentExamInfo.start || currentExamInfo.startFormatted.replace(/\//g, "-"),
+        );
+        const currentEnd = new Date(
+          currentExamInfo.end || currentExamInfo.endFormatted.replace(/\//g, "-"),
+        );
 
         if (isNaN(currentStart.getTime()) || isNaN(currentEnd.getTime())) {
           return true; // 格式错误由其他验证处理
@@ -1316,11 +1069,10 @@ export default {
           if (isNaN(otherStart.getTime()) || isNaN(otherEnd.getTime())) continue;
 
           // 检查时间重叠：当前开始时间在其他时间段内 或 当前结束时间在其他时间段内 或 当前时间段完全包含其他时间段
-          const isOverlap = (
+          const isOverlap =
             (currentStart >= otherStart && currentStart < otherEnd) || // 当前开始时间在其他时间段内
-            (currentEnd > otherStart && currentEnd <= otherEnd) ||     // 当前结束时间在其他时间段内
-            (currentStart <= otherStart && currentEnd >= otherEnd)     // 当前时间段完全包含其他时间段
-          );
+            (currentEnd > otherStart && currentEnd <= otherEnd) || // 当前结束时间在其他时间段内
+            (currentStart <= otherStart && currentEnd >= otherEnd); // 当前时间段完全包含其他时间段
 
           if (isOverlap) {
             const otherSubjectName = otherExamInfo.name || `第${i + 1}个科目`;
@@ -1340,7 +1092,7 @@ export default {
     toggleAlertTimeMode() {
       if (!this.enableCustomAlertTime) {
         // 关闭自定义时，将所有提醒时间设为15分钟
-        this.localConfig.examInfos.forEach(info => {
+        this.localConfig.examInfos.forEach((info) => {
           info.alertTime = 15;
         });
       }
@@ -1350,14 +1102,14 @@ export default {
      * 计算考试时长
      */
     getExamDuration(examInfo) {
-      if (!examInfo.start || !examInfo.end) return '';
+      if (!examInfo.start || !examInfo.end) return "";
 
       try {
         const startTime = new Date(examInfo.start);
         const endTime = new Date(examInfo.end);
 
         if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
-          return '';
+          return "";
         }
 
         const durationMs = endTime.getTime() - startTime.getTime();
@@ -1376,7 +1128,7 @@ export default {
           return `${hours}小时${minutes}分钟`;
         }
       } catch (error) {
-        return '';
+        return "";
       }
     },
 
@@ -1391,11 +1143,17 @@ export default {
       if (!formatted) return;
 
       // 尝试解析输入格式: 2025/01/01 09:00 或 2025-01-01 09:00
-      const match = formatted.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
+      const match = formatted.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
       if (!match) return;
 
       const [, year, month, day, hour, minute] = match;
-      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute));
+      const date = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day),
+        parseInt(hour),
+        parseInt(minute),
+      );
 
       if (isNaN(date.getTime())) return;
 
@@ -1416,11 +1174,17 @@ export default {
       if (!formatted) return;
 
       // 尝试解析输入格式: 2025/01/01 11:00 或 2025-01-01 11:00
-      const match = formatted.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
+      const match = formatted.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
       if (!match) return;
 
       const [, year, month, day, hour, minute] = match;
-      const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute));
+      const date = new Date(
+        parseInt(year),
+        parseInt(month) - 1,
+        parseInt(day),
+        parseInt(hour),
+        parseInt(minute),
+      );
 
       if (isNaN(date.getTime())) return;
 
@@ -1497,13 +1261,12 @@ export default {
 
           // 检测是否有自定义提醒时间
           const hasCustomAlertTime = this.localConfig.examInfos.some(
-            info => info.alertTime !== 15
+            (info) => info.alertTime !== 15,
           );
           this.enableCustomAlertTime = hasCustomAlertTime;
         } else {
           console.error("加载配置失败:", response);
-          this.error =
-            "加载配置失败: " + (response.error?.message || "未知错误");
+          this.error = "加载配置失败: " + (response.error?.message || "未知错误");
           this.$emit("error", this.error);
         }
       } catch (err) {
@@ -1547,18 +1310,14 @@ export default {
           })),
         };
 
-        const response = await dataProvider.saveData(
-          `es_${this.configId}`,
-          configToSave
-        );
+        const response = await dataProvider.saveData(`es_${this.configId}`, configToSave);
 
         if (response) {
           this.success = "配置保存成功";
           this.$emit("saved", configToSave);
           return true;
         } else {
-          this.error =
-            "保存配置失败: " + (response.error?.message || "未知错误");
+          this.error = "保存配置失败: " + (response.error?.message || "未知错误");
           this.$emit("error", this.error);
           return false;
         }
@@ -1634,8 +1393,8 @@ export default {
     async copyToClipboard() {
       try {
         await navigator.clipboard.writeText(this.formattedStorageJson);
-        this.$message.success('配置已复制到剪贴板');
-        } catch (err) {
+        this.$message.success("配置已复制到剪贴板");
+      } catch (err) {
         this.error = "复制失败: " + err.message;
       }
     },
@@ -1645,18 +1404,18 @@ export default {
      */
     downloadAsJson() {
       try {
-        const blob = new Blob([this.formattedStorageJson], { type: 'application/json' });
+        const blob = new Blob([this.formattedStorageJson], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `${this.localConfig.examName || 'exam-config'}.json`;
+        a.download = `${this.localConfig.examName || "exam-config"}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        this.$message?.success('已下载 JSON 文件');
-        } catch (err) {
-        this.error = '下载失败: ' + err.message;
+        this.$message?.success("已下载 JSON 文件");
+      } catch (err) {
+        this.error = "下载失败: " + err.message;
       }
     },
 
@@ -1665,20 +1424,18 @@ export default {
      */
     downloadAsEa2() {
       try {
-        const blob = new Blob([this.formattedStorageJson], { type: 'application/json' });
+        const blob = new Blob([this.formattedStorageJson], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `${this.localConfig.examName || 'exam-config'}.ea2`;
+        a.download = `${this.localConfig.examName || "exam-config"}.ea2`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-                  this.$message?.success('已下载 ExamAware2 知试 （.ea2）文件');
-
-
+        this.$message?.success("已下载 ExamAware2 知试 （.ea2）文件");
       } catch (err) {
-        this.error = '下载失败: ' + err.message;
+        this.error = "下载失败: " + err.message;
       }
     },
 
@@ -1690,18 +1447,18 @@ export default {
         // 获取配置的云端访问地址
         const result = await dataProvider.getKeyCloudUrl(`es_${this.configId}`, {
           autoMigrate: true,
-          autoConfig: true
+          autoConfig: true,
         });
 
         if (result.success && result.url) {
           // 直接复制KV地址
           await navigator.clipboard.writeText(result.url);
-          this.$message.success('云端地址已复制到剪贴板');
+          this.$message.success("云端地址已复制到剪贴板");
         } else {
-          throw new Error(result.error || '获取云端地址失败');
+          throw new Error(result.error || "获取云端地址失败");
         }
       } catch (err) {
-        this.error = '复制链接失败: ' + err.message;
+        this.error = "复制链接失败: " + err.message;
       }
     },
 
@@ -1960,7 +1717,7 @@ export default {
         // 获取配置的云端访问地址
         const result = await dataProvider.getKeyCloudUrl(`es_${this.configId}`, {
           autoMigrate: true,
-          autoConfig: true
+          autoConfig: true,
         });
 
         if (result.success && result.url) {
@@ -1968,19 +1725,18 @@ export default {
           const examUrl = `https://es.examaware.cn/exam/?configUrl=${encodeURIComponent(result.url)}`;
 
           // 在新窗口中打开
-          window.open(examUrl, '_blank');
+          window.open(examUrl, "_blank");
 
-          this.success = '配置已在新窗口中打开';
-          this.$emit('opened', {configId: this.configId, url: result.url});
+          this.success = "配置已在新窗口中打开";
+          this.$emit("opened", { configId: this.configId, url: result.url });
         } else {
-          throw new Error(result.error || '获取云端地址失败');
+          throw new Error(result.error || "获取云端地址失败");
         }
       } catch (err) {
-        this.error = '打开配置失败: ' + err.message;
-        this.$emit('error', '打开配置失败: ' + err.message);
+        this.error = "打开配置失败: " + err.message;
+        this.$emit("error", "打开配置失败: " + err.message);
       }
     },
-
 
     /**
      * 确认删除配置
@@ -1996,29 +1752,29 @@ export default {
       this.deleting = true;
       try {
         // 获取当前云端的配置列表
-        const listData = await dataProvider.loadData('es_list');
+        const listData = await dataProvider.loadData("es_list");
         const currentList = listData || [];
 
         // 从列表中移除当前配置
-        const updatedList = currentList.filter(item => item.id !== this.configId);
+        const updatedList = currentList.filter((item) => item.id !== this.configId);
 
         // 更新云端的配置列表
-        const listResponse = await dataProvider.saveData('es_list', updatedList);
+        const listResponse = await dataProvider.saveData("es_list", updatedList);
         if (!listResponse) {
-          throw new Error('更新云端列表失败');
+          throw new Error("更新云端列表失败");
         }
 
         this.deleteDialog = false;
         this.$emit("deleted", {
           success: true,
           message: "配置删除成功",
-          configId: this.configId
+          configId: this.configId,
         });
       } catch (error) {
         console.error("删除配置失败:", error);
         this.$emit("deleted", {
           success: false,
-          message: "删除失败: " + error.message
+          message: "删除失败: " + error.message,
         });
       } finally {
         this.deleting = false;
@@ -2055,9 +1811,9 @@ export default {
         // 尝试打开
         window.location.href = ea2Url;
 
-        this.$message?.success('正在拉起 ExamAware2 播放器...');
+        this.$message?.success("正在拉起 ExamAware2 播放器...");
       } catch (err) {
-        this.error = '拉起播放器失败: ' + err.message;
+        this.error = "拉起播放器失败: " + err.message;
       }
     },
   },

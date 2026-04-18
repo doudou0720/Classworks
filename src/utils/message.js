@@ -1,4 +1,4 @@
-import {getSetting} from './settings';
+import { getSetting } from "./settings";
 
 class LogDB {
   constructor() {
@@ -26,38 +26,38 @@ let snackbarCallback = null;
 let logCallback = null;
 
 const MessageType = {
-  SUCCESS: 'success',
-  ERROR: 'error',
-  INFO: 'info',
-  WARNING: 'warning'
+  SUCCESS: "success",
+  ERROR: "error",
+  INFO: "info",
+  WARNING: "warning",
 };
 
 const defaultOptions = {
   timeout: 3000,
   showSnackbar: true,
-  addToLog: true
+  addToLog: true,
 };
 
-async function createMessage(type, title, content = '', options = {}) {
-  const msgOptions = {...defaultOptions, ...options};
+async function createMessage(type, title, content = "", options = {}) {
+  const msgOptions = { ...defaultOptions, ...options };
   const message = {
     id: Date.now() + Math.random(),
     type,
     title,
     content: content.substring(0, 500),
-    timestamp: new Date()
+    timestamp: new Date(),
   };
 
   if (msgOptions.addToLog) {
     try {
       await logDB.addLog(message);
       messages.unshift(message);
-      while (messages.length > getSetting('message.maxActiveMessages')) {
+      while (messages.length > getSetting("message.maxActiveMessages")) {
         messages.pop();
       }
       logCallback?.(messages);
     } catch (error) {
-      console.error('保存日志失败:', error);
+      console.error("保存日志失败:", error);
     }
   }
 
@@ -81,10 +81,12 @@ function debounce(fn, delay) {
 export default {
   install: (app) => {
     app.config.globalProperties.$message = {
-      success: (title, content, options) => createMessage(MessageType.SUCCESS, title, content, options),
+      success: (title, content, options) =>
+        createMessage(MessageType.SUCCESS, title, content, options),
       error: (title, content, options) => createMessage(MessageType.ERROR, title, content, options),
       info: (title, content, options) => createMessage(MessageType.INFO, title, content, options),
-      warning: (title, content, options) => createMessage(MessageType.WARNING, title, content, options),
+      warning: (title, content, options) =>
+        createMessage(MessageType.WARNING, title, content, options),
     };
   },
   onSnackbar: (callback) => {
@@ -97,7 +99,7 @@ export default {
     try {
       return await logDB.getLogs();
     } catch (error) {
-      console.error('获取日志失败:', error);
+      console.error("获取日志失败:", error);
       return [...messages];
     }
   },
@@ -107,22 +109,21 @@ export default {
       messages.length = 0;
       logCallback?.(messages);
     } catch (error) {
-      console.error('清除日志失败:', error);
+      console.error("清除日志失败:", error);
     }
   },
   MessageType,
-  markAsRead: () => {
-  }, // 移除标记已读功能
+  markAsRead: () => {}, // 移除标记已读功能
   deleteMessage: async (messageId) => {
     try {
       await logDB.deleteLog(messageId);
-      const index = messages.findIndex(m => m.id === messageId);
+      const index = messages.findIndex((m) => m.id === messageId);
       if (index !== -1) {
         messages.splice(index, 1);
       }
       logCallback?.(messages);
     } catch (error) {
-      console.error('删除消息失败:', error);
+      console.error("删除消息失败:", error);
     }
   },
   getUnreadCount: () => 0, // 移除未读计数

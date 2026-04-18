@@ -2,9 +2,9 @@
 // - Uses server domain from settings when available
 // - Exposes join/leave helpers and event on/off wrappers
 
-import {io} from 'socket.io-client';
-import {getSetting} from '@/utils/settings';
-import {getEffectiveServerUrl, isRotationEnabled} from '@/utils/serverRotation';
+import { io } from "socket.io-client";
+import { getSetting } from "@/utils/settings";
+import { getEffectiveServerUrl, isRotationEnabled } from "@/utils/serverRotation";
 
 let socket = null;
 let connectedDomain = null;
@@ -17,7 +17,7 @@ export function getServerUrl() {
   }
 
   // Prefer configured server domain; fallback to env; then current origin
-  const cfg = getSetting('server.domain');
+  const cfg = getSetting("server.domain");
   const envUrl = import.meta?.env?.VITE_SERVER_URL;
   return cfg || envUrl || window.location.origin;
 }
@@ -39,10 +39,10 @@ export function getSocket() {
     // Note: Socket.IO's built-in reconnection will retry the same server URL.
     // Server rotation is handled at the HTTP request level, not Socket.IO level.
     // If the Socket.IO server goes down, the connection will fail until the server recovers.
-    socket = io(serverUrl, {transports:  ["polling","websocket"]});
+    socket = io(serverUrl, { transports: ["polling", "websocket"] });
 
     // Re-attach previously registered event handlers on new socket instance
-    listeners.forEach(({event, handler}) => {
+    listeners.forEach(({ event, handler }) => {
       socket.on(event, handler);
     });
   }
@@ -52,7 +52,7 @@ export function getSocket() {
 export function on(event, handler) {
   const s = getSocket();
   s.on(event, handler);
-  listeners.add({event, handler});
+  listeners.add({ event, handler });
   return () => off(event, handler);
 }
 
@@ -70,30 +70,30 @@ export function off(event, handler) {
 export function joinToken(token) {
   const s = getSocket();
   if (!token) return;
-  s.emit('join-token', {token});
+  s.emit("join-token", { token });
 }
 
 export function leaveToken(token) {
   if (!socket) return;
-  socket.emit('leave-token', {token});
+  socket.emit("leave-token", { token });
 }
 
 export function leaveAll() {
   if (!socket) return;
-  socket.emit('leave-all');
+  socket.emit("leave-all");
 }
 
 export function onConnect(handler) {
   const s = getSocket();
-  s.on('connect', handler);
-  return () => s.off('connect', handler);
+  s.on("connect", handler);
+  return () => s.off("connect", handler);
 }
 
 export function sendEvent(type, content = null) {
   const s = getSocket();
-  s.emit('send-event', {
+  s.emit("send-event", {
     type,
-    content
+    content,
   });
 }
 

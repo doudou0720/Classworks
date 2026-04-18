@@ -1,6 +1,6 @@
 import axios from "@/axios/axios";
-import {getSetting} from "@/utils/settings";
-import {tryWithRotation, isRotationEnabled} from "@/utils/serverRotation";
+import { getSetting } from "@/utils/settings";
+import { tryWithRotation, isRotationEnabled } from "@/utils/serverRotation";
 
 // Helper function to check if provider is valid for API calls
 const isValidProvider = () => {
@@ -10,7 +10,7 @@ const isValidProvider = () => {
 
 // Helper function to get request headers with kvtoken
 const getHeaders = () => {
-  const headers = {Accept: "application/json"};
+  const headers = { Accept: "application/json" };
   const kvToken = getSetting("server.kvToken");
   const siteKey = getSetting("server.siteKey");
 

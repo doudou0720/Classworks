@@ -1,5 +1,5 @@
-import {openDB} from "idb";
-import {formatResponse, formatError} from "../dataProvider";
+import { openDB } from "idb";
+import { formatResponse, formatError } from "../dataProvider";
 
 // Database initialization for local storage
 const DB_NAME = "ClassworksDB";
@@ -78,11 +78,7 @@ export const kvLocalProvider = {
       const allKeys = await store.getAllKeys();
 
       // 设置默认参数
-      const {
-        sortDir = "asc",
-        limit = 100,
-        skip = 0
-      } = options;
+      const { sortDir = "asc", limit = 100, skip = 0 } = options;
       // 排序键名（本地存储只支持按键名排序）
       const sortedKeys = allKeys.sort((a, b) => {
         if (sortDir === "desc") {
@@ -102,9 +98,9 @@ export const kvLocalProvider = {
         current_page: {
           limit,
           skip,
-          count: paginatedKeys.length
+          count: paginatedKeys.length,
         },
-        load_more: null // 本地存储不需要分页URL
+        load_more: null, // 本地存储不需要分页URL
       };
 
       return formatResponse(responseData);

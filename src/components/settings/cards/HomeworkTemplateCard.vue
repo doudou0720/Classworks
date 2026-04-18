@@ -1,18 +1,7 @@
 <template>
-  <settings-card
-    :loading="loading"
-    border
-    icon="mdi-book-edit"
-    title="作业模板配置"
-  >
+  <settings-card :loading="loading" border icon="mdi-book-edit" title="作业模板配置">
     <!-- 顶部操作按钮 -->
-    <v-alert
-      v-if="error"
-      class="mb-4"
-      closable
-      type="error"
-      variant="tonal"
-    >
+    <v-alert v-if="error" class="mb-4" closable type="error" variant="tonal">
       {{ error }}
     </v-alert>
 
@@ -38,25 +27,12 @@
           保存所有更改
         </v-btn>
       </div>
-      <v-chip
-        v-if="hasChanges"
-        color="warning"
-        variant="elevated"
-      >
-        有未保存的更改
-      </v-chip>
+      <v-chip v-if="hasChanges" color="warning" variant="elevated"> 有未保存的更改 </v-chip>
     </div>
 
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <setting-group
-          border
-          icon="mdi-book"
-          title="科目配置"
-        >
+      <v-col cols="12" md="6">
+        <setting-group border icon="mdi-book" title="科目配置">
           <v-list>
             <v-list-item>
               <v-text-field
@@ -70,14 +46,8 @@
               />
             </v-list-item>
 
-            <v-list-item
-              v-for="subject in subjectList"
-              :key="subject"
-            >
-              <v-card
-                border
-                class="w-100 mb-2"
-              >
+            <v-list-item v-for="subject in subjectList" :key="subject">
+              <v-card border class="w-100 mb-2">
                 <v-card-title class="d-flex align-center">
                   <v-text-field
                     v-model="editedSubjects[subject]"
@@ -108,11 +78,7 @@
                     @keyup.enter="() => addBookType(subject)"
                   />
 
-                  <v-list
-                    border
-                    density="compact"
-                    rounded
-                  >
+                  <v-list border density="compact" rounded>
                     <v-list-item
                       v-for="(books, bookType) in config.subjects[subject].books"
                       :key="bookType"
@@ -120,17 +86,10 @@
                       @click="openSubjectBookDialog(subject, bookType, books)"
                     >
                       <template #prepend>
-                        <v-icon
-                          class="mr-2"
-                          icon="mdi-book-open-variant"
-                        />
+                        <v-icon class="mr-2" icon="mdi-book-open-variant" />
                       </template>
                       <template #append>
-                        <v-chip
-                          class="mr-2"
-                          color="info"
-                          size="small"
-                        >
+                        <v-chip class="mr-2" color="info" size="small">
                           {{ books.length }}个部分
                         </v-chip>
                         <v-btn
@@ -150,15 +109,8 @@
         </setting-group>
       </v-col>
 
-      <v-col
-        cols="12"
-        md="6"
-      >
-        <setting-group
-          border
-          icon="mdi-cog"
-          title="通用配置"
-        >
+      <v-col cols="12" md="6">
+        <setting-group border icon="mdi-cog" title="通用配置">
           <v-list>
             <v-list-item>
               <v-text-field
@@ -173,11 +125,7 @@
             </v-list-item>
 
             <v-list-item>
-              <v-list
-                border
-                density="compact"
-                rounded
-              >
+              <v-list border density="compact" rounded>
                 <v-list-item
                   v-for="(books, bookType) in config.commonSubject.books"
                   :key="bookType"
@@ -185,17 +133,10 @@
                   @click="openSubjectBookDialog('common', bookType, books)"
                 >
                   <template #prepend>
-                    <v-icon
-                      class="mr-2"
-                      icon="mdi-book-multiple"
-                    />
+                    <v-icon class="mr-2" icon="mdi-book-multiple" />
                   </template>
                   <template #append>
-                    <v-chip
-                      class="mr-2"
-                      color="info"
-                      size="small"
-                    >
+                    <v-chip class="mr-2" color="info" size="small">
                       {{ books.length }}个部分
                     </v-chip>
                     <v-btn
@@ -225,11 +166,7 @@
             </v-list-item>
 
             <v-list-item>
-              <v-list
-                border
-                density="compact"
-                rounded
-              >
+              <v-list border density="compact" rounded>
                 <v-list-item
                   v-for="action in config.actions"
                   :key="action"
@@ -254,10 +191,7 @@
     </v-row>
 
     <!-- 编辑弹框 -->
-    <v-dialog
-      v-model="dialog.show"
-      max-width="600px"
-    >
+    <v-dialog v-model="dialog.show" max-width="600px">
       <v-card>
         <v-card-title class="text-h5 pa-4">
           {{ dialog.title }}
@@ -270,19 +204,14 @@
                 <v-text-field
                   v-model="dialog.editedItem.name"
                   :label="dialog.nameLabel"
-                  :rules="[v => !!v || '名称不能为空']"
+                  :rules="[(v) => !!v || '名称不能为空']"
                   density="comfortable"
                   variant="outlined"
                 />
               </v-col>
 
-              <v-col
-                v-if="dialog.editedItem.type === 'subjectBook'"
-                cols="12"
-              >
-                <div class="text-subtitle-2 mb-2">
-                  所属科目
-                </div>
+              <v-col v-if="dialog.editedItem.type === 'subjectBook'" cols="12">
+                <div class="text-subtitle-2 mb-2">所属科目</div>
                 <v-chip color="primary">
                   {{ dialog.editedItem.subject }}
                 </v-chip>
@@ -293,20 +222,10 @@
                 cols="12"
               >
                 <v-card variant="outlined">
-                  <v-card-title class="text-subtitle-1 py-2">
-                    需完成部分
-                  </v-card-title>
+                  <v-card-title class="text-subtitle-1 py-2"> 需完成部分 </v-card-title>
                   <v-card-text class="pt-0">
-                    <v-list
-                      border
-                      class="mb-2"
-                      density="compact"
-                      rounded
-                    >
-                      <v-list-item
-                        v-for="(task, index) in dialog.editedItem.tasks"
-                        :key="index"
-                      >
+                    <v-list border class="mb-2" density="compact" rounded>
+                      <v-list-item v-for="(task, index) in dialog.editedItem.tasks" :key="index">
                         <template #prepend>
                           <v-icon
                             class="mr-2"
@@ -350,77 +269,61 @@
 
         <v-card-actions class="pa-4">
           <v-spacer />
-          <v-btn
-            color="primary"
-            variant="elevated"
-            @click="saveDialog"
-          >
-            关闭
-          </v-btn>
-          <v-btn
-            color="error"
-            variant="text"
-            @click="closeDialog"
-          >
-            取消
-          </v-btn>
+          <v-btn color="primary" variant="elevated" @click="saveDialog"> 关闭 </v-btn>
+          <v-btn color="error" variant="text" @click="closeDialog"> 取消 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!-- 底部保存提示 -->
-    <v-snackbar
-      v-model="showSnackbar"
-      :color="snackbarColor"
-      :timeout="3000"
-    >
+    <v-snackbar v-model="showSnackbar" :color="snackbarColor" :timeout="3000">
       {{ snackbarText }}
     </v-snackbar>
   </settings-card>
 </template>
 
 <script>
-import {reactive} from 'vue';
-import SettingsCard from '@/components/SettingsCard.vue';
-import SettingGroup from '@/components/settings/SettingGroup.vue';
+import { reactive } from "vue";
+import SettingsCard from "@/components/SettingsCard.vue";
+import SettingGroup from "@/components/settings/SettingGroup.vue";
 import dataProvider from "@/utils/dataProvider.js";
 
 const DEFAULT_CONFIG = {
   subjects: {
-    "语文": {
+    语文: {
       books: {
-        "课本": ["第一单元", "第二单元"],
-        "练习册": ["第一章", "第二章"]
-      }
+        课本: ["第一单元", "第二单元"],
+        练习册: ["第一章", "第二章"],
+      },
     },
-    "数学": {
+    数学: {
       books: {
-        "课本": ["第一章", "第二章"],
-        "习题册": ["基础练习", "提高练习"]
-      }
+        课本: ["第一章", "第二章"],
+        习题册: ["基础练习", "提高练习"],
+      },
     },
-    "英语": {
+    英语: {
       books: {
-        "课本": ["Unit 1", "Unit 2"],
-        "练习册": ["Chapter 1", "Chapter 2"]
-      }
-    }
+        课本: ["Unit 1", "Unit 2"],
+        练习册: ["Chapter 1", "Chapter 2"],
+      },
+    },
   },
   commonSubject: {
     books: {
-      "试卷": ["单元测试", "期中测试", "期末测试"],
-      "假期作业": ["必做题", "选做题"]
-    }
+      试卷: ["单元测试", "期中测试", "期末测试"],
+      假期作业: ["必做题", "选做题"],
+    },
   },
-  actions: ["写完", "下一课", "不交", "明天交"]
+  actions: ["写完", "下一课", "不交", "明天交"],
 };
 
 export default {
-  name: 'HomeworkTemplateCard',
+  name: "HomeworkTemplateCard",
 
   components: {
     SettingsCard,
-    SettingGroup
+    SettingGroup,
   },
 
   data() {
@@ -429,31 +332,31 @@ export default {
       error: null,
       config: reactive(JSON.parse(JSON.stringify(DEFAULT_CONFIG))),
       originalConfig: null,
-      newSubject: '',
-      newCommonBook: '',
-      newAction: '',
-      newTask: '',
+      newSubject: "",
+      newCommonBook: "",
+      newAction: "",
+      newTask: "",
       editedSubjects: {},
       editedBookTypes: {},
       newBookTypes: {},
       newBooks: {},
       showSnackbar: false,
-      snackbarText: '',
-      snackbarColor: 'success',
+      snackbarText: "",
+      snackbarColor: "success",
       isNewConfig: true,
       dialog: {
         show: false,
-        title: '',
-        nameLabel: '',
+        title: "",
+        nameLabel: "",
         editedItem: {
-          name: '',
-          type: '', // 'book', 'commonBook', 'action'
-          subject: '',
-          bookType: '',
-          originalName: '',
-          tasks: []
-        }
-      }
+          name: "",
+          type: "", // 'book', 'commonBook', 'action'
+          subject: "",
+          bookType: "",
+          originalName: "",
+          tasks: [],
+        },
+      },
     };
   },
 
@@ -463,9 +366,10 @@ export default {
     },
     hasChanges() {
       if (this.isNewConfig) return true;
-      return this.originalConfig &&
-        JSON.stringify(this.config) !== JSON.stringify(this.originalConfig);
-    }
+      return (
+        this.originalConfig && JSON.stringify(this.config) !== JSON.stringify(this.originalConfig)
+      );
+    },
   },
 
   created() {
@@ -483,20 +387,20 @@ export default {
           Object.assign(this.config, config);
           this.originalConfig = JSON.parse(JSON.stringify(config));
           this.isNewConfig = false;
-          this.showMessage('配置已加载', 'success');
-        } else if (response.error?.code === 'NOT_FOUND') {
+          this.showMessage("配置已加载", "success");
+        } else if (response.error?.code === "NOT_FOUND") {
           // 数据不存在，使用默认配置
-          this.showMessage('使用默认配置', 'info');
+          this.showMessage("使用默认配置", "info");
           this.isNewConfig = true;
         } else {
           // 其他错误，继续使用当前配置
-          const errorMsg = response.error?.message || '加载失败';
-          this.showMessage(`加载失败: ${errorMsg}，可继续编辑当前配置`, 'warning');
+          const errorMsg = response.error?.message || "加载失败";
+          this.showMessage(`加载失败: ${errorMsg}，可继续编辑当前配置`, "warning");
         }
       } catch (error) {
         // 发生错误，继续使用当前配置
-        console.error('Failed to load config:', error);
-        this.showMessage('加载失败，可继续编辑当前配置', 'warning');
+        console.error("Failed to load config:", error);
+        this.showMessage("加载失败，可继续编辑当前配置", "warning");
       }
       this.loading = false;
     },
@@ -504,22 +408,25 @@ export default {
     async saveConfig() {
       this.loading = true;
       try {
-        const response = await dataProvider.saveData("classworks-config-homework-template", this.config);
+        const response = await dataProvider.saveData(
+          "classworks-config-homework-template",
+          this.config,
+        );
         if (response) {
           this.originalConfig = JSON.parse(JSON.stringify(this.config));
           this.isNewConfig = false;
-          this.showMessage('配置已保存', 'success');
+          this.showMessage("配置已保存", "success");
         } else {
-          throw new Error(response || '保存失败');
+          throw new Error(response || "保存失败");
         }
       } catch (error) {
-        console.error('Failed to save config:', error);
-        this.showMessage(`保存失败: ${error.message}，请稍后重试`, 'error');
+        console.error("Failed to save config:", error);
+        this.showMessage(`保存失败: ${error.message}，请稍后重试`, "error");
       }
       this.loading = false;
     },
 
-    showMessage(text, color = 'success') {
+    showMessage(text, color = "success") {
       this.snackbarText = text;
       this.snackbarColor = color;
       this.showSnackbar = true;
@@ -528,9 +435,9 @@ export default {
     addSubject() {
       if (!this.newSubject) return;
       if (!this.config.subjects[this.newSubject]) {
-        this.config.subjects[this.newSubject] = {books: {}};
+        this.config.subjects[this.newSubject] = { books: {} };
       }
-      this.newSubject = '';
+      this.newSubject = "";
     },
 
     updateSubject(oldSubject) {
@@ -554,7 +461,7 @@ export default {
       if (!this.config.subjects[subject].books[newType]) {
         this.config.subjects[subject].books[newType] = [];
       }
-      this.newBookTypes[subject] = '';
+      this.newBookTypes[subject] = "";
     },
 
     updateBookType(subject, oldType) {
@@ -569,7 +476,7 @@ export default {
     },
 
     deleteBookType(subject, bookType) {
-      if (subject === 'common') {
+      if (subject === "common") {
         delete this.config.commonSubject.books[bookType];
       } else {
         delete this.config.subjects[subject].books[bookType];
@@ -584,7 +491,7 @@ export default {
       if (!this.config.subjects[subject].books[bookType].includes(newBook)) {
         this.config.subjects[subject].books[bookType].push(newBook);
       }
-      this.newBooks[key] = '';
+      this.newBooks[key] = "";
     },
 
     removeBook(subject, bookType, book) {
@@ -600,7 +507,7 @@ export default {
       if (!this.config.commonSubject.books[this.newCommonBook]) {
         this.config.commonSubject.books[this.newCommonBook] = [];
       }
-      this.newCommonBook = '';
+      this.newCommonBook = "";
     },
 
     removeCommonBook(book) {
@@ -612,7 +519,7 @@ export default {
       if (!this.config.actions.includes(this.newAction)) {
         this.config.actions.push(this.newAction);
       }
-      this.newAction = '';
+      this.newAction = "";
     },
 
     removeAction(action) {
@@ -624,41 +531,43 @@ export default {
 
     openBookDialog(subject, bookType, book) {
       this.dialog.show = true;
-      this.dialog.title = '编辑需完成部分';
-      this.dialog.nameLabel = '部分名称';
+      this.dialog.title = "编辑需完成部分";
+      this.dialog.nameLabel = "部分名称";
       this.dialog.editedItem = {
         name: book,
-        type: 'book',
+        type: "book",
         subject,
         bookType,
         originalName: book,
-        tasks: this.config.subjects[subject].books[bookType]
+        tasks: this.config.subjects[subject].books[bookType],
       };
     },
 
     openCommonBookDialog(book) {
       this.dialog.show = true;
-      this.dialog.title = '编辑通用作业本';
-      this.dialog.nameLabel = '作业本名称';
+      this.dialog.title = "编辑通用作业本";
+      this.dialog.nameLabel = "作业本名称";
       this.dialog.editedItem = {
         name: book,
-        type: 'commonBook',
+        type: "commonBook",
         originalName: book,
-        tasks: Array.isArray(this.config.commonSubject.books[book]) ? [...this.config.commonSubject.books[book]] : []
+        tasks: Array.isArray(this.config.commonSubject.books[book])
+          ? [...this.config.commonSubject.books[book]]
+          : [],
       };
     },
 
     openActionDialog(action) {
       this.dialog = {
         show: true,
-        title: '编辑操作',
-        nameLabel: '操作名称',
+        title: "编辑操作",
+        nameLabel: "操作名称",
         editedItem: {
           name: action,
-          type: 'action',
+          type: "action",
           originalName: action,
-          tasks: []
-        }
+          tasks: [],
+        },
       };
     },
 
@@ -668,7 +577,7 @@ export default {
         this.dialog.editedItem.tasks = [];
       }
       this.dialog.editedItem.tasks.push(this.newTask);
-      this.newTask = '';
+      this.newTask = "";
     },
 
     removeTask(index) {
@@ -677,32 +586,35 @@ export default {
 
     openSubjectBookDialog(subject, bookType, books) {
       this.dialog.show = true;
-      this.dialog.title = subject === 'common' ? '编辑通用作业本' : '编辑作业本';
-      this.dialog.nameLabel = '作业本名称';
+      this.dialog.title = subject === "common" ? "编辑通用作业本" : "编辑作业本";
+      this.dialog.nameLabel = "作业本名称";
       this.dialog.editedItem = {
         name: bookType,
-        type: 'subjectBook',
+        type: "subjectBook",
         subject,
         originalName: bookType,
-        tasks: Array.isArray(books) ? [...books] : []
+        tasks: Array.isArray(books) ? [...books] : [],
       };
     },
 
     saveDialog() {
-      const {type, name, subject, originalName, tasks} = this.dialog.editedItem;
+      const { type, name, subject, originalName, tasks } = this.dialog.editedItem;
 
       if (!name) {
-        this.showMessage('名称不能为空', 'error');
+        this.showMessage("名称不能为空", "error");
         return;
       }
 
       let actionIndex;
-      const targetBooks = subject === 'common'
-        ? this.config.commonSubject.books
-        : subject ? this.config.subjects[subject].books : null;
+      const targetBooks =
+        subject === "common"
+          ? this.config.commonSubject.books
+          : subject
+            ? this.config.subjects[subject].books
+            : null;
 
       switch (type) {
-        case 'subjectBook':
+        case "subjectBook":
           if (targetBooks) {
             if (originalName !== name) {
               // 如果名称改变了，需要创建新的条目并删除旧的
@@ -714,7 +626,7 @@ export default {
             }
           }
           break;
-        case 'action':
+        case "action":
           actionIndex = this.config.actions.indexOf(originalName);
           if (actionIndex > -1) {
             this.config.actions[actionIndex] = name;
@@ -729,19 +641,19 @@ export default {
     closeDialog() {
       this.dialog = {
         show: false,
-        title: '',
-        nameLabel: '',
+        title: "",
+        nameLabel: "",
         editedItem: {
-          name: '',
-          type: '',
-          subject: '',
-          originalName: '',
-          tasks: []
-        }
+          name: "",
+          type: "",
+          subject: "",
+          originalName: "",
+          tasks: [],
+        },
       };
-      this.newTask = '';
-    }
-  }
+      this.newTask = "";
+    },
+  },
 };
 </script>
 

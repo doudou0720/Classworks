@@ -1,11 +1,6 @@
 <template>
   <div class="warning-container">
-    <v-chip
-      v-if="show"
-      class="warning-chip"
-      color="warning"
-      size="small"
-    >
+    <v-chip v-if="show" class="warning-chip" color="warning" size="small">
       {{ message }}
     </v-chip>
   </div>
@@ -13,15 +8,15 @@
 
 <script>
 export default {
-  name: 'UnsavedWarning',
+  name: "UnsavedWarning",
   props: {
     show: Boolean,
     message: {
       type: String,
-      default: '未保存'
-    }
-  }
-}
+      default: "未保存",
+    },
+  },
+};
 </script>
 
 <style scoped>

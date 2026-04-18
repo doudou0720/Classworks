@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-dialog
-      v-model="visible"
-      persistent
-      transition="dialog-bottom-transition"
-    >
+    <v-dialog v-model="visible" persistent transition="dialog-bottom-transition">
       <v-card
         class="kvinit-card"
         elevation="8"
@@ -13,42 +9,18 @@
         title="初始化云端存储授权"
       >
         <v-card-actions class="justify-end">
-          <v-btn
-            class="me-3"
-            text
-            @click="useLocalMode"
-          >
-            使用本地模式
-          </v-btn>
-          <v-btn
-            :loading="loading"
-            color="primary"
-            variant="flat"
-            @click="goToAuthorize"
-          >
+          <v-btn class="me-3" text @click="useLocalMode"> 使用本地模式 </v-btn>
+          <v-btn :loading="loading" color="primary" variant="flat" @click="goToAuthorize">
             前往授权
           </v-btn>
         </v-card-actions>
         <div class="d-flex align-center justify-space-between">
           <div>
-            <div
-              v-if="loading"
-              class="d-flex align-center"
-            >
-              <v-progress-circular
-                class="me-2"
-                indeterminate
-                size="20"
-                width="2"
-              />
+            <div v-if="loading" class="d-flex align-center">
+              <v-progress-circular class="me-2" indeterminate size="20" width="2" />
               <span class="body-2"> 正在检查授权状态… </span>
             </div>
-            <div
-              v-else-if="error"
-              class="body-2 text-error"
-            >
-              检查出错：{{ error }}
-            </div>
+            <div v-else-if="error" class="body-2 text-error">检查出错：{{ error }}</div>
           </div>
         </div>
       </v-card>
@@ -57,10 +29,10 @@
 </template>
 
 <script setup>
-import {ref, onMounted, onBeforeUnmount} from "vue";
-import {useRoute} from "vue-router";
-import {getSetting, setSetting} from "@/utils/settings";
-import {kvServerProvider} from "@/utils/providers/kvServerProvider";
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRoute } from "vue-router";
+import { getSetting, setSetting } from "@/utils/settings";
+import { kvServerProvider } from "@/utils/providers/kvServerProvider";
 
 const visible = ref(false);
 const loading = ref(false);
@@ -75,8 +47,7 @@ const onExternalOpen = () => {
 // Guard key to avoid infinite redirect loops across reloads
 const REDIRECT_GUARD_KEY = "kvinit.redirecting";
 
-const isKvProvider = (provider) =>
-  provider === "kv-server" || provider === "classworkscloud";
+const isKvProvider = (provider) => provider === "kv-server" || provider === "classworkscloud";
 
 const shouldInitialize = () => {
   const provider = getSetting("server.provider");
@@ -92,8 +63,7 @@ const goToAuthorize = () => {
   const currentDomain = window.location.origin;
   const callbackUrl = encodeURIComponent(`${currentDomain}/authorize`);
 
-  const uuid =
-    getSetting("device.uuid") || "00000000-0000-4000-8000-000000000000";
+  const uuid = getSetting("device.uuid") || "00000000-0000-4000-8000-000000000000";
   let authorizeUrl = `${authDomain}/authorize?app_id=${appId}&mode=callback&callback_url=${callbackUrl}&remark=Classworks 自动授权 来自${window.location.hostname} ${new Date().toLocaleString()}`;
 
   // 如果UUID不是默认值，附加编码后的 uuid 参数用于迁移
@@ -103,7 +73,7 @@ const goToAuthorize = () => {
 
   // set a short-lived guard to prevent immediate re-redirect
   try {
-    const guardObj = {ts: Date.now()};
+    const guardObj = { ts: Date.now() };
     sessionStorage.setItem(REDIRECT_GUARD_KEY, JSON.stringify(guardObj));
   } catch (err) {
     // sessionStorage may be unavailable in some environments
@@ -161,8 +131,7 @@ onMounted(async () => {
 
     visible.value = true;
     // Only auto-redirect if UUID is non-default (we have a device to migrate)
-    const uuid =
-      getSetting("device.uuid") || "00000000-0000-4000-8000-000000000000";
+    const uuid = getSetting("device.uuid") || "00000000-0000-4000-8000-000000000000";
     const isDefaultUuid = uuid === "00000000-0000-4000-8000-000000000000";
 
     if (!guarded && !isDefaultUuid) {
@@ -184,12 +153,12 @@ onMounted(async () => {
 });
 // add/remove listener in lifecycle hooks
 if (typeof window !== "undefined") {
-  window.addEventListener('kvinit:open', onExternalOpen);
+  window.addEventListener("kvinit:open", onExternalOpen);
 }
 
 onBeforeUnmount(() => {
   if (typeof window !== "undefined") {
-    window.removeEventListener('kvinit:open', onExternalOpen);
+    window.removeEventListener("kvinit:open", onExternalOpen);
   }
 });
 </script>

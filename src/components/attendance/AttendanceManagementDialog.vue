@@ -8,18 +8,10 @@
   >
     <v-card>
       <v-card-title class="d-flex align-center">
-        <v-icon
-          class="mr-2"
-          icon="mdi-account-group"
-        />
+        <v-icon class="mr-2" icon="mdi-account-group" />
         考勤
         <v-spacer />
-        <v-chip
-          v-if="!isMobile"
-          class="ml-2"
-          color="primary"
-          size="small"
-        >
+        <v-chip v-if="!isMobile" class="ml-2" color="primary" size="small">
           {{ dateString }}
         </v-chip>
         <v-btn
@@ -33,10 +25,7 @@
       <v-card-text>
         <!-- 批量操作和搜索 -->
         <v-row class="mb-4">
-          <v-col
-            cols="12"
-            md="12"
-          >
+          <v-col cols="12" md="12">
             <v-text-field
               v-model="attendanceSearch"
               clearable
@@ -52,13 +41,8 @@
                 v-for="surname in extractedSurnames"
                 :key="surname.name"
                 :color="attendanceSearch === surname.name ? 'primary' : ''"
-                :variant="
-                  attendanceSearch === surname.name ? 'elevated' : 'text'
-                "
-                @click="
-                  attendanceSearch =
-                    attendanceSearch === surname.name ? '' : surname.name
-                "
+                :variant="attendanceSearch === surname.name ? 'elevated' : 'text'"
+                @click="attendanceSearch = attendanceSearch === surname.name ? '' : surname.name"
               >
                 {{ surname.name }}
                 ({{ surname.count }})
@@ -71,13 +55,9 @@
         <div class="d-flex flex-wrap mb-4 gap-2">
           <div>
             <v-chip
-              :append-icon="
-                attendanceFilter.includes('present') ? 'mdi-check' : ''
-              "
+              :append-icon="attendanceFilter.includes('present') ? 'mdi-check' : ''"
               :color="attendanceFilter.includes('present') ? 'success' : ''"
-              :variant="
-                attendanceFilter.includes('present') ? 'elevated' : 'tonal'
-              "
+              :variant="attendanceFilter.includes('present') ? 'elevated' : 'tonal'"
               class="px-2 filter-chip"
               prepend-icon="mdi-account-check"
               value="present"
@@ -87,13 +67,9 @@
             </v-chip>
 
             <v-chip
-              :append-icon="
-                attendanceFilter.includes('absent') ? 'mdi-check' : ''
-              "
+              :append-icon="attendanceFilter.includes('absent') ? 'mdi-check' : ''"
               :color="attendanceFilter.includes('absent') ? 'error' : ''"
-              :variant="
-                attendanceFilter.includes('absent') ? 'elevated' : 'tonal'
-              "
+              :variant="attendanceFilter.includes('absent') ? 'elevated' : 'tonal'"
               class="px-2 filter-chip"
               prepend-icon="mdi-account-off"
               value="absent"
@@ -102,13 +78,9 @@
               请假
             </v-chip>
             <v-chip
-              :append-icon="
-                attendanceFilter.includes('late') ? 'mdi-check' : ''
-              "
+              :append-icon="attendanceFilter.includes('late') ? 'mdi-check' : ''"
               :color="attendanceFilter.includes('late') ? 'warning' : ''"
-              :variant="
-                attendanceFilter.includes('late') ? 'elevated' : 'tonal'
-              "
+              :variant="attendanceFilter.includes('late') ? 'elevated' : 'tonal'"
               class="px-2 filter-chip"
               prepend-icon="mdi-clock-alert"
               value="late"
@@ -117,13 +89,9 @@
               迟到
             </v-chip>
             <v-chip
-              :append-icon="
-                attendanceFilter.includes('exclude') ? 'mdi-check' : ''
-              "
+              :append-icon="attendanceFilter.includes('exclude') ? 'mdi-check' : ''"
               :color="attendanceFilter.includes('exclude') ? 'grey' : ''"
-              :variant="
-                attendanceFilter.includes('exclude') ? 'elevated' : 'tonal'
-              "
+              :variant="attendanceFilter.includes('exclude') ? 'elevated' : 'tonal'"
               class="px-2 filter-chip"
               prepend-icon="mdi-account-cancel"
               value="exclude"
@@ -136,26 +104,12 @@
 
         <!-- 学生列表 -->
         <v-row>
-          <v-col
-            v-for="student in filteredStudents"
-            :key="student"
-            cols="12"
-            lg="4"
-            md="6"
-            sm="6"
-          >
-            <v-card
-              border
-              class="student-card"
-            >
+          <v-col v-for="student in filteredStudents" :key="student" cols="12" lg="4" md="6" sm="6">
+            <v-card border class="student-card">
               <v-card-text class="d-flex align-center pa-2">
                 <div class="flex-grow-1">
                   <div class="d-flex align-center">
-                    <v-avatar
-                      :color="getStudentStatusColor(student)"
-                      class="mr-2"
-                      size="24"
-                    >
+                    <v-avatar :color="getStudentStatusColor(student)" class="mr-2" size="24">
                       <v-icon size="small">
                         {{ getStudentStatusIcon(student) }}
                       </v-icon>
@@ -204,19 +158,10 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col
-            cols="12"
-            md="12"
-          >
-            <v-card
-              class="mb-4"
-              color="primary"
-              variant="tonal"
-            >
+          <v-col cols="12" md="12">
+            <v-card class="mb-4" color="primary" variant="tonal">
               <v-card-text>
-                <div class="text-subtitle-2 mb-2">
-                  批量操作
-                </div>
+                <div class="text-subtitle-2 mb-2">批量操作</div>
                 <div class="d-flex flex-wrap gap-2">
                   <v-btn
                     class="flex-grow-1"
@@ -262,13 +207,8 @@
       <v-card-actions>
         <v-spacer />
 
-        <v-btn
-          color="primary"
-          @click="$emit('save')"
-        >
-          <v-icon start>
-            mdi-content-save
-          </v-icon>
+        <v-btn color="primary" @click="$emit('save')">
+          <v-icon start> mdi-content-save </v-icon>
           保存
         </v-btn>
       </v-card-actions>
@@ -314,7 +254,7 @@ export default {
   computed: {
     isMobile() {
       // 如果启用了强制一体机UI模式，返回false（使用桌面UI）
-      const forceDesktopMode = getSetting('display.forceDesktopMode');
+      const forceDesktopMode = getSetting("display.forceDesktopMode");
       if (forceDesktopMode) {
         return false;
       }
@@ -325,21 +265,15 @@ export default {
 
       if (this.attendanceSearch) {
         const searchTerm = this.attendanceSearch.toLowerCase();
-        students = students.filter((student) =>
-          student.toLowerCase().includes(searchTerm)
-        );
+        students = students.filter((student) => student.toLowerCase().includes(searchTerm));
       }
 
       if (this.attendanceFilter && this.attendanceFilter.length > 0) {
         students = students.filter((student) => {
-          if (this.attendanceFilter.includes("present") && this.isPresent(student))
-            return true;
-          if (this.attendanceFilter.includes("absent") && this.isAbsent(student))
-            return true;
-          if (this.attendanceFilter.includes("late") && this.isLate(student))
-            return true;
-          if (this.attendanceFilter.includes("exclude") && this.isExclude(student))
-            return true;
+          if (this.attendanceFilter.includes("present") && this.isPresent(student)) return true;
+          if (this.attendanceFilter.includes("absent") && this.isAbsent(student)) return true;
+          if (this.attendanceFilter.includes("late") && this.isLate(student)) return true;
+          if (this.attendanceFilter.includes("exclude") && this.isExclude(student)) return true;
           return false;
         });
       }
@@ -362,7 +296,7 @@ export default {
 
       return Array.from(surnameMap.entries())
         .map(([name, count]) => ({ name, count }))
-        .sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+        .sort((a, b) => a.name.localeCompare(b.name, "zh-CN"));
     },
   },
   methods: {
@@ -376,11 +310,7 @@ export default {
     },
     isPresent(student) {
       const { absent, late, exclude } = this.attendance;
-      return (
-        !absent.includes(student) &&
-        !late.includes(student) &&
-        !exclude.includes(student)
-      );
+      return !absent.includes(student) && !late.includes(student) && !exclude.includes(student);
     },
     isAbsent(student) {
       return this.attendance.absent.includes(student);

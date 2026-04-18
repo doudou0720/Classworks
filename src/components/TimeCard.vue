@@ -8,34 +8,19 @@
     style="cursor: pointer"
     @click="showFullscreen = true"
   >
-    <v-card-text
-      class="pa-6 d-flex flex-column"
-      style="height: 100%"
-    >
-      <div
-        class="d-flex align-center"
-        style="gap: 16px;"
-      >
+    <v-card-text class="pa-6 d-flex flex-column" style="height: 100%">
+      <div class="d-flex align-center" style="gap: 16px">
         <!-- 左侧：时间显示 -->
         <div class="flex-grow-1">
-          <div
-            class="time-display"
-            :style="timeStyle"
-          >
-            {{ timeString }}<span
-              class="seconds-text"
-              :style="secondsStyle"
-            >{{ secondsString }}</span><span
-              v-if="use12hClock"
-              class="ampm-text"
-              :style="secondsStyle"
-            > {{ amPmString }}</span>
+          <div class="time-display" :style="timeStyle">
+            {{ timeString
+            }}<span class="seconds-text" :style="secondsStyle">{{ secondsString }}</span
+            ><span v-if="use12hClock" class="ampm-text" :style="secondsStyle">
+              {{ amPmString }}</span
+            >
           </div>
-          <div
-            class="date-line mt-3"
-            :style="dateStyle"
-          >
-            {{ dateString }}  {{ weekdayString }}  {{ periodOfDay }}
+          <div class="date-line mt-3" :style="dateStyle">
+            {{ dateString }} {{ weekdayString }} {{ periodOfDay }}
           </div>
         </div>
 
@@ -43,34 +28,21 @@
         <div
           v-if="noiseEnabled"
           class="d-flex flex-column align-center justify-center"
-          style="min-width: 80px;"
+          style="min-width: 80px"
           @click.stop="onNoiseClick"
         >
           <!-- 无麦克风权限提示 -->
           <template v-if="micPermissionState === 'denied'">
-            <v-icon
-              color="error"
-              size="24"
-            >
-              mdi-microphone-off
-            </v-icon>
-            <div
-              class="text-caption text-error mt-1"
-              style="white-space: nowrap; font-size: 10px;"
-            >
+            <v-icon color="error" size="24"> mdi-microphone-off </v-icon>
+            <div class="text-caption text-error mt-1" style="white-space: nowrap; font-size: 10px">
               权限被拒绝
             </div>
           </template>
           <template v-else-if="micPermissionState === 'unavailable'">
-            <v-icon
-              color="warning"
-              size="24"
-            >
-              mdi-microphone-question
-            </v-icon>
+            <v-icon color="warning" size="24"> mdi-microphone-question </v-icon>
             <div
               class="text-caption text-warning mt-1"
-              style="white-space: nowrap; font-size: 10px;"
+              style="white-space: nowrap; font-size: 10px"
             >
               无麦克风
             </div>
@@ -79,21 +51,25 @@
             <div
               class="noise-side-db font-weight-bold"
               :class="`text-${noiseDbColor}`"
-              :style="{ fontSize: `${fontSize * 0.9}px`, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }"
+              :style="{
+                fontSize: `${fontSize * 0.9}px`,
+                lineHeight: 1,
+                fontVariantNumeric: 'tabular-nums',
+              }"
             >
               {{ noiseDisplayDb }}
             </div>
             <div
               class="text-caption mt-1"
               :class="`text-${noiseDbColor}`"
-              style="white-space: nowrap; font-size: 11px;"
+              style="white-space: nowrap; font-size: 11px"
             >
               {{ noiseStatusText }}
             </div>
             <div
               v-if="!noiseMonitoring"
               class="text-caption text-medium-emphasis mt-1"
-              style="font-size: 10px; cursor: pointer;"
+              style="font-size: 10px; cursor: pointer"
             >
               点击开启
             </div>
@@ -132,32 +108,18 @@
     />
 
     <!-- 麦克风权限引导弹框 -->
-    <v-dialog
-      v-model="showMicPermissionDialog"
-      max-width="480"
-      persistent
-    >
+    <v-dialog v-model="showMicPermissionDialog" max-width="480" persistent>
       <v-card rounded="xl">
         <div class="text-center pt-8 pb-2">
-          <v-avatar
-            color="primary"
-            size="72"
-          >
-            <v-icon
-              icon="mdi-microphone-outline"
-              size="36"
-            />
+          <v-avatar color="primary" size="72">
+            <v-icon icon="mdi-microphone-outline" size="36" />
           </v-avatar>
         </div>
 
-        <v-card-title class="text-center text-h6 pt-4">
-          开启环境噪音监测
-        </v-card-title>
+        <v-card-title class="text-center text-h6 pt-4"> 开启环境噪音监测 </v-card-title>
 
         <v-card-text class="text-body-2 text-medium-emphasis px-6">
-          <p class="mb-3">
-            该功能可以实时监测教室环境噪音，帮助营造安静的学习氛围：
-          </p>
+          <p class="mb-3">该功能可以实时监测教室环境噪音，帮助营造安静的学习氛围：</p>
           <div class="d-flex align-start mb-2">
             <v-icon
               icon="mdi-chart-line"
@@ -186,12 +148,7 @@
             <span>音频数据仅在本地处理，不会上传或存储录音</span>
           </div>
 
-          <v-alert
-            type="info"
-            variant="tonal"
-            density="compact"
-            class="mb-2"
-          >
+          <v-alert type="info" variant="tonal" density="compact" class="mb-2">
             需要授予麦克风权限才能使用此功能。浏览器将弹出权限请求，请点击「允许」。
           </v-alert>
         </v-card-text>
@@ -199,21 +156,13 @@
         <v-divider />
 
         <v-card-text class="px-6 py-3">
-          <v-list
-            density="compact"
-            class="pa-0"
-          >
+          <v-list density="compact" class="pa-0">
             <v-list-item class="px-0">
               <template #prepend>
-                <v-icon
-                  icon="mdi-microphone"
-                  class="mr-3"
-                />
+                <v-icon icon="mdi-microphone" class="mr-3" />
               </template>
               <v-list-item-title>启用噪音监测</v-list-item-title>
-              <v-list-item-subtitle class="text-caption">
-                关闭后将不再提醒
-              </v-list-item-subtitle>
+              <v-list-item-subtitle class="text-caption"> 关闭后将不再提醒 </v-list-item-subtitle>
               <template #append>
                 <v-switch
                   :model-value="noiseEnabled"
@@ -227,12 +176,7 @@
         </v-card-text>
 
         <v-card-actions class="px-6 pb-5">
-          <v-btn
-            variant="text"
-            @click="dismissMicPermission"
-          >
-            暂不开启
-          </v-btn>
+          <v-btn variant="text" @click="dismissMicPermission"> 暂不开启 </v-btn>
           <v-spacer />
           <v-btn
             color="primary"
@@ -263,10 +207,7 @@
     >
       <!-- 顶部分页导航 (自动隐藏) -->
       <Transition name="toolbar-fade">
-        <div
-          v-show="toolbarVisible"
-          class="fullscreen-toolbar"
-        >
+        <div v-show="toolbarVisible" class="fullscreen-toolbar">
           <v-tabs
             v-model="fullscreenMode"
             density="comfortable"
@@ -275,24 +216,15 @@
             class="fullscreen-tabs"
           >
             <v-tab value="clock">
-              <v-icon
-                start
-                icon="mdi-clock-outline"
-              />
+              <v-icon start icon="mdi-clock-outline" />
               时钟
             </v-tab>
             <v-tab value="countdown">
-              <v-icon
-                start
-                icon="mdi-timer-sand"
-              />
+              <v-icon start icon="mdi-timer-sand" />
               倒计时
             </v-tab>
             <v-tab value="stopwatch">
-              <v-icon
-                start
-                icon="mdi-timer-outline"
-              />
+              <v-icon start icon="mdi-timer-outline" />
               秒表
             </v-tab>
           </v-tabs>
@@ -301,21 +233,16 @@
 
       <!-- 主体内容区 -->
       <div class="fullscreen-time-body flex-grow-1 d-flex flex-column align-center justify-center">
-        <v-tabs-window
-          v-model="fullscreenMode"
-          class="fullscreen-tabs-window"
-        >
+        <v-tabs-window v-model="fullscreenMode" class="fullscreen-tabs-window">
           <!-- ========= 时钟模式 ========= -->
           <v-tabs-window-item value="clock">
             <div class="d-flex flex-column align-center justify-center">
               <div class="fullscreen-time-display">
-                {{ timeString }}<span class="fullscreen-seconds">{{ secondsString }}</span><span
-                  v-if="use12hClock"
-                  class="fullscreen-seconds"
-                > {{ amPmString }}</span>
+                {{ timeString }}<span class="fullscreen-seconds">{{ secondsString }}</span
+                ><span v-if="use12hClock" class="fullscreen-seconds"> {{ amPmString }}</span>
               </div>
               <div class="fullscreen-date-line mt-6">
-                {{ dateString }}  {{ weekdayString }}  {{ periodOfDay }}
+                {{ dateString }} {{ weekdayString }} {{ periodOfDay }}
               </div>
               <div class="fullscreen-progress mt-10">
                 <div class="text-caption text-medium-emphasis mb-1">
@@ -372,7 +299,7 @@
                       @click="countdownHours = Math.min(countdownHours + 1, 99)"
                     />
                     <div class="countdown-digit">
-                      {{ String(countdownHours).padStart(2, '0') }}
+                      {{ String(countdownHours).padStart(2, "0") }}
                     </div>
                     <v-btn
                       icon="mdi-chevron-down"
@@ -380,13 +307,9 @@
                       size="small"
                       @click="countdownHours = Math.max(countdownHours - 1, 0)"
                     />
-                    <div class="text-caption text-medium-emphasis">
-                      时
-                    </div>
+                    <div class="text-caption text-medium-emphasis">时</div>
                   </div>
-                  <div class="countdown-sep">
-                    :
-                  </div>
+                  <div class="countdown-sep">:</div>
                   <div class="text-center">
                     <v-btn
                       icon="mdi-chevron-up"
@@ -395,7 +318,7 @@
                       @click="countdownMinutes = Math.min(countdownMinutes + 1, 59)"
                     />
                     <div class="countdown-digit">
-                      {{ String(countdownMinutes).padStart(2, '0') }}
+                      {{ String(countdownMinutes).padStart(2, "0") }}
                     </div>
                     <v-btn
                       icon="mdi-chevron-down"
@@ -403,13 +326,9 @@
                       size="small"
                       @click="countdownMinutes = Math.max(countdownMinutes - 1, 0)"
                     />
-                    <div class="text-caption text-medium-emphasis">
-                      分
-                    </div>
+                    <div class="text-caption text-medium-emphasis">分</div>
                   </div>
-                  <div class="countdown-sep">
-                    :
-                  </div>
+                  <div class="countdown-sep">:</div>
                   <div class="text-center">
                     <v-btn
                       icon="mdi-chevron-up"
@@ -418,7 +337,7 @@
                       @click="countdownSeconds = Math.min(countdownSeconds + 1, 59)"
                     />
                     <div class="countdown-digit">
-                      {{ String(countdownSeconds).padStart(2, '0') }}
+                      {{ String(countdownSeconds).padStart(2, "0") }}
                     </div>
                     <v-btn
                       icon="mdi-chevron-down"
@@ -426,9 +345,7 @@
                       size="small"
                       @click="countdownSeconds = Math.max(countdownSeconds - 1, 0)"
                     />
-                    <div class="text-caption text-medium-emphasis">
-                      秒
-                    </div>
+                    <div class="text-caption text-medium-emphasis">秒</div>
                   </div>
                 </div>
                 <!-- 快捷按钮 -->
@@ -466,7 +383,13 @@
                   {{ countdownDisplay }}
                 </div>
                 <div class="fullscreen-date-line mt-4 text-medium-emphasis">
-                  {{ countdownRunning ? '倒计时进行中' : (countdownRemaining <= 0 ? '时间到！' : '已暂停') }}
+                  {{
+                    countdownRunning
+                      ? "倒计时进行中"
+                      : countdownRemaining <= 0
+                        ? "时间到！"
+                        : "已暂停"
+                  }}
                 </div>
                 <!-- 进度 -->
                 <v-progress-linear
@@ -505,7 +428,7 @@
                 {{ stopwatchDisplay }}
               </div>
               <div class="fullscreen-date-line mt-4 text-medium-emphasis">
-                {{ stopwatchRunning ? '计时中' : (stopwatchElapsed > 0 ? '已暂停' : '秒表') }}
+                {{ stopwatchRunning ? "计时中" : stopwatchElapsed > 0 ? "已暂停" : "秒表" }}
               </div>
               <div class="mt-8 d-flex ga-3">
                 <v-btn
@@ -534,32 +457,17 @@
               </div>
               <!-- 计次记录 -->
               <v-slide-y-transition>
-                <div
-                  v-if="laps.length > 0"
-                  class="stopwatch-laps mt-6"
-                >
-                  <v-table
-                    density="compact"
-                    class="stopwatch-laps-table"
-                  >
+                <div v-if="laps.length > 0" class="stopwatch-laps mt-6">
+                  <v-table density="compact" class="stopwatch-laps-table">
                     <thead>
                       <tr>
-                        <th>
-                          #
-                        </th>
-                        <th>
-                          计次
-                        </th>
-                        <th>
-                          总计
-                        </th>
+                        <th>#</th>
+                        <th>计次</th>
+                        <th>总计</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr
-                        v-for="(lap, idx) in laps"
-                        :key="idx"
-                      >
+                      <tr v-for="(lap, idx) in laps" :key="idx">
                         <td>
                           {{ laps.length - idx }}
                         </td>
@@ -581,12 +489,7 @@
 
       <!-- 右下角按钮组 -->
       <div class="fullscreen-actions">
-        <v-btn
-          icon="mdi-cog"
-          variant="text"
-          size="large"
-          @click.stop="showSettings = true"
-        />
+        <v-btn icon="mdi-cog" variant="text" size="large" @click.stop="showSettings = true" />
         <v-btn
           icon="mdi-close"
           variant="text"
@@ -599,41 +502,19 @@
   </v-dialog>
 
   <!-- 倒计时结束弹框 -->
-  <v-dialog
-    v-model="countdownEndedDialog"
-    max-width="480"
-    persistent
-  >
+  <v-dialog v-model="countdownEndedDialog" max-width="480" persistent>
     <v-card rounded="xl">
       <v-card-title class="d-flex align-center justify-center pt-6">
-        <v-icon
-          color="error"
-          size="32"
-          class="mr-2"
-          icon="mdi-alarm"
-        />
+        <v-icon color="error" size="32" class="mr-2" icon="mdi-alarm" />
         时间到！
       </v-card-title>
       <v-card-text class="text-center pb-2">
-        <div
-          class="text-h4 font-weight-bold my-4"
-          style="font-variant-numeric: tabular-nums;"
-        >
+        <div class="text-h4 font-weight-bold my-4" style="font-variant-numeric: tabular-nums">
           {{ formatCountdownTotal(countdownTotal) }}
         </div>
-        <div class="text-body-1 text-medium-emphasis">
-          设定的倒计时已结束
-        </div>
-        <div
-          v-if="overtimeElapsed > 0"
-          class="mt-4"
-        >
-          <v-chip
-            color="error"
-            variant="tonal"
-            size="large"
-            prepend-icon="mdi-clock-alert-outline"
-          >
+        <div class="text-body-1 text-medium-emphasis">设定的倒计时已结束</div>
+        <div v-if="overtimeElapsed > 0" class="mt-4">
+          <v-chip color="error" variant="tonal" size="large" prepend-icon="mdi-clock-alert-outline">
             已超时 {{ overtimeDisplay }}
           </v-chip>
         </div>
@@ -654,27 +535,17 @@
   </v-dialog>
 
   <!-- 设置弹框 -->
-  <v-dialog
-    v-model="showSettings"
-    max-width="420"
-    :scrim="true"
-  >
+  <v-dialog v-model="showSettings" max-width="420" :scrim="true">
     <v-card rounded="xl">
       <v-card-title class="d-flex align-center">
-        <v-icon
-          class="mr-2"
-          icon="mdi-cog"
-        />
+        <v-icon class="mr-2" icon="mdi-cog" />
         时间卡片设置
       </v-card-title>
       <v-card-text>
         <v-list>
           <v-list-item>
             <template #prepend>
-              <v-icon
-                class="mr-3"
-                icon="mdi-clock-outline"
-              />
+              <v-icon class="mr-3" icon="mdi-clock-outline" />
             </template>
             <v-list-item-title>显示时间卡片</v-list-item-title>
             <v-list-item-subtitle>在首页显示时间卡片，刷新后生效。</v-list-item-subtitle>
@@ -689,10 +560,7 @@
           </v-list-item>
           <v-list-item>
             <template #prepend>
-              <v-icon
-                class="mr-3"
-                icon="mdi-clock-time-six-outline"
-              />
+              <v-icon class="mr-3" icon="mdi-clock-time-six-outline" />
             </template>
             <v-list-item-title>12 小时制</v-list-item-title>
             <v-list-item-subtitle>以 12 小时制（AM/PM）显示时间。</v-list-item-subtitle>
@@ -709,35 +577,30 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer />
-        <v-btn
-          variant="text"
-          @click="showSettings = false"
-        >
-          完成
-        </v-btn>
+        <v-btn variant="text" @click="showSettings = false"> 完成 </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { SettingsManager, watchSettings, getSetting, setSetting } from '@/utils/settings'
-import { playSound, defaultSingleSound } from '@/utils/soundList'
-import { noiseService } from '@wydev/noise-core'
-import { defineAsyncComponent } from 'vue'
-import dataProvider from '@/utils/dataProvider'
+import { SettingsManager, watchSettings, getSetting, setSetting } from "@/utils/settings";
+import { playSound, defaultSingleSound } from "@/utils/soundList";
+import { noiseService } from "@wydev/noise-core";
+import { defineAsyncComponent } from "vue";
+import dataProvider from "@/utils/dataProvider";
 
-const NoiseMonitorDetail = defineAsyncComponent(() =>
-  import('@/components/NoiseMonitorDetail.vue')
-)
+const NoiseMonitorDetail = defineAsyncComponent(
+  () => import("@/components/NoiseMonitorDetail.vue"),
+);
 
 // 时间字体大小比例（卡片场景）
-const TIME_FONT_RATIO = 2.0
-const SECONDS_FONT_RATIO = 0.9
-const DATE_FONT_RATIO = 0.6
+const TIME_FONT_RATIO = 2.0;
+const SECONDS_FONT_RATIO = 0.9;
+const DATE_FONT_RATIO = 0.6;
 
 export default {
-  name: 'TimeCard',
+  name: "TimeCard",
   components: { NoiseMonitorDetail },
   data() {
     return {
@@ -750,7 +613,7 @@ export default {
       timeCardEnabled: true,
       use12hClock: false,
       // 全屏模式切换
-      fullscreenMode: 'clock',
+      fullscreenMode: "clock",
       // 工具栏自动隐藏
       toolbarVisible: true,
       toolbarTimer: null,
@@ -760,17 +623,17 @@ export default {
       countdownSeconds: 0,
       countdownRunning: false,
       countdownRemaining: 0, // 剩余毫秒
-      countdownTotal: 0,     // 总毫秒
+      countdownTotal: 0, // 总毫秒
       countdownTimer: null,
       countdownLastTick: null,
       countdownPresets: [
-        { label: '1 分钟', h: 0, m: 1, s: 0 },
-        { label: '3 分钟', h: 0, m: 3, s: 0 },
-        { label: '5 分钟', h: 0, m: 5, s: 0 },
-        { label: '10 分钟', h: 0, m: 10, s: 0 },
-        { label: '15 分钟', h: 0, m: 15, s: 0 },
-        { label: '30 分钟', h: 0, m: 30, s: 0 },
-        { label: '1 小时', h: 1, m: 0, s: 0 },
+        { label: "1 分钟", h: 0, m: 1, s: 0 },
+        { label: "3 分钟", h: 0, m: 3, s: 0 },
+        { label: "5 分钟", h: 0, m: 5, s: 0 },
+        { label: "10 分钟", h: 0, m: 10, s: 0 },
+        { label: "15 分钟", h: 0, m: 15, s: 0 },
+        { label: "30 分钟", h: 0, m: 30, s: 0 },
+        { label: "1 小时", h: 1, m: 0, s: 0 },
       ],
       // 倒计时结束弹框
       countdownEndedDialog: false,
@@ -779,7 +642,7 @@ export default {
       overtimeLastTick: null,
       // 秒表
       stopwatchRunning: false,
-      stopwatchElapsed: 0,  // 已走毫秒
+      stopwatchElapsed: 0, // 已走毫秒
       stopwatchTimer: null,
       stopwatchLastTick: null,
       laps: [],
@@ -787,7 +650,7 @@ export default {
       // 噪音监测
       noiseEnabled: false,
       noiseMonitoring: false,
-      noiseStatus: 'initializing',
+      noiseStatus: "initializing",
       noiseCurrentDbfs: -100,
       noiseCurrentDisplayDb: 0,
       noiseSmoothedDb: 0, // 防抖后的平滑值
@@ -805,642 +668,643 @@ export default {
       noiseSessionCheckTimer: null,
       // 按日期存储的报告系统
       noiseReportMeta: {}, // { dates: { '2026-03-07': { count, avgScore, sessions } } }
-      noiseSelectedDate: '', // 当前查看的日期 YYYY-MM-DD
+      noiseSelectedDate: "", // 当前查看的日期 YYYY-MM-DD
       noiseCurrentDateReports: [], // 当前日期的报告列表
       // 麦克风权限引导
       showMicPermissionDialog: false,
-      micPermissionState: '', // 'granted' | 'prompt' | 'denied' | 'unavailable'
-    }
+      micPermissionState: "", // 'granted' | 'prompt' | 'denied' | 'unavailable'
+    };
   },
   computed: {
     timeString() {
-      const hours = this.now.getHours()
-      const m = String(this.now.getMinutes()).padStart(2, '0')
+      const hours = this.now.getHours();
+      const m = String(this.now.getMinutes()).padStart(2, "0");
       if (this.use12hClock) {
-        const h12 = hours % 12 || 12
-        return `${h12}:${m}`
+        const h12 = hours % 12 || 12;
+        return `${h12}:${m}`;
       }
-      return `${String(hours).padStart(2, '0')}:${m}`
+      return `${String(hours).padStart(2, "0")}:${m}`;
     },
     amPmString() {
-      return this.now.getHours() < 12 ? 'AM' : 'PM'
+      return this.now.getHours() < 12 ? "AM" : "PM";
     },
     secondsString() {
-      return `:${String(this.now.getSeconds()).padStart(2, '0')}`
+      return `:${String(this.now.getSeconds()).padStart(2, "0")}`;
     },
     dateString() {
-      const y = this.now.getFullYear()
-      const m = this.now.getMonth() + 1
-      const d = this.now.getDate()
-      return `${y}年${m}月${d}日`
+      const y = this.now.getFullYear();
+      const m = this.now.getMonth() + 1;
+      const d = this.now.getDate();
+      return `${y}年${m}月${d}日`;
     },
     weekdayString() {
-      const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
-      return days[this.now.getDay()]
+      const days = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+      return days[this.now.getDay()];
     },
     periodOfDay() {
-      const h = this.now.getHours()
-      if (h < 6) return '凌晨'
-      if (h < 8) return '早晨'
-      if (h < 11) return '上午'
-      if (h < 13) return '中午'
-      if (h < 17) return '下午'
-      if (h < 19) return '傍晚'
-      if (h < 22) return '晚上'
-      return '深夜'
+      const h = this.now.getHours();
+      if (h < 6) return "凌晨";
+      if (h < 8) return "早晨";
+      if (h < 11) return "上午";
+      if (h < 13) return "中午";
+      if (h < 17) return "下午";
+      if (h < 19) return "傍晚";
+      if (h < 22) return "晚上";
+      return "深夜";
     },
     dayProgressPercent() {
-      const h = this.now.getHours()
-      const m = this.now.getMinutes()
-      const s = this.now.getSeconds()
-      const totalSeconds = h * 3600 + m * 60 + s
-      return ((totalSeconds / 86400) * 100).toFixed(1)
+      const h = this.now.getHours();
+      const m = this.now.getMinutes();
+      const s = this.now.getSeconds();
+      const totalSeconds = h * 3600 + m * 60 + s;
+      return ((totalSeconds / 86400) * 100).toFixed(1);
     },
 
     timeStyle() {
       return {
-        'font-size': `${this.fontSize * TIME_FONT_RATIO}px`,
-        'font-weight': '700',
-        'line-height': '1',
-        'letter-spacing': '4px',
-        'font-variant-numeric': 'tabular-nums',
-      }
+        "font-size": `${this.fontSize * TIME_FONT_RATIO}px`,
+        "font-weight": "700",
+        "line-height": "1",
+        "letter-spacing": "4px",
+        "font-variant-numeric": "tabular-nums",
+      };
     },
     secondsStyle() {
       return {
-        'font-size': `${this.fontSize * SECONDS_FONT_RATIO}px`,
-        'font-variant-numeric': 'tabular-nums',
-        'vertical-align': 'baseline',
-        'margin-left': '4px',
-        'opacity': '0.6',
-      }
+        "font-size": `${this.fontSize * SECONDS_FONT_RATIO}px`,
+        "font-variant-numeric": "tabular-nums",
+        "vertical-align": "baseline",
+        "margin-left": "4px",
+        opacity: "0.6",
+      };
     },
     dateStyle() {
       return {
-        'font-size': `${this.fontSize * DATE_FONT_RATIO}px`,
-        'letter-spacing': '1px',
-      }
+        "font-size": `${this.fontSize * DATE_FONT_RATIO}px`,
+        "letter-spacing": "1px",
+      };
     },
     // 倒计时 computed
     countdownTotalSetSeconds() {
-      return this.countdownHours * 3600 + this.countdownMinutes * 60 + this.countdownSeconds
+      return this.countdownHours * 3600 + this.countdownMinutes * 60 + this.countdownSeconds;
     },
     countdownDisplay() {
-      const totalSec = Math.max(0, Math.ceil(this.countdownRemaining / 1000))
-      const h = Math.floor(totalSec / 3600)
-      const m = Math.floor((totalSec % 3600) / 60)
-      const s = totalSec % 60
+      const totalSec = Math.max(0, Math.ceil(this.countdownRemaining / 1000));
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
       if (h > 0) {
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
       }
-      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     },
     countdownProgressPercent() {
-      if (this.countdownTotal <= 0) return 0
-      return ((this.countdownTotal - this.countdownRemaining) / this.countdownTotal) * 100
+      if (this.countdownTotal <= 0) return 0;
+      return ((this.countdownTotal - this.countdownRemaining) / this.countdownTotal) * 100;
     },
     overtimeDisplay() {
-      const totalSec = Math.floor(this.overtimeElapsed / 1000)
-      const h = Math.floor(totalSec / 3600)
-      const m = Math.floor((totalSec % 3600) / 60)
-      const s = totalSec % 60
+      const totalSec = Math.floor(this.overtimeElapsed / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
       if (h > 0) {
-        return `${h}小时${m}分${s}秒`
+        return `${h}小时${m}分${s}秒`;
       }
       if (m > 0) {
-        return `${m}分${s}秒`
+        return `${m}分${s}秒`;
       }
-      return `${s}秒`
+      return `${s}秒`;
     },
     // 秒表 computed
     stopwatchDisplay() {
-      const ms = this.stopwatchElapsed
-      const totalSec = Math.floor(ms / 1000)
-      const h = Math.floor(totalSec / 3600)
-      const m = Math.floor((totalSec % 3600) / 60)
-      const s = totalSec % 60
-      const centis = Math.floor((ms % 1000) / 10)
+      const ms = this.stopwatchElapsed;
+      const totalSec = Math.floor(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      const centis = Math.floor((ms % 1000) / 10);
       if (h > 0) {
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(centis).padStart(2, '0')}`
+        return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${String(centis).padStart(2, "0")}`;
       }
-      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(centis).padStart(2, '0')}`
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${String(centis).padStart(2, "0")}`;
     },
     // ===== 噪音监测 computed =====
     noiseDisplayDb() {
-      if (!this.noiseMonitoring || this.noiseStatus !== 'active') return '--'
-      return Math.round(this.noiseSmoothedDb)
+      if (!this.noiseMonitoring || this.noiseStatus !== "active") return "--";
+      return Math.round(this.noiseSmoothedDb);
     },
     noiseDbColor() {
-      const db = typeof this.noiseDisplayDb === 'number' ? this.noiseDisplayDb : 0
-      if (db < 40) return 'success'
-      if (db < 55) return 'light-green'
-      if (db < 70) return 'warning'
-      if (db < 85) return 'orange'
-      return 'error'
+      const db = typeof this.noiseDisplayDb === "number" ? this.noiseDisplayDb : 0;
+      if (db < 40) return "success";
+      if (db < 55) return "light-green";
+      if (db < 70) return "warning";
+      if (db < 85) return "orange";
+      return "error";
     },
     noiseIconColor() {
-      if (!this.noiseMonitoring) return 'grey'
-      return this.noiseDbColor
+      if (!this.noiseMonitoring) return "grey";
+      return this.noiseDbColor;
     },
     noiseStatusText() {
-      if (!this.noiseMonitoring || this.noiseStatus !== 'active') return '未监测'
-      const db = typeof this.noiseDisplayDb === 'number' ? this.noiseDisplayDb : 0
-      if (db < 30) return '极其安静'
-      if (db < 40) return '非常安静'
-      if (db < 50) return '安静'
-      if (db < 60) return '正常交谈'
-      if (db < 70) return '较为嘈杂'
-      if (db < 80) return '嘈杂'
-      if (db < 90) return '非常嘈杂'
-      return '极度嘈杂'
+      if (!this.noiseMonitoring || this.noiseStatus !== "active") return "未监测";
+      const db = typeof this.noiseDisplayDb === "number" ? this.noiseDisplayDb : 0;
+      if (db < 30) return "极其安静";
+      if (db < 40) return "非常安静";
+      if (db < 50) return "安静";
+      if (db < 60) return "正常交谈";
+      if (db < 70) return "较为嘈杂";
+      if (db < 80) return "嘈杂";
+      if (db < 90) return "非常嘈杂";
+      return "极度嘈杂";
     },
   },
   watch: {
     showFullscreen(val) {
       if (val) {
         this.handleKeydown = (e) => {
-          if (e.key === 'Escape') {
+          if (e.key === "Escape") {
             if (this.showSettings) {
-              this.showSettings = false
+              this.showSettings = false;
             } else if (this.countdownEndedDialog) {
-              this.dismissCountdownDialog()
+              this.dismissCountdownDialog();
             }
             // 不关闭全屏弹框，阻止默认行为
-            e.preventDefault()
-            e.stopPropagation()
+            e.preventDefault();
+            e.stopPropagation();
           }
-        }
-        window.addEventListener('keydown', this.handleKeydown, true)
-        this.showToolbar()
+        };
+        window.addEventListener("keydown", this.handleKeydown, true);
+        this.showToolbar();
       } else {
         if (this.handleKeydown) {
-          window.removeEventListener('keydown', this.handleKeydown, true)
-          this.handleKeydown = null
+          window.removeEventListener("keydown", this.handleKeydown, true);
+          this.handleKeydown = null;
         }
-        this.clearToolbarTimer()
+        this.clearToolbarTimer();
       }
     },
   },
   async mounted() {
-    this.loadSettings()
-    this.startTimer()
+    this.loadSettings();
+    this.startTimer();
     this.unwatch = watchSettings(() => {
-      this.loadSettings()
-    })
+      this.loadSettings();
+    });
     // 噪音: 加载历史 & 自动启动（带权限检测）
-    this.noiseEnabled = getSetting('noiseMonitor.enabled')
+    this.noiseEnabled = getSetting("noiseMonitor.enabled");
     if (this.noiseEnabled) {
-      this.noiseHistory = noiseService.getHistory()
+      this.noiseHistory = noiseService.getHistory();
       // 检查麦克风权限状态
-      const micState = await this.checkMicPermission()
-      this.micPermissionState = micState
-      if (micState === 'granted') {
+      const micState = await this.checkMicPermission();
+      this.micPermissionState = micState;
+      if (micState === "granted") {
         // 已授权 → 正常流程
         this.loadNoiseSessionConfig().then(() => {
-          this.startSessionCheck()
-          if (getSetting('noiseMonitor.autoStart') && !this.noiseMonitoring) {
-            this.startNoise()
+          this.startSessionCheck();
+          if (getSetting("noiseMonitor.autoStart") && !this.noiseMonitoring) {
+            this.startNoise();
           }
-        })
-      } else if (micState === 'prompt') {
+        });
+      } else if (micState === "prompt") {
         // 未授权也未拒绝 → 看是否已跳过引导
-        if (!getSetting('noiseMonitor.permissionDismissed')) {
-          this.showMicPermissionDialog = true
+        if (!getSetting("noiseMonitor.permissionDismissed")) {
+          this.showMicPermissionDialog = true;
         }
       }
       // denied / unavailable → 不自动启动，micPermissionState 已记录
     }
   },
   beforeUnmount() {
-    this.stopTimer()
-    this.clearCountdownTimer()
-    this.clearStopwatchTimer()
-    this.clearToolbarTimer()
-    this.dismissCountdownDialog()
-    this.stopNoise()
-    this.stopSessionCheck()
+    this.stopTimer();
+    this.clearCountdownTimer();
+    this.clearStopwatchTimer();
+    this.clearToolbarTimer();
+    this.dismissCountdownDialog();
+    this.stopNoise();
+    this.stopSessionCheck();
     if (this.unwatch) {
-      this.unwatch()
+      this.unwatch();
     }
     if (this.handleKeydown) {
-      window.removeEventListener('keydown', this.handleKeydown, true)
+      window.removeEventListener("keydown", this.handleKeydown, true);
     }
   },
   methods: {
     loadSettings() {
-      this.fontSize = SettingsManager.getSetting('font.size')
-      this.timeCardEnabled = getSetting('timeCard.enabled')
-      this.use12hClock = getSetting('timeCard.use12h')
-      this.noiseEnabled = getSetting('noiseMonitor.enabled')
+      this.fontSize = SettingsManager.getSetting("font.size");
+      this.timeCardEnabled = getSetting("timeCard.enabled");
+      this.use12hClock = getSetting("timeCard.use12h");
+      this.noiseEnabled = getSetting("noiseMonitor.enabled");
     },
     setTimeCardEnabled(val) {
-      this.timeCardEnabled = val
-      setSetting('timeCard.enabled', val)
+      this.timeCardEnabled = val;
+      setSetting("timeCard.enabled", val);
     },
     setUse12hClock(val) {
-      this.use12hClock = val
-      setSetting('timeCard.use12h', val)
+      this.use12hClock = val;
+      setSetting("timeCard.use12h", val);
     },
     startTimer() {
       this.timer = setInterval(() => {
-        this.now = new Date()
-      }, 1000)
+        this.now = new Date();
+      }, 1000);
     },
     stopTimer() {
       if (this.timer) {
-        clearInterval(this.timer)
-        this.timer = null
+        clearInterval(this.timer);
+        this.timer = null;
       }
     },
 
     // ---- 工具栏自动隐藏 ----
     showToolbar() {
-      this.toolbarVisible = true
-      this.clearToolbarTimer()
+      this.toolbarVisible = true;
+      this.clearToolbarTimer();
       this.toolbarTimer = setTimeout(() => {
-        this.toolbarVisible = false
-      }, 3000)
+        this.toolbarVisible = false;
+      }, 3000);
     },
     clearToolbarTimer() {
       if (this.toolbarTimer) {
-        clearTimeout(this.toolbarTimer)
-        this.toolbarTimer = null
+        clearTimeout(this.toolbarTimer);
+        this.toolbarTimer = null;
       }
     },
 
     // ---- 倒计时 ----
     applyCountdownPreset(preset) {
-      this.countdownHours = preset.h
-      this.countdownMinutes = preset.m
-      this.countdownSeconds = preset.s
+      this.countdownHours = preset.h;
+      this.countdownMinutes = preset.m;
+      this.countdownSeconds = preset.s;
     },
     startCountdown() {
-      const totalMs = this.countdownTotalSetSeconds * 1000
-      if (totalMs <= 0) return
-      this.countdownTotal = totalMs
-      this.countdownRemaining = totalMs
-      this.countdownRunning = true
-      this.countdownLastTick = Date.now()
+      const totalMs = this.countdownTotalSetSeconds * 1000;
+      if (totalMs <= 0) return;
+      this.countdownTotal = totalMs;
+      this.countdownRemaining = totalMs;
+      this.countdownRunning = true;
+      this.countdownLastTick = Date.now();
       this.countdownTimer = setInterval(() => {
-        this.tickCountdown()
-      }, 50)
+        this.tickCountdown();
+      }, 50);
     },
     tickCountdown() {
-      const now = Date.now()
-      const delta = now - this.countdownLastTick
-      this.countdownLastTick = now
-      this.countdownRemaining = Math.max(0, this.countdownRemaining - delta)
+      const now = Date.now();
+      const delta = now - this.countdownLastTick;
+      this.countdownLastTick = now;
+      this.countdownRemaining = Math.max(0, this.countdownRemaining - delta);
       if (this.countdownRemaining <= 0) {
-        this.countdownRunning = false
-        this.clearCountdownTimer()
-        playSound(defaultSingleSound)
-        this.showCountdownEndedDialog()
+        this.countdownRunning = false;
+        this.clearCountdownTimer();
+        playSound(defaultSingleSound);
+        this.showCountdownEndedDialog();
       }
     },
     toggleCountdown() {
       if (this.countdownRunning) {
-        this.countdownRunning = false
-        this.clearCountdownTimer()
+        this.countdownRunning = false;
+        this.clearCountdownTimer();
       } else {
-        this.countdownRunning = true
-        this.countdownLastTick = Date.now()
+        this.countdownRunning = true;
+        this.countdownLastTick = Date.now();
         this.countdownTimer = setInterval(() => {
-          this.tickCountdown()
-        }, 50)
+          this.tickCountdown();
+        }, 50);
       }
     },
     resetCountdown() {
-      this.countdownRunning = false
-      this.countdownRemaining = 0
-      this.countdownTotal = 0
-      this.clearCountdownTimer()
-      this.dismissCountdownDialog()
+      this.countdownRunning = false;
+      this.countdownRemaining = 0;
+      this.countdownTotal = 0;
+      this.clearCountdownTimer();
+      this.dismissCountdownDialog();
     },
     showCountdownEndedDialog() {
-      this.countdownEndedDialog = true
-      this.overtimeElapsed = 0
-      this.overtimeLastTick = Date.now()
+      this.countdownEndedDialog = true;
+      this.overtimeElapsed = 0;
+      this.overtimeLastTick = Date.now();
       this.overtimeTimer = setInterval(() => {
-        const now = Date.now()
-        this.overtimeElapsed += now - this.overtimeLastTick
-        this.overtimeLastTick = now
-      }, 200)
+        const now = Date.now();
+        this.overtimeElapsed += now - this.overtimeLastTick;
+        this.overtimeLastTick = now;
+      }, 200);
     },
     dismissCountdownDialog() {
-      this.countdownEndedDialog = false
-      this.overtimeElapsed = 0
+      this.countdownEndedDialog = false;
+      this.overtimeElapsed = 0;
       if (this.overtimeTimer) {
-        clearInterval(this.overtimeTimer)
-        this.overtimeTimer = null
+        clearInterval(this.overtimeTimer);
+        this.overtimeTimer = null;
       }
     },
     formatCountdownTotal(ms) {
-      const totalSec = Math.round(ms / 1000)
-      const h = Math.floor(totalSec / 3600)
-      const m = Math.floor((totalSec % 3600) / 60)
-      const s = totalSec % 60
-      const parts = []
-      if (h > 0) parts.push(`${h}小时`)
-      if (m > 0) parts.push(`${m}分钟`)
-      if (s > 0) parts.push(`${s}秒`)
-      return parts.join('') || '0秒'
+      const totalSec = Math.round(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      const parts = [];
+      if (h > 0) parts.push(`${h}小时`);
+      if (m > 0) parts.push(`${m}分钟`);
+      if (s > 0) parts.push(`${s}秒`);
+      return parts.join("") || "0秒";
     },
     clearCountdownTimer() {
       if (this.countdownTimer) {
-        clearInterval(this.countdownTimer)
-        this.countdownTimer = null
+        clearInterval(this.countdownTimer);
+        this.countdownTimer = null;
       }
     },
 
     // ---- 秒表 ----
     toggleStopwatch() {
       if (this.stopwatchRunning) {
-        this.stopwatchRunning = false
-        this.clearStopwatchTimer()
+        this.stopwatchRunning = false;
+        this.clearStopwatchTimer();
       } else {
-        this.stopwatchRunning = true
-        this.stopwatchLastTick = Date.now()
+        this.stopwatchRunning = true;
+        this.stopwatchLastTick = Date.now();
         this.stopwatchTimer = setInterval(() => {
-          this.tickStopwatch()
-        }, 30)
+          this.tickStopwatch();
+        }, 30);
       }
     },
     tickStopwatch() {
-      const now = Date.now()
-      this.stopwatchElapsed += now - this.stopwatchLastTick
-      this.stopwatchLastTick = now
+      const now = Date.now();
+      this.stopwatchElapsed += now - this.stopwatchLastTick;
+      this.stopwatchLastTick = now;
     },
     addLap() {
-      const split = this.stopwatchElapsed - this.lastLapElapsed
-      this.laps.unshift({ split, total: this.stopwatchElapsed })
-      this.lastLapElapsed = this.stopwatchElapsed
+      const split = this.stopwatchElapsed - this.lastLapElapsed;
+      this.laps.unshift({ split, total: this.stopwatchElapsed });
+      this.lastLapElapsed = this.stopwatchElapsed;
     },
     resetStopwatch() {
-      this.stopwatchRunning = false
-      this.stopwatchElapsed = 0
-      this.lastLapElapsed = 0
-      this.laps = []
-      this.clearStopwatchTimer()
+      this.stopwatchRunning = false;
+      this.stopwatchElapsed = 0;
+      this.lastLapElapsed = 0;
+      this.laps = [];
+      this.clearStopwatchTimer();
     },
     clearStopwatchTimer() {
       if (this.stopwatchTimer) {
-        clearInterval(this.stopwatchTimer)
-        this.stopwatchTimer = null
+        clearInterval(this.stopwatchTimer);
+        this.stopwatchTimer = null;
       }
     },
     formatMs(ms) {
-      const totalSec = Math.floor(ms / 1000)
-      const m = Math.floor(totalSec / 60)
-      const s = totalSec % 60
-      const centis = Math.floor((ms % 1000) / 10)
-      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(centis).padStart(2, '0')}`
+      const totalSec = Math.floor(ms / 1000);
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      const centis = Math.floor((ms % 1000) / 10);
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}.${String(centis).padStart(2, "0")}`;
     },
     // ===== 麦克风权限引导 =====
     async checkMicPermission() {
       try {
         // 先检查是否有麦克风硬件
         if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-          const devices = await navigator.mediaDevices.enumerateDevices()
-          const hasMic = devices.some(d => d.kind === 'audioinput')
-          if (!hasMic) return 'unavailable'
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const hasMic = devices.some((d) => d.kind === "audioinput");
+          if (!hasMic) return "unavailable";
         }
-        if (!navigator.permissions || !navigator.permissions.query) return 'granted'
-        const result = await navigator.permissions.query({ name: 'microphone' })
-        return result.state // 'granted' | 'prompt' | 'denied'
+        if (!navigator.permissions || !navigator.permissions.query) return "granted";
+        const result = await navigator.permissions.query({ name: "microphone" });
+        return result.state; // 'granted' | 'prompt' | 'denied'
       } catch {
         // Firefox 等部分浏览器不支持 query microphone，视为 prompt
-        return 'prompt'
+        return "prompt";
       }
     },
     async grantMicPermission() {
-      this.showMicPermissionDialog = false
+      this.showMicPermissionDialog = false;
       // 先加载配置和会话
-      await this.loadNoiseSessionConfig()
-      this.startSessionCheck()
+      await this.loadNoiseSessionConfig();
+      this.startSessionCheck();
       // 调用 startNoise 触发浏览器权限弹框
-      await this.startNoise()
+      await this.startNoise();
       // 重新检查状态
-      this.micPermissionState = await this.checkMicPermission()
+      this.micPermissionState = await this.checkMicPermission();
     },
     dismissMicPermission() {
-      this.showMicPermissionDialog = false
-      setSetting('noiseMonitor.permissionDismissed', true)
+      this.showMicPermissionDialog = false;
+      setSetting("noiseMonitor.permissionDismissed", true);
     },
     onPermissionDialogToggle(val) {
-      this.noiseEnabled = val
-      setSetting('noiseMonitor.enabled', val)
+      this.noiseEnabled = val;
+      setSetting("noiseMonitor.enabled", val);
       if (!val) {
         // 用户在弹框中关闭了功能
-        this.showMicPermissionDialog = false
-        setSetting('noiseMonitor.permissionDismissed', true)
+        this.showMicPermissionDialog = false;
+        setSetting("noiseMonitor.permissionDismissed", true);
       }
     },
     // ===== 噪音监测 methods =====
     async startNoise() {
       try {
-        await noiseService.start()
-        this.noiseMonitoring = true
+        await noiseService.start();
+        this.noiseMonitoring = true;
         this.noiseUnsubscribe = noiseService.subscribe((snapshot) => {
-          this.noiseStatus = snapshot.status
-          this.noiseCurrentDbfs = snapshot.currentDbfs
-          this.noiseCurrentDisplayDb = snapshot.currentDisplayDb
+          this.noiseStatus = snapshot.status;
+          this.noiseCurrentDbfs = snapshot.currentDbfs;
+          this.noiseCurrentDisplayDb = snapshot.currentDisplayDb;
           // 防抖平滑: 指数移动平均
-          const alpha = 0.25
-          const rawDb = snapshot.currentDisplayDb
-          this.noiseSmoothedDb = this.noiseSmoothedDb === 0
-            ? rawDb
-            : this.noiseSmoothedDb * (1 - alpha) + rawDb * alpha
-          this.noiseRingBuffer = snapshot.ringBuffer || []
-          this.noiseLastSlice = snapshot.lastSlice || null
-          this.noiseScore = snapshot.currentScore ?? null
-          this.noiseScoreDetail = snapshot.currentScoreDetail ?? null
-          this.noiseHistory = noiseService.getHistory()
+          const alpha = 0.25;
+          const rawDb = snapshot.currentDisplayDb;
+          this.noiseSmoothedDb =
+            this.noiseSmoothedDb === 0 ? rawDb : this.noiseSmoothedDb * (1 - alpha) + rawDb * alpha;
+          this.noiseRingBuffer = snapshot.ringBuffer || [];
+          this.noiseLastSlice = snapshot.lastSlice || null;
+          this.noiseScore = snapshot.currentScore ?? null;
+          this.noiseScoreDetail = snapshot.currentScoreDetail ?? null;
+          this.noiseHistory = noiseService.getHistory();
           // 会话数据采集
           if (this.noiseSessionActive && this.noiseSessionData) {
-            this.collectSessionSample(snapshot)
+            this.collectSessionSample(snapshot);
           }
-        })
+        });
       } catch (e) {
-        console.error('噪音监测启动失败:', e)
-        this.noiseStatus = 'error'
+        console.error("噪音监测启动失败:", e);
+        this.noiseStatus = "error";
       }
     },
     stopNoise() {
       if (this.noiseUnsubscribe) {
-        this.noiseUnsubscribe()
-        this.noiseUnsubscribe = null
+        this.noiseUnsubscribe();
+        this.noiseUnsubscribe = null;
       }
       if (this.noiseMonitoring) {
-        noiseService.stop()
+        noiseService.stop();
       }
-      this.noiseMonitoring = false
-      this.noiseStatus = 'initializing'
-      this.noiseSmoothedDb = 0
-      this.noiseScore = null
-      this.noiseScoreDetail = null
+      this.noiseMonitoring = false;
+      this.noiseStatus = "initializing";
+      this.noiseSmoothedDb = 0;
+      this.noiseScore = null;
+      this.noiseScoreDetail = null;
     },
     clearNoiseHistory() {
-      noiseService.clearHistory()
-      this.noiseHistory = []
+      noiseService.clearHistory();
+      this.noiseHistory = [];
     },
     onNoiseClick() {
-      if (this.micPermissionState === 'denied' || this.micPermissionState === 'unavailable') {
-        this.showNoiseDetail = true
-        return
+      if (this.micPermissionState === "denied" || this.micPermissionState === "unavailable") {
+        this.showNoiseDetail = true;
+        return;
       }
       if (!this.noiseMonitoring) {
-        this.startNoise()
+        this.startNoise();
       } else {
-        this.showNoiseDetail = true
+        this.showNoiseDetail = true;
       }
     },
 
     // ===== 晚自习会话管理 =====
     async loadNoiseSessionConfig() {
       try {
-        const res = await dataProvider.loadData('noise-session-config')
-        const data = res?.data || res
+        const res = await dataProvider.loadData("noise-session-config");
+        const data = res?.data || res;
         if (data && data.sessions) {
-          this.noiseSessionConfig = data
+          this.noiseSessionConfig = data;
         } else {
           // 默认配置
           this.noiseSessionConfig = {
             sessions: [
-              { name: '第1节晚自习', start: '19:20', duration: 70, enabled: true },
-              { name: '第2节晚自习', start: '20:20', duration: 110, enabled: true },
+              { name: "第1节晚自习", start: "19:20", duration: 70, enabled: true },
+              { name: "第2节晚自习", start: "20:20", duration: 110, enabled: true },
             ],
             alertThresholdDb: 55,
-          }
+          };
         }
         // 加载报告
-        await this.loadSessionReports()
+        await this.loadSessionReports();
       } catch (e) {
-        console.error('加载噪音会话配置失败:', e)
+        console.error("加载噪音会话配置失败:", e);
         this.noiseSessionConfig = {
           sessions: [
-            { name: '第1节晚自习', start: '19:20', duration: 70, enabled: true },
-            { name: '第2节晚自习', start: '20:20', duration: 110, enabled: true },
+            { name: "第1节晚自习", start: "19:20", duration: 70, enabled: true },
+            { name: "第2节晚自习", start: "20:20", duration: 110, enabled: true },
           ],
           alertThresholdDb: 55,
-        }
+        };
       }
     },
     async saveNoiseSessionConfig() {
       try {
-        await dataProvider.saveData('noise-session-config', this.noiseSessionConfig)
+        await dataProvider.saveData("noise-session-config", this.noiseSessionConfig);
       } catch (e) {
-        console.error('保存噪音会话配置失败:', e)
+        console.error("保存噪音会话配置失败:", e);
       }
     },
     // ===== 按日期的报告存储 =====
     formatDateKey(ts) {
-      const d = new Date(ts)
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      const d = new Date(ts);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     },
     async loadReportMeta() {
       try {
-        const res = await dataProvider.loadData('noise-reports-meta')
-        const data = res?.data || res
+        const res = await dataProvider.loadData("noise-reports-meta");
+        const data = res?.data || res;
         if (data && data.dates) {
           // 清理超过 30 天的元数据
-          const cutoffDate = new Date()
-          cutoffDate.setDate(cutoffDate.getDate() - 30)
-          const cutoffKey = this.formatDateKey(cutoffDate.getTime())
-          const cleaned = {}
+          const cutoffDate = new Date();
+          cutoffDate.setDate(cutoffDate.getDate() - 30);
+          const cutoffKey = this.formatDateKey(cutoffDate.getTime());
+          const cleaned = {};
           for (const [key, val] of Object.entries(data.dates)) {
-            if (key >= cutoffKey) cleaned[key] = val
+            if (key >= cutoffKey) cleaned[key] = val;
           }
-          this.noiseReportMeta = { dates: cleaned }
+          this.noiseReportMeta = { dates: cleaned };
         } else {
-          this.noiseReportMeta = { dates: {} }
+          this.noiseReportMeta = { dates: {} };
         }
       } catch {
-        this.noiseReportMeta = { dates: {} }
+        this.noiseReportMeta = { dates: {} };
       }
     },
     async saveReportMeta() {
       try {
-        await dataProvider.saveData('noise-reports-meta', this.noiseReportMeta)
+        await dataProvider.saveData("noise-reports-meta", this.noiseReportMeta);
       } catch {
-        console.error('保存报告元数据失败')
+        console.error("保存报告元数据失败");
       }
     },
     async loadReportsForDate(dateStr) {
-      this.noiseSelectedDate = dateStr
+      this.noiseSelectedDate = dateStr;
       try {
-        const res = await dataProvider.loadData(`noise-reports-${dateStr}`)
-        const data = res?.data || res
-        this.noiseCurrentDateReports = Array.isArray(data) ? data : []
+        const res = await dataProvider.loadData(`noise-reports-${dateStr}`);
+        const data = res?.data || res;
+        this.noiseCurrentDateReports = Array.isArray(data) ? data : [];
       } catch {
-        this.noiseCurrentDateReports = []
+        this.noiseCurrentDateReports = [];
       }
     },
     async saveReportToDate(report) {
-      const dateStr = this.formatDateKey(report.startTime)
+      const dateStr = this.formatDateKey(report.startTime);
       // 加载当天已有报告
-      let existing = []
+      let existing = [];
       try {
-        const res = await dataProvider.loadData(`noise-reports-${dateStr}`)
-        const data = res?.data || res
-        if (Array.isArray(data)) existing = data
-      } catch { /* empty */ }
-      existing.push(report)
-      await dataProvider.saveData(`noise-reports-${dateStr}`, existing)
+        const res = await dataProvider.loadData(`noise-reports-${dateStr}`);
+        const data = res?.data || res;
+        if (Array.isArray(data)) existing = data;
+      } catch {
+        /* empty */
+      }
+      existing.push(report);
+      await dataProvider.saveData(`noise-reports-${dateStr}`, existing);
       // 更新元数据
-      if (!this.noiseReportMeta.dates) this.noiseReportMeta.dates = {}
-      const scores = existing.map(r => r.score)
+      if (!this.noiseReportMeta.dates) this.noiseReportMeta.dates = {};
+      const scores = existing.map((r) => r.score);
       this.noiseReportMeta.dates[dateStr] = {
         count: existing.length,
         avgScore: Math.round(scores.reduce((a, b) => a + b, 0) / scores.length),
-        sessions: existing.map(r => r.sessionName),
+        sessions: existing.map((r) => r.sessionName),
         lastUpdated: Date.now(),
-      }
-      await this.saveReportMeta()
+      };
+      await this.saveReportMeta();
       // 如果当前正在查看该日期，刷新
       if (this.noiseSelectedDate === dateStr) {
-        this.noiseCurrentDateReports = existing
+        this.noiseCurrentDateReports = existing;
       }
     },
     async loadSessionReports() {
-      await this.loadReportMeta()
+      await this.loadReportMeta();
       // 默认加载今天的报告
-      const today = this.formatDateKey(Date.now())
-      await this.loadReportsForDate(today)
+      const today = this.formatDateKey(Date.now());
+      await this.loadReportsForDate(today);
     },
     startSessionCheck() {
       // 每 30 秒检查是否在晚自习时间段
-      this.checkSessionTime()
+      this.checkSessionTime();
       this.noiseSessionCheckTimer = setInterval(() => {
-        this.checkSessionTime()
-      }, 30000)
+        this.checkSessionTime();
+      }, 30000);
     },
     stopSessionCheck() {
       if (this.noiseSessionCheckTimer) {
-        clearInterval(this.noiseSessionCheckTimer)
-        this.noiseSessionCheckTimer = null
+        clearInterval(this.noiseSessionCheckTimer);
+        this.noiseSessionCheckTimer = null;
       }
     },
     checkSessionTime() {
-      if (!this.noiseSessionConfig?.sessions) return
-      const now = new Date()
-      const nowMinutes = now.getHours() * 60 + now.getMinutes()
-      const activeSession = this.noiseSessionConfig.sessions.find(s => {
-        if (!s.enabled) return false
-        const [h, m] = s.start.split(':').map(Number)
-        const startMin = h * 60 + m
-        const endMin = startMin + (s.duration || 70)
-        return nowMinutes >= startMin && nowMinutes < endMin
-      })
+      if (!this.noiseSessionConfig?.sessions) return;
+      const now = new Date();
+      const nowMinutes = now.getHours() * 60 + now.getMinutes();
+      const activeSession = this.noiseSessionConfig.sessions.find((s) => {
+        if (!s.enabled) return false;
+        const [h, m] = s.start.split(":").map(Number);
+        const startMin = h * 60 + m;
+        const endMin = startMin + (s.duration || 70);
+        return nowMinutes >= startMin && nowMinutes < endMin;
+      });
       if (activeSession && !this.noiseSessionActive) {
         // 进入晚自习时段，自动开始
-        this.beginSession(activeSession)
+        this.beginSession(activeSession);
       } else if (!activeSession && this.noiseSessionActive) {
         // 离开晚自习时段，自动结束并保存
-        this.endSession()
+        this.endSession();
       }
     },
     beginSession(session) {
-      this.noiseSessionActive = true
+      this.noiseSessionActive = true;
       this.noiseSessionData = {
         sessionName: session.name,
         startTime: Date.now(),
@@ -1448,42 +1312,42 @@ export default {
         samples: [], // { t, db }
         slices: [],
         alertThresholdDb: this.noiseSessionConfig.alertThresholdDb || 55,
-      }
+      };
       // 如果还没在监测，自动开始
       if (!this.noiseMonitoring) {
-        this.startNoise()
+        this.startNoise();
       }
     },
     endSession() {
       if (!this.noiseSessionData) {
-        this.noiseSessionActive = false
-        return
+        this.noiseSessionActive = false;
+        return;
       }
-      this.noiseSessionData.endTime = Date.now()
-      this.noiseSessionData.slices = [...this.noiseHistory]
+      this.noiseSessionData.endTime = Date.now();
+      this.noiseSessionData.slices = [...this.noiseHistory];
       // 生成报告并按日期保存
-      const report = this.generateSessionReport(this.noiseSessionData)
-      this.saveReportToDate(report)
-      this.noiseSessionActive = false
-      this.noiseSessionData = null
+      const report = this.generateSessionReport(this.noiseSessionData);
+      this.saveReportToDate(report);
+      this.noiseSessionActive = false;
+      this.noiseSessionData = null;
     },
     collectSessionSample(snapshot) {
-      if (!this.noiseSessionData) return
-      const db = snapshot.currentDisplayDb
-      if (typeof db === 'number' && db > 0) {
+      if (!this.noiseSessionData) return;
+      const db = snapshot.currentDisplayDb;
+      if (typeof db === "number" && db > 0) {
         // 每 2 秒采样一次（通过间隔控制）
-        const samples = this.noiseSessionData.samples
-        const lastT = samples.length > 0 ? samples[samples.length - 1].t : 0
+        const samples = this.noiseSessionData.samples;
+        const lastT = samples.length > 0 ? samples[samples.length - 1].t : 0;
         if (Date.now() - lastT >= 2000) {
-          samples.push({ t: Date.now(), db: Math.round(db * 10) / 10 })
+          samples.push({ t: Date.now(), db: Math.round(db * 10) / 10 });
         }
       }
     },
     generateSessionReport(data) {
-      const samples = data.samples
-      const dbs = samples.map(s => s.db)
-      const threshold = data.alertThresholdDb
-      const duration = data.endTime - data.startTime
+      const samples = data.samples;
+      const dbs = samples.map((s) => s.db);
+      const threshold = data.alertThresholdDb;
+      const duration = data.endTime - data.startTime;
 
       if (dbs.length === 0) {
         return {
@@ -1491,43 +1355,54 @@ export default {
           startTime: data.startTime,
           endTime: data.endTime,
           duration,
-          avgDb: 0, maxDb: 0, score: 100,
-          overThresholdDuration: 0, overThresholdRatio: 0,
-          segmentCount: 0, samples: [],
+          avgDb: 0,
+          maxDb: 0,
+          score: 100,
+          overThresholdDuration: 0,
+          overThresholdRatio: 0,
+          segmentCount: 0,
+          samples: [],
           scorePenalties: { sustained: 0, time: 0, segment: 0 },
-        }
+        };
       }
 
       // 统计
-      const avgDb = Math.round(dbs.reduce((a, b) => a + b, 0) / dbs.length * 10) / 10
-      const maxDb = Math.round(Math.max(...dbs) * 10) / 10
+      const avgDb = Math.round((dbs.reduce((a, b) => a + b, 0) / dbs.length) * 10) / 10;
+      const maxDb = Math.round(Math.max(...dbs) * 10) / 10;
 
       // 超阈时长
-      let overCount = 0
-      dbs.forEach(d => { if (d > threshold) overCount++ })
-      const overThresholdRatio = overCount / dbs.length
-      const overThresholdDuration = Math.round(overThresholdRatio * duration / 1000)
+      let overCount = 0;
+      dbs.forEach((d) => {
+        if (d > threshold) overCount++;
+      });
+      const overThresholdRatio = overCount / dbs.length;
+      const overThresholdDuration = Math.round((overThresholdRatio * duration) / 1000);
 
       // 打断次数（超阈片段）
-      let segmentCount = 0
-      let inSegment = false
-      dbs.forEach(d => {
-        if (d > threshold && !inSegment) { segmentCount++; inSegment = true }
-        if (d <= threshold) inSegment = false
-      })
+      let segmentCount = 0;
+      let inSegment = false;
+      dbs.forEach((d) => {
+        if (d > threshold && !inSegment) {
+          segmentCount++;
+          inSegment = true;
+        }
+        if (d <= threshold) inSegment = false;
+      });
 
       // 评分
-      const sustainedPenalty = Math.min(40, Math.max(0, (avgDb - threshold) / 30 * 40))
-      const timePenalty = Math.min(30, overThresholdRatio * 30)
-      const segmentPenalty = Math.min(30, (segmentCount / Math.max(1, duration / 60000) / 6) * 30)
-      const score = Math.max(0, Math.round(100 - sustainedPenalty - timePenalty - segmentPenalty))
+      const sustainedPenalty = Math.min(40, Math.max(0, ((avgDb - threshold) / 30) * 40));
+      const timePenalty = Math.min(30, overThresholdRatio * 30);
+      const segmentPenalty = Math.min(30, (segmentCount / Math.max(1, duration / 60000) / 6) * 30);
+      const score = Math.max(0, Math.round(100 - sustainedPenalty - timePenalty - segmentPenalty));
 
       return {
         sessionName: data.sessionName,
         startTime: data.startTime,
         endTime: data.endTime,
         duration,
-        avgDb, maxDb, score,
+        avgDb,
+        maxDb,
+        score,
         overThresholdDuration,
         overThresholdRatio: Math.round(overThresholdRatio * 1000) / 10,
         segmentCount,
@@ -1538,30 +1413,32 @@ export default {
           segment: Math.round(segmentPenalty),
         },
         alertThresholdDb: threshold,
-      }
+      };
     },
     downsampleArray(arr, targetLen) {
-      const step = arr.length / targetLen
-      const result = []
+      const step = arr.length / targetLen;
+      const result = [];
       for (let i = 0; i < targetLen; i++) {
-        result.push(arr[Math.floor(i * step)])
+        result.push(arr[Math.floor(i * step)]);
       }
-      return result
+      return result;
     },
     async onSelectReportDate(dateStr) {
-      await this.loadReportsForDate(dateStr)
+      await this.loadReportsForDate(dateStr);
     },
     async onClearDateReports(dateStr) {
       try {
-        await dataProvider.saveData(`noise-reports-${dateStr}`, [])
-      } catch { /* empty */ }
+        await dataProvider.saveData(`noise-reports-${dateStr}`, []);
+      } catch {
+        /* empty */
+      }
       // 更新元数据
       if (this.noiseReportMeta.dates) {
-        delete this.noiseReportMeta.dates[dateStr]
-        await this.saveReportMeta()
+        delete this.noiseReportMeta.dates[dateStr];
+        await this.saveReportMeta();
       }
       if (this.noiseSelectedDate === dateStr) {
-        this.noiseCurrentDateReports = []
+        this.noiseCurrentDateReports = [];
       }
     },
     async onClearAllReports() {
@@ -1569,16 +1446,18 @@ export default {
       if (this.noiseReportMeta.dates) {
         for (const dateStr of Object.keys(this.noiseReportMeta.dates)) {
           try {
-            await dataProvider.saveData(`noise-reports-${dateStr}`, [])
-          } catch { /* empty */ }
+            await dataProvider.saveData(`noise-reports-${dateStr}`, []);
+          } catch {
+            /* empty */
+          }
         }
       }
-      this.noiseReportMeta = { dates: {} }
-      await this.saveReportMeta()
-      this.noiseCurrentDateReports = []
+      this.noiseReportMeta = { dates: {} };
+      await this.saveReportMeta();
+      this.noiseCurrentDateReports = [];
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -1592,12 +1471,12 @@ export default {
 }
 
 .time-display {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   white-space: nowrap;
 }
 
 .seconds-text {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
 }
 
 .date-line {
@@ -1648,7 +1527,9 @@ export default {
 
 .toolbar-fade-enter-active,
 .toolbar-fade-leave-active {
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 .toolbar-fade-enter-from,
@@ -1667,7 +1548,7 @@ export default {
 }
 
 .fullscreen-time-display {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   font-size: clamp(4rem, 15vw, 12rem);
   font-weight: 700;
   line-height: 1;
@@ -1677,7 +1558,7 @@ export default {
 }
 
 .fullscreen-seconds {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   font-size: 0.45em;
   vertical-align: baseline;
   margin-left: 4px;
@@ -1720,7 +1601,7 @@ export default {
 }
 
 .countdown-digit {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   font-size: clamp(3rem, 10vw, 8rem);
   font-weight: 700;
   line-height: 1;
@@ -1730,7 +1611,7 @@ export default {
 }
 
 .countdown-sep {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   font-size: clamp(3rem, 10vw, 8rem);
   font-weight: 300;
   line-height: 1;
@@ -1743,7 +1624,8 @@ export default {
 }
 
 @keyframes pulse-red {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -1760,7 +1642,7 @@ export default {
 
 .stopwatch-laps-table {
   background: transparent !important;
-  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", "Consolas", monospace;
   font-variant-numeric: tabular-nums;
 }
 </style>

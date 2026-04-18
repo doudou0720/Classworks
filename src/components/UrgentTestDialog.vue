@@ -1,26 +1,13 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    fullscreen
-    transition="dialog-bottom-transition"
-    scrollable
-  >
+  <v-dialog v-model="dialog" fullscreen transition="dialog-bottom-transition" scrollable>
     <v-card>
-      <v-toolbar
-        dark
-        flat
-      >
+      <v-toolbar dark flat>
         <v-toolbar-title>
-          <v-icon class="mr-2">
-            mdi-chat
-          </v-icon>
+          <v-icon class="mr-2"> mdi-chat </v-icon>
           发送通知
         </v-toolbar-title>
         <v-spacer />
-        <v-btn
-          icon="mdi-close"
-          @click="close"
-        />
+        <v-btn icon="mdi-close" @click="close" />
       </v-toolbar>
 
       <v-card-text class="pa-0">
@@ -31,10 +18,7 @@
                 <v-card-text>
                   <v-form>
                     <v-row>
-                      <v-col
-                        cols="12"
-                        md="6"
-                      >
+                      <v-col cols="12" md="6">
                         <v-switch
                           v-model="notificationForm.isUrgent"
                           label="强调通知"
@@ -72,9 +56,9 @@
                     @click="sendNotification"
                   >
                     <v-icon left>
-                      {{ notificationForm.isUrgent ? 'mdi-alert-circle' : 'mdi-information' }}
+                      {{ notificationForm.isUrgent ? "mdi-alert-circle" : "mdi-information" }}
                     </v-icon>
-                    {{ notificationForm.isUrgent ? '发送强调通知' : '发送通知' }}
+                    {{ notificationForm.isUrgent ? "发送强调通知" : "发送通知" }}
                   </v-btn>
 
                   <v-spacer />
@@ -88,9 +72,7 @@
             <v-col cols="12">
               <v-card>
                 <v-card-title>
-                  <v-icon class="mr-2">
-                    mdi-pin
-                  </v-icon>
+                  <v-icon class="mr-2"> mdi-pin </v-icon>
                   常驻通知管理
                 </v-card-title>
                 <v-card-text>
@@ -110,7 +92,7 @@
                     >
                       <template #prepend>
                         <v-icon :color="item.isUrgent ? 'error' : 'primary'">
-                          {{ item.isUrgent ? 'mdi-alert-circle' : 'mdi-information' }}
+                          {{ item.isUrgent ? "mdi-alert-circle" : "mdi-information" }}
                         </v-icon>
                       </template>
                       <template #append>
@@ -140,26 +122,14 @@
             <v-col cols="12">
               <v-card>
                 <v-card-title>
-                  <v-icon class="mr-2">
-                    mdi-history
-                  </v-icon>
+                  <v-icon class="mr-2"> mdi-history </v-icon>
                   消息记录
                   <v-spacer />
                 </v-card-title>
                 <v-card-text>
-                  <div
-                    v-if="sentMessages.length === 0"
-                    class="text-center text-grey py-8"
-                  >
-                    <v-icon
-                      size="64"
-                      color="grey-lighten-2"
-                    >
-                      mdi-message-outline
-                    </v-icon>
-                    <div class="mt-2">
-                      暂无发送记录
-                    </div>
+                  <div v-if="sentMessages.length === 0" class="text-center text-grey py-8">
+                    <v-icon size="64" color="grey-lighten-2"> mdi-message-outline </v-icon>
+                    <div class="mt-2">暂无发送记录</div>
                   </div>
                   <v-row v-else>
                     <v-col
@@ -170,14 +140,11 @@
                       lg="4"
                     >
                       <!-- 主消息卡片 -->
-                      <v-card
-                        :color="getMainCardColor(message.receipts)"
-                        class="mb-2"
-                      >
+                      <v-card :color="getMainCardColor(message.receipts)" class="mb-2">
                         <v-card-text>
                           <div class="d-flex align-center mb-2">
                             <span class="font-weight-medium">
-                              {{ message.isUrgent ? '强调通知' : '通知' }}
+                              {{ message.isUrgent ? "强调通知" : "通知" }}
                             </span>
                             <v-spacer />
                             <span class="text-caption font-weight-medium">
@@ -185,10 +152,7 @@
                             </span>
                           </div>
 
-                          <div
-                            class="text-body-2 mb-3"
-                            style="max-height: 60px; overflow: hidden;"
-                          >
+                          <div class="text-body-2 mb-3" style="max-height: 60px; overflow: hidden">
                             {{ message.message }}
                           </div>
 
@@ -212,8 +176,10 @@
                         >
                           <v-card-text class="pa-2">
                             <div class="align-center">
-                              <span class="text-body-2 font-weight-medium">{{ device.deviceName }}  </span>
-                              <br>
+                              <span class="text-body-2 font-weight-medium"
+                                >{{ device.deviceName }}
+                              </span>
+                              <br />
 
                               {{ device.deviceType }}
                             </div>
@@ -234,10 +200,16 @@
                         >
                           <v-card-text class="pa-2">
                             <div class="align-center">
-                              <span class="text-body-2 font-weight-medium">{{ device.deviceName }}</span>
+                              <span class="text-body-2 font-weight-medium">{{
+                                device.deviceName
+                              }}</span>
                               <v-spacer />
                               <span class="text-caption text-grey">
-                                {{ device.deviceType=="classroom"?"教室设备上的应用":device.deviceType }}
+                                {{
+                                  device.deviceType == "classroom"
+                                    ? "教室设备上的应用"
+                                    : device.deviceType
+                                }}
                               </span>
                             </div>
                             <div class="text-caption text-grey mt-1">
@@ -248,7 +220,6 @@
                       </div>
                       <div v-else>
                         <v-card
-
                           color="info-lighten-4"
                           variant="outlined"
                           class="mb-1"
@@ -274,37 +245,17 @@
     <EventSender ref="eventSender" />
 
     <!-- 编辑常驻通知对话框 -->
-    <v-dialog
-      v-model="editDialog"
-      max-width="500"
-      :fullscreen="$vuetify.display.xs"
-    >
+    <v-dialog v-model="editDialog" max-width="500" :fullscreen="$vuetify.display.xs">
       <v-card>
-        <v-toolbar
-          flat
-          density="compact"
-        >
+        <v-toolbar flat density="compact">
           <v-toolbar-title>编辑常驻通知</v-toolbar-title>
           <v-spacer />
-          <v-btn
-            icon="mdi-close"
-            @click="editDialog = false"
-          />
+          <v-btn icon="mdi-close" @click="editDialog = false" />
         </v-toolbar>
         <v-card-text>
           <v-form>
-            <v-textarea
-              v-model="editForm.message"
-              label="通知内容"
-              rows="3"
-              auto-grow
-            />
-            <v-switch
-              v-model="editForm.isUrgent"
-              label="强调通知"
-              color="error"
-              hide-details
-            />
+            <v-textarea v-model="editForm.message" label="通知内容" rows="3" auto-grow />
+            <v-switch v-model="editForm.isUrgent" label="强调通知" color="error" hide-details />
             <v-checkbox
               v-model="editForm.resend"
               label="保存并重新发送通知"
@@ -315,49 +266,23 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            variant="text"
-            @click="editDialog = false"
-          >
-            取消
-          </v-btn>
-          <v-btn
-            color="primary"
-            :loading="savingEdit"
-            @click="saveEdit"
-          >
-            保存
-          </v-btn>
+          <v-btn variant="text" @click="editDialog = false"> 取消 </v-btn>
+          <v-btn color="primary" :loading="savingEdit" @click="saveEdit"> 保存 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
     <!-- 删除确认对话框 -->
-    <v-dialog
-      v-model="deleteConfirmDialog"
-      max-width="400"
-    >
+    <v-dialog v-model="deleteConfirmDialog" max-width="400">
       <v-card>
-        <v-card-title class="text-h5">
-          确认删除
-        </v-card-title>
+        <v-card-title class="text-h5"> 确认删除 </v-card-title>
         <v-card-text>确定要删除这条常驻通知吗？此操作无法撤销。</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            color="grey-darken-1"
-            variant="text"
-            @click="deleteConfirmDialog = false"
-          >
+          <v-btn color="grey-darken-1" variant="text" @click="deleteConfirmDialog = false">
             取消
           </v-btn>
-          <v-btn
-            color="error"
-            variant="text"
-            @click="executeDelete"
-          >
-            删除
-          </v-btn>
+          <v-btn color="error" variant="text" @click="executeDelete"> 删除 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -365,31 +290,31 @@
 </template>
 
 <script>
-import ChatWidget from '@/components/ChatWidget.vue'
-import EventSender from '@/components/EventSender.vue'
-import { on as socketOn } from '@/utils/socketClient'
-import dataProvider from '@/utils/dataProvider'
+import ChatWidget from "@/components/ChatWidget.vue";
+import EventSender from "@/components/EventSender.vue";
+import { on as socketOn } from "@/utils/socketClient";
+import dataProvider from "@/utils/dataProvider";
 
 export default {
-  name: 'UrgentTestDialog',
+  name: "UrgentTestDialog",
   components: {
     ChatWidget,
-    EventSender
+    EventSender,
   },
   props: {
     modelValue: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['update:modelValue'],
+  emits: ["update:modelValue"],
   data() {
     return {
       sending: false,
       notificationForm: {
         isUrgent: false,
-        message: '',
-        isPersistent: false
+        message: "",
+        isPersistent: false,
       },
       sentMessages: [],
       receiptCleanup: [],
@@ -397,63 +322,63 @@ export default {
       editDialog: false,
       editForm: {
         id: null,
-        message: '',
+        message: "",
         isUrgent: false,
-        resend: false
+        resend: false,
       },
       savingEdit: false,
       deleteConfirmDialog: false,
       itemToDelete: null,
-    }
+    };
   },
   computed: {
     dialog: {
       get() {
-        return this.modelValue
+        return this.modelValue;
       },
       set(value) {
-        this.$emit('update:modelValue', value)
-      }
-    }
+        this.$emit("update:modelValue", value);
+      },
+    },
   },
   mounted() {
-    this.setupEventListeners()
-    this.loadPersistentNotifications()
+    this.setupEventListeners();
+    this.loadPersistentNotifications();
   },
   beforeUnmount() {
-    this.cleanup()
+    this.cleanup();
   },
   methods: {
     generateNotificationId() {
       // 生成32位随机字符串
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-      let result = ''
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
       for (let i = 0; i < 32; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length))
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
       }
-      return result
+      return result;
     },
 
     async sendNotification() {
-      if (!this.notificationForm.message.trim()) return
+      if (!this.notificationForm.message.trim()) return;
 
-      this.sending = true
+      this.sending = true;
       try {
         // 生成32位随机通知ID
-        const notificationId = this.generateNotificationId()
-        const messageContent = this.notificationForm.message
-        const isUrgent = this.notificationForm.isUrgent
-        const isPersistent = this.notificationForm.isPersistent
+        const notificationId = this.generateNotificationId();
+        const messageContent = this.notificationForm.message;
+        const isUrgent = this.notificationForm.isUrgent;
+        const isPersistent = this.notificationForm.isPersistent;
 
         const result = await this.$refs.eventSender.sendNotification(
           messageContent,
           isUrgent,
           [],
-          { deviceName: '测试设备', deviceType: 'system', isReadOnly: false },
-          notificationId
-        )
+          { deviceName: "测试设备", deviceType: "system", isReadOnly: false },
+          notificationId,
+        );
 
-        const eventId = result?.eventId || `msg-${Date.now()}`
+        const eventId = result?.eventId || `msg-${Date.now()}`;
 
         this.sentMessages.push({
           id: eventId,
@@ -463,150 +388,149 @@ export default {
           timestamp: new Date().toISOString(),
           receipts: {
             displayed: [],
-            read: []
-          }
-        })
+            read: [],
+          },
+        });
 
         // 处理常驻通知
         if (isPersistent) {
           try {
-            const listKey = 'notification-list'
-            const existingData = await dataProvider.loadData(listKey)
-            let list = []
+            const listKey = "notification-list";
+            const existingData = await dataProvider.loadData(listKey);
+            let list = [];
             if (existingData && Array.isArray(existingData)) {
-              list = existingData
-            } else if (existingData && existingData.success !== false && Array.isArray(existingData.data)) {
-            // list = existingData.data
-               list = existingData.data
+              list = existingData;
+            } else if (
+              existingData &&
+              existingData.success !== false &&
+              Array.isArray(existingData.data)
+            ) {
+              // list = existingData.data
+              list = existingData.data;
             }
 
             const newNotification = {
               id: notificationId,
               message: messageContent,
               isUrgent: isUrgent,
-              timestamp: new Date().toISOString()
-            }
+              timestamp: new Date().toISOString(),
+            };
 
-            list.unshift(newNotification)
-            await dataProvider.saveData(listKey, list)
+            list.unshift(newNotification);
+            await dataProvider.saveData(listKey, list);
             // 更新本地列表
-            this.persistentNotifications = list
-            console.log('常驻通知已保存')
+            this.persistentNotifications = list;
+            console.log("常驻通知已保存");
           } catch (e) {
-            console.error('保存常驻通知失败', e)
+            console.error("保存常驻通知失败", e);
           }
         }
 
-        console.log('通知已发送，事件ID:', eventId, '通知ID:', notificationId)
-        this.resetForm()
+        console.log("通知已发送，事件ID:", eventId, "通知ID:", notificationId);
+        this.resetForm();
       } catch (error) {
-        console.error('发送通知失败:', error)
+        console.error("发送通知失败:", error);
       } finally {
-        this.sending = false
+        this.sending = false;
       }
     },
 
     resetForm() {
       this.notificationForm = {
         isUrgent: false,
-        message: '',
-        isPersistent: false
-      }
+        message: "",
+        isPersistent: false,
+      };
     },
 
     close() {
-      this.dialog = false
+      this.dialog = false;
     },
 
     setupEventListeners() {
       // 监听显示回执
-      const cleanup1 = socketOn('notification-displayed', (data) => {
-        console.log('收到显示回执:', data)
-        this.updateReceipt(data, 'displayed')
-      })
+      const cleanup1 = socketOn("notification-displayed", (data) => {
+        console.log("收到显示回执:", data);
+        this.updateReceipt(data, "displayed");
+      });
 
       // 监听已读回执
-      const cleanup2 = socketOn('notification-read', (data) => {
-        console.log('收到已读回执:', data)
-        this.updateReceipt(data, 'read')
-      })
+      const cleanup2 = socketOn("notification-read", (data) => {
+        console.log("收到已读回执:", data);
+        this.updateReceipt(data, "read");
+      });
 
-      this.receiptCleanup.push(cleanup1, cleanup2)
+      this.receiptCleanup.push(cleanup1, cleanup2);
     },
 
     updateReceipt(data, type) {
-      const originalEventId = data.originalEventId
-      const notificationId = data.notificationId || data.content?.notificationId
+      const originalEventId = data.originalEventId;
+      const notificationId = data.notificationId || data.content?.notificationId;
 
-      if (!originalEventId && !notificationId) return
+      if (!originalEventId && !notificationId) return;
 
-      const message = this.sentMessages.find(msg =>
-        msg.id === originalEventId ||
-        msg.notificationId === notificationId
-      )
+      const message = this.sentMessages.find(
+        (msg) => msg.id === originalEventId || msg.notificationId === notificationId,
+      );
       if (message) {
         // 使用 senderInfo 中的设备信息，并包含 senderId
         const deviceInfo = {
-          senderId: data.senderId || 'unknown-sender',
-          deviceName: data.senderInfo?.deviceName || data.deviceInfo?.deviceName || '未知设备',
-          deviceType: data.senderInfo?.deviceType || data.deviceInfo?.deviceType || 'unknown',
-          timestamp: new Date().toISOString()
-        }
+          senderId: data.senderId || "unknown-sender",
+          deviceName: data.senderInfo?.deviceName || data.deviceInfo?.deviceName || "未知设备",
+          deviceType: data.senderInfo?.deviceType || data.deviceInfo?.deviceType || "unknown",
+          timestamp: new Date().toISOString(),
+        };
 
         // 避免重复添加相同设备（按 senderId 判断）
-        const exists = message.receipts[type].find(item =>
-          item.senderId === deviceInfo.senderId
-        )
+        const exists = message.receipts[type].find((item) => item.senderId === deviceInfo.senderId);
 
         if (!exists) {
-          message.receipts[type].push(deviceInfo)
-          console.log(`更新${type}回执:`, message.id, deviceInfo)
+          message.receipts[type].push(deviceInfo);
+          console.log(`更新${type}回执:`, message.id, deviceInfo);
         }
       }
     },
 
     cleanup() {
-      this.receiptCleanup.forEach(cleanup => cleanup())
-      this.receiptCleanup = []
+      this.receiptCleanup.forEach((cleanup) => cleanup());
+      this.receiptCleanup = [];
     },
 
     formatTime(timestamp) {
-      return new Date(timestamp).toLocaleString('zh-CN')
+      return new Date(timestamp).toLocaleString("zh-CN");
     },
 
     getReceiptStatus(receipts) {
-      if (receipts.read.length > 0) return '已读'
-      if (receipts.displayed.length > 0) return '已显示'
-      return '已发送'
+      if (receipts.read.length > 0) return "已读";
+      if (receipts.displayed.length > 0) return "已显示";
+      return "已发送";
     },
 
     getReceiptColor(receipts) {
-      if (receipts.read.length > 0) return 'success'
-      if (receipts.displayed.length > 0) return 'info'
-      return 'grey'
+      if (receipts.read.length > 0) return "success";
+      if (receipts.displayed.length > 0) return "info";
+      return "grey";
     },
 
     formatDeviceTime(timestamp) {
-      return new Date(timestamp).toLocaleTimeString('zh-CN')
+      return new Date(timestamp).toLocaleTimeString("zh-CN");
     },
 
     getMainCardColor(receipts) {
       // 优先显示已读状态（绿色），其次是已显示状态（蓝色）
-      if (receipts.read.length > 0) return 'success'
-      if (receipts.displayed.length > 0) return 'info'
-      return 'grey'
+      if (receipts.read.length > 0) return "success";
+      if (receipts.displayed.length > 0) return "info";
+      return "grey";
     },
 
     hasAnyReceipts(receipts) {
-      return receipts.read.length > 0 || receipts.displayed.length > 0
+      return receipts.read.length > 0 || receipts.displayed.length > 0;
     },
 
     getDisplayedOnlyDevices(receipts) {
       // 返回只显示未读的设备（按 senderId 排除已读的设备）
-      const readSenderIds = receipts.read.map(device => device.senderId)
-      return receipts.displayed.filter(device =>
-        !readSenderIds.includes(device.senderId)
-      )
+      const readSenderIds = receipts.read.map((device) => device.senderId);
+      return receipts.displayed.filter((device) => !readSenderIds.includes(device.senderId));
     },
 
     openEditDialog(notification) {
@@ -615,44 +539,44 @@ export default {
         message: notification.message,
         isUrgent: notification.isUrgent || false,
         resend: false,
-        timestamp: notification.timestamp
-      }
-      this.editDialog = true
+        timestamp: notification.timestamp,
+      };
+      this.editDialog = true;
     },
 
     async saveEdit() {
-      if (!this.editForm.message.trim()) return
+      if (!this.editForm.message.trim()) return;
 
-      this.savingEdit = true
+      this.savingEdit = true;
       try {
         // 更新列表
-        const index = this.persistentNotifications.findIndex(n => n.id === this.editForm.id)
+        const index = this.persistentNotifications.findIndex((n) => n.id === this.editForm.id);
         if (index !== -1) {
           this.persistentNotifications[index] = {
             ...this.persistentNotifications[index],
             message: this.editForm.message,
             isUrgent: this.editForm.isUrgent,
             // 如果重新发送，更新时间戳？或者保持原样？通常编辑后更新时间戳比较合理
-            timestamp: new Date().toISOString()
-          }
+            timestamp: new Date().toISOString(),
+          };
 
-          await dataProvider.saveData('notification-list', this.persistentNotifications)
+          await dataProvider.saveData("notification-list", this.persistentNotifications);
 
           // 如果需要重新发送
           if (this.editForm.resend) {
-             const notificationId = this.editForm.id
-             const messageContent = this.editForm.message
-             const isUrgent = this.editForm.isUrgent
+            const notificationId = this.editForm.id;
+            const messageContent = this.editForm.message;
+            const isUrgent = this.editForm.isUrgent;
 
-             const result = await this.$refs.eventSender.sendNotification(
+            const result = await this.$refs.eventSender.sendNotification(
               messageContent,
               isUrgent,
               [],
-              { deviceName: '测试设备', deviceType: 'system', isReadOnly: false },
-              notificationId
-            )
+              { deviceName: "测试设备", deviceType: "system", isReadOnly: false },
+              notificationId,
+            );
 
-            const eventId = result?.eventId || `msg-${Date.now()}`
+            const eventId = result?.eventId || `msg-${Date.now()}`;
 
             // 添加到发送记录
             this.sentMessages.push({
@@ -663,81 +587,84 @@ export default {
               timestamp: new Date().toISOString(),
               receipts: {
                 displayed: [],
-                read: []
-              }
-            })
+                read: [],
+              },
+            });
           }
 
-          this.editDialog = false
-          this.$message?.success('已更新')
+          this.editDialog = false;
+          this.$message?.success("已更新");
         }
       } catch (e) {
-        console.error('保存失败', e)
-        this.$message?.error('保存失败')
+        console.error("保存失败", e);
+        this.$message?.error("保存失败");
       } finally {
-        this.savingEdit = false
+        this.savingEdit = false;
       }
     },
 
     async loadPersistentNotifications() {
       try {
-        const res = await dataProvider.loadData('notification-list')
+        const res = await dataProvider.loadData("notification-list");
         if (res && Array.isArray(res)) {
-          this.persistentNotifications = res
+          this.persistentNotifications = res;
         } else if (res && res.success !== false && Array.isArray(res.data)) {
-          this.persistentNotifications = res.data
+          this.persistentNotifications = res.data;
         } else {
-          this.persistentNotifications = []
+          this.persistentNotifications = [];
         }
       } catch (e) {
-        console.error('加载常驻通知失败', e)
+        console.error("加载常驻通知失败", e);
       }
     },
 
     async deleteNotification(notificationId) {
-      const confirmed = confirm('确定要删除这个通知吗？')
-      if (!confirmed) return
+      const confirmed = confirm("确定要删除这个通知吗？");
+      if (!confirmed) return;
 
       try {
         // 从 sentMessages 中删除
-        this.sentMessages = this.sentMessages.filter(msg => msg.id !== notificationId)
+        this.sentMessages = this.sentMessages.filter((msg) => msg.id !== notificationId);
 
         // 从常驻通知列表中删除
-        this.persistentNotifications = this.persistentNotifications.filter(notif => notif.id !== notificationId)
+        this.persistentNotifications = this.persistentNotifications.filter(
+          (notif) => notif.id !== notificationId,
+        );
 
         // TODO: 调用接口删除通知（如果有的话）
 
-        console.log('通知已删除，通知ID:', notificationId)
+        console.log("通知已删除，通知ID:", notificationId);
       } catch (error) {
-        console.error('删除通知失败:', error)
+        console.error("删除通知失败:", error);
       }
     },
 
     deletePersistentNotification(id) {
-      this.itemToDelete = id
-      this.deleteConfirmDialog = true
+      this.itemToDelete = id;
+      this.deleteConfirmDialog = true;
     },
 
     async executeDelete() {
-      if (!this.itemToDelete) return
+      if (!this.itemToDelete) return;
 
-      const id = this.itemToDelete
-      this.deleteConfirmDialog = false
-      this.itemToDelete = null
+      const id = this.itemToDelete;
+      this.deleteConfirmDialog = false;
+      this.itemToDelete = null;
 
       try {
-        this.persistentNotifications = this.persistentNotifications.filter(n => n.id !== id)
+        this.persistentNotifications = this.persistentNotifications.filter((n) => n.id !== id);
         // 当通知列表为空时，保存空对象 {} 而不是空数组 []，因为后端不接受空数组
-        const dataToSave = this.persistentNotifications.length > 0 ? this.persistentNotifications : {}
-        await dataProvider.saveData('notification-list', dataToSave)
-        this.$message?.success('已删除')
+        const dataToSave =
+          this.persistentNotifications.length > 0 ? this.persistentNotifications : {};
+        await dataProvider.saveData("notification-list", dataToSave);
+        this.$message?.success("已删除");
       } catch (e) {
-        console.error('删除失败', e)
-        this.$message?.error('删除失败')
+        console.error("删除失败", e);
+        this.$message?.error("删除失败");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

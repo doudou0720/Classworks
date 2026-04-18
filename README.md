@@ -38,7 +38,6 @@ pnpm run dev
 pnpm run build
 ```
 
-
 ## 🤝 参与贡献
 
 Classworks 非常欢迎你的加入！[提一个 Issue](https://github.com/ZeroCatDev/Classworks/issues/new) 或者提交一个 Pull Request。对于小白问题，最好在 qq 群里问，我们会尽量回答。
@@ -60,5 +59,4 @@ ZeroCat 的项目 遵循 [Contributor Covenant](http://contributor-covenant.org/
 
 ZeroCat 社区项目遵循 [AGPL-3.0 许可证](LICENSE)。
 
-
-Copyright (C) 2020-2026  Sunwuyuan.
+Copyright (C) 2020-2026 Sunwuyuan.

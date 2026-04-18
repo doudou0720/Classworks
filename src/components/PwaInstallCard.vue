@@ -1,25 +1,15 @@
 <template>
-  <v-card
-    v-if="showCard"
-    class="mb-4"
-    color="surface-variant"
-    variant="tonal"
-  >
+  <v-card v-if="showCard" class="mb-4" color="surface-variant" variant="tonal">
     <div class="d-flex flex-no-wrap justify-space-between">
       <div class="pe-4">
-        <v-card-title class="text-h6">
-          安装应用与授权
-        </v-card-title>
+        <v-card-title class="text-h6"> 安装应用与授权 </v-card-title>
 
         <v-card-subtitle class="pb-1">
           手动点选下方项目请求安装和权限，也可以直接关闭
         </v-card-subtitle>
 
         <v-card-text class="pt-0 pb-1">
-          <v-list
-            density="comfortable"
-            lines="two"
-          >
+          <v-list density="comfortable" lines="two">
             <v-list-item
               v-for="item in chipList"
               :key="item.key"
@@ -27,11 +17,7 @@
               @click="() => handleSingleRequest(item.key)"
             >
               <template #prepend>
-                <v-avatar
-                  :color="chipColors[item.status]"
-                  size="32"
-                  variant="tonal"
-                >
+                <v-avatar :color="chipColors[item.status]" size="32" variant="tonal">
                   <v-icon :icon="statusIcons[item.status]" />
                 </v-avatar>
               </template>
@@ -40,12 +26,7 @@
               <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
 
               <template #append>
-                <v-chip
-                  :color="chipColors[item.status]"
-                  size="small"
-                  variant="tonal"
-                  class="me-2"
-                >
+                <v-chip :color="chipColors[item.status]" size="small" variant="tonal" class="me-2">
                   {{ statusText[item.status] }}
                 </v-chip>
                 <v-btn
@@ -61,14 +42,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn
-            class="ms-2"
-            variant="outlined"
-            size="small"
-            @click="dismiss"
-          >
-            关闭
-          </v-btn>
+          <v-btn class="ms-2" variant="outlined" size="small" @click="dismiss"> 关闭 </v-btn>
           <v-btn
             class="ms-2"
             variant="elevated"
@@ -83,22 +57,12 @@
         </v-card-actions>
       </div>
 
-      <v-avatar
-        class="ma-3"
-        size="100"
-        rounded="0"
-      >
-        <v-icon
-          icon="mdi-monitor-cellphone"
-          size="80"
-        />
+      <v-avatar class="ma-3" size="100" rounded="0">
+        <v-icon icon="mdi-monitor-cellphone" size="80" />
       </v-avatar>
     </div>
 
-    <v-dialog
-      v-model="helpDialog"
-      max-width="520"
-    >
+    <v-dialog v-model="helpDialog" max-width="520">
       <v-card>
         <v-card-title class="text-h6">
           {{ helpContent.title }}
@@ -122,12 +86,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn
-            variant="text"
-            @click="helpDialog = false"
-          >
-            我知道了
-          </v-btn>
+          <v-btn variant="text" @click="helpDialog = false"> 我知道了 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -135,8 +94,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
-import { getSetting, setSetting, requestNotificationPermission, requestPersistentStorage } from "@/utils/settings";
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
+import {
+  getSetting,
+  setSetting,
+  requestNotificationPermission,
+  requestPersistentStorage,
+} from "@/utils/settings";
 
 const showCard = ref(false);
 const isRequesting = ref(false);
@@ -170,8 +134,16 @@ const chipColors = {
 
 const permissionStates = reactive({
   pwa: { label: "安装应用", description: "将网站安装为独立应用，便于快速启动", status: "pending" },
-  notification: { label: "通知权限", description: "允许接收作业、考试等通知提醒", status: "pending" },
-  storage: { label: "离线存储", description: "启用持久化存储以获得更稳健的离线体验", status: "pending" },
+  notification: {
+    label: "通知权限",
+    description: "允许接收作业、考试等通知提醒",
+    status: "pending",
+  },
+  storage: {
+    label: "离线存储",
+    description: "启用持久化存储以获得更稳健的离线体验",
+    status: "pending",
+  },
 });
 
 const chipList = computed(() => [
@@ -220,8 +192,8 @@ const refreshStates = async () => {
     return;
   }
 
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-    window.navigator.standalone === true;
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 
   if (isStandalone) {
     permissionStates.pwa.status = "granted";
@@ -236,11 +208,8 @@ const refreshStates = async () => {
     permissionStates.notification.status = "unavailable";
   } else {
     const current = Notification.permission;
-    permissionStates.notification.status = current === "granted"
-      ? "granted"
-      : current === "denied"
-        ? "denied"
-        : "pending";
+    permissionStates.notification.status =
+      current === "granted" ? "granted" : current === "denied" ? "denied" : "pending";
   }
 
   if (navigator.storage?.persisted) {
@@ -363,15 +332,15 @@ const onDisplayModeChange = () => {
 
 onMounted(() => {
   refreshStates();
-  window.addEventListener('pwa-prompt-ready', onPromptReady);
-  displayModeMedia = window.matchMedia('(display-mode: standalone)');
-  displayModeMedia.addEventListener('change', onDisplayModeChange);
+  window.addEventListener("pwa-prompt-ready", onPromptReady);
+  displayModeMedia = window.matchMedia("(display-mode: standalone)");
+  displayModeMedia.addEventListener("change", onDisplayModeChange);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('pwa-prompt-ready', onPromptReady);
+  window.removeEventListener("pwa-prompt-ready", onPromptReady);
   if (displayModeMedia) {
-    displayModeMedia.removeEventListener('change', onDisplayModeChange);
+    displayModeMedia.removeEventListener("change", onDisplayModeChange);
   }
 });
 </script>
