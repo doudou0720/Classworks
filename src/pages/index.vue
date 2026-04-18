@@ -4,6 +4,57 @@
       {{ titleText }}
     </v-app-bar-title>
 
+    <!-- 噪音监测显示（放在中间，无边框） -->
+    <div
+      v-if="noiseEnabled"
+      class="d-flex align-center mx-4"
+      style="cursor: pointer"
+      @click="showNoiseDetail = true"
+    >
+      <template v-if="micPermissionState === 'denied'">
+        <v-icon color="error" size="20"> mdi-microphone-off </v-icon>
+        <span class="text-caption text-error ml-1">权限被拒</span>
+      </template>
+      <template v-else-if="micPermissionState === 'unavailable'">
+        <v-icon color="grey" size="20"> mdi-microphone-question </v-icon>
+        <span class="text-caption text-medium-emphasis ml-1">无麦克风</span>
+      </template>
+      <template v-else>
+        <span
+          class="font-weight-bold"
+          style="font-size: 18px; font-variant-numeric: tabular-nums"
+        >
+          {{ noiseMonitoring ? noiseDisplayDb : '--' }}
+        </span>
+        <span class="text-caption text-medium-emphasis ml-1">dB</span>
+        <v-icon
+          v-if="noiseMonitoring"
+          size="16"
+          class="ml-1"
+        >
+          mdi-microphone
+        </v-icon>
+        <v-icon
+          v-else
+          color="grey"
+          size="16"
+          class="ml-1"
+        >
+          mdi-microphone-off
+        </v-icon>
+      </template>
+    </div>
+
+    <!-- 启用噪音监测按钮（放在中间） -->
+    <v-btn
+      v-if="!noiseEnabled"
+      class="mx-2"
+      icon="mdi-microphone"
+      variant="text"
+      title="启用噪音监测"
+      @click="onNoiseClick"
+    />
+
     <v-spacer />
 
     <template #append>
@@ -50,6 +101,20 @@
       <v-btn icon="mdi-cog" variant="text" @click="$router.push('/settings')" />
     </template>
   </v-app-bar>
+
+  <!-- 噪音进度条（顶栏底部，黑白配色） -->
+  <div
+    v-if="noiseEnabled && noiseMonitoring"
+    style="position: fixed; top: 64px; left: 0; right: 0; z-index: 999; pointer-events: none"
+  >
+    <v-progress-linear
+      :model-value="noiseLevelPercent"
+      color="white"
+      bg-color="grey-darken-1"
+      height="4"
+    />
+  </div>
+
   <!-- 初始化选择卡片，仅在首页且需要授权时显示；不影响顶栏 -->
   <init-service-chooser v-if="shouldShowInit" :preconfig="preconfigData" @done="settingsTick++" />
 
@@ -405,6 +470,23 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+
+  <!-- 噪音监测详情对话框 -->
+  <noise-monitor-detail
+    v-model="showNoiseDetail"
+    :status="noiseStatus"
+    :current-db="noiseDisplayDb"
+    :current-dbfs="noiseCurrentDbfs"
+    :noise-level="noiseStatusText"
+    :db-color="noiseDbColor"
+    :current-score="noiseScore"
+    :score-detail="noiseScoreDetail"
+    :history="noiseHistory"
+    :is-monitoring="noiseMonitoring"
+    :mic-permission-state="micPermissionState"
+    @start="startNoise"
+    @stop="stopNoise"
+  />
   <br /><br /><br />
 </template>
 
@@ -450,6 +532,10 @@ const StudentNameManager = defineAsyncComponent({
   loader: () => import("@/components/StudentNameManager.vue"),
   delay: 200,
 });
+const NoiseMonitorDetail = defineAsyncComponent({
+  loader: () => import("@/components/NoiseMonitorDetail.vue"),
+  delay: 0,
+});
 const UrgentTestDialog = defineAsyncComponent({
   loader: () => import("@/components/UrgentTestDialog.vue"),
   delay: 0,
@@ -491,6 +577,7 @@ import {
   onConnect as onSocketConnect,
 } from "@/utils/socketClient";
 import { createDeviceEventHandler } from "@/utils/deviceEvents";
+import { noiseService } from "@wydev/noise-core";
 import axios from "@/axios/axios";
 
 export default {
@@ -504,6 +591,7 @@ export default {
     InitServiceChooser,
     ChatWidget,
     StudentNameManager,
+    NoiseMonitorDetail,
     UrgentTestDialog,
     AttendanceSidebar,
     AttendanceManagementDialog,
@@ -640,6 +728,22 @@ export default {
       urgentTestDialog: false,
       // 令牌信息
       tokenInfo: null,
+
+      // 噪音监测状态
+      noiseEnabled: false,
+      noiseMonitoring: false,
+      noiseStatus: "initializing",
+      noiseCurrentDbfs: -100,
+      noiseSmoothedDb: 0,
+      noiseScore: null,
+      noiseScoreDetail: null,
+      noiseHistory: [],
+      noiseUnsubscribe: null,
+      noiseDbColor: "grey",
+      noiseStatusText: "未监测",
+      micPermissionState: "prompt",
+      showNoiseDetail: false,
+      showMicPermissionDialog: false,
 
       // 常驻通知
       persistentNotifications: [],
@@ -928,6 +1032,31 @@ export default {
       return this.tokenInfo.deviceType === "teacher" || this.tokenInfo.deviceType === "classroom";
     },
 
+    noiseDbColor() {
+      const db = typeof this.noiseDisplayDb === "number" ? this.noiseDisplayDb : 0;
+      if (db < 40) return "success";
+      if (db < 60) return "warning";
+      if (db < 80) return "orange";
+      return "error";
+    },
+    noiseStatusText() {
+      if (!this.noiseMonitoring || this.noiseStatus !== "active") return "未监测";
+      const db = typeof this.noiseDisplayDb === "number" ? this.noiseDisplayDb : 0;
+      if (db < 40) return "安静";
+      if (db < 60) return "正常";
+      if (db < 80) return "较吵";
+      return "嘈杂";
+    },
+    noiseDisplayDb() {
+      if (!this.noiseMonitoring || this.noiseStatus !== "active") return "--";
+      return Math.round(this.noiseSmoothedDb);
+    },
+    noiseLevelPercent() {
+      if (!this.noiseMonitoring) return 0;
+      const db = typeof this.noiseDisplayDb === "number" ? this.noiseDisplayDb : 0;
+      return Math.min(100, Math.max(0, (db / 80) * 100));
+    },
+
     subjectOrder() {
       return [...this.state.availableSubjects]
         .sort((a, b) => a.order - b.order)
@@ -984,6 +1113,9 @@ export default {
       this.unwatchSettings = watchSettings(() => {
         this.updateSettings();
       });
+
+      // 初始化噪音监测
+      this.initNoiseMonitor();
 
       // 连接学生姓名管理组件（支持学生和教师）
       this.$nextTick(() => {
@@ -1092,6 +1224,9 @@ export default {
     } catch (e) {
       console.warn("主页面事件清理失败:", e);
     }
+
+    // 清理噪音监测
+    this.cleanupNoiseMonitor();
   },
 
   methods: {
@@ -1941,6 +2076,85 @@ export default {
           this.openRandomPicker();
         });
       }
+    },
+
+    // ===== 噪音监测相关方法 =====
+    async initNoiseMonitor() {
+      this.noiseEnabled = getSetting("noiseMonitor.enabled");
+      if (this.noiseEnabled) {
+        this.noiseHistory = noiseService.getHistory();
+        const micState = await this.checkMicPermission();
+        this.micPermissionState = micState;
+        if (micState === "granted" && getSetting("noiseMonitor.autoStart")) {
+          await this.startNoise();
+        }
+      }
+    },
+    async cleanupNoiseMonitor() {
+      if (this.noiseUnsubscribe) {
+        this.noiseUnsubscribe();
+        this.noiseUnsubscribe = null;
+      }
+      if (this.noiseMonitoring) {
+        noiseService.stop();
+        this.noiseMonitoring = false;
+      }
+    },
+    async checkMicPermission() {
+      try {
+        const result = await navigator.permissions.query({ name: "microphone" });
+        return result.state;
+      } catch {
+        return "unavailable";
+      }
+    },
+    async startNoise() {
+      try {
+        await noiseService.start();
+        this.noiseMonitoring = true;
+        this.noiseUnsubscribe = noiseService.subscribe((snapshot) => {
+          this.noiseStatus = snapshot.status;
+          this.noiseCurrentDbfs = snapshot.currentDbfs;
+          this.noiseCurrentDisplayDb = snapshot.currentDisplayDb;
+          const rawDb = snapshot.currentDisplayDb;
+          const alpha = 0.3;
+          this.noiseSmoothedDb =
+            this.noiseSmoothedDb === 0 ? rawDb : this.noiseSmoothedDb * (1 - alpha) + rawDb * alpha;
+          this.noiseScore = snapshot.currentScore ?? null;
+          this.noiseScoreDetail = snapshot.currentScoreDetail ?? null;
+          this.noiseHistory = noiseService.getHistory();
+        });
+      } catch (error) {
+        console.error("启动噪音监测失败:", error);
+      }
+    },
+    async stopNoise() {
+      if (this.noiseUnsubscribe) {
+        this.noiseUnsubscribe();
+        this.noiseUnsubscribe = null;
+      }
+      if (this.noiseMonitoring) {
+        noiseService.stop();
+        this.noiseMonitoring = false;
+      }
+    },
+    toggleNoise() {
+      if (this.noiseMonitoring) {
+        this.stopNoise();
+      } else {
+        this.startNoise();
+      }
+    },
+    onNoiseClick() {
+      if (this.micPermissionState === "denied" || this.micPermissionState === "unavailable") {
+        this.showNoiseDetail = true;
+        return;
+      }
+      if (!this.noiseEnabled) {
+        this.noiseEnabled = true;
+        setSetting("noiseMonitor.enabled", true);
+      }
+      this.toggleNoise();
     },
 
     parseUrlConfig() {
