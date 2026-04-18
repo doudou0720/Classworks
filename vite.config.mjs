@@ -174,6 +174,9 @@ export default defineConfig({
             styles: "wght@100;300;400;500;700;900",
           },
         ],
+        display: "swap",
+        fontBaseUrl: "https://fonts.googleapis.cn/css2",
+        preconnectUrl: "https://fonts.gstatic.cn",
       },
     }),
     AutoImport({
