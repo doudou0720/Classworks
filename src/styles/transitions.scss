@@ -92,9 +92,17 @@ $standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
 
   @media (pointer: coarse) {
     &::before {
-      // 增加触摸反馈区域
       margin: -8px;
     }
+  }
+}
+
+// 禁用含有输入框的卡片的点击缩放动画
+.v-card:has(.v-text-field),
+.v-card:has(.v-textarea) {
+  &:active {
+    transform: none;
+    transition: none;
   }
 }
 

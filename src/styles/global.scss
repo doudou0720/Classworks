@@ -17,6 +17,13 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
   }
+
+  &:has(.v-text-field),
+  &:has(.v-textarea) {
+    &:active {
+      transform: translateY(0);
+    }
+  }
 }
 
 // 触摸友好的按钮

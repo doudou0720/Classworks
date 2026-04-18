@@ -23,6 +23,13 @@
   &:active {
     transform: scale(0.98);
   }
+
+  &:has(.v-text-field),
+  &:has(.v-textarea) {
+    &:active {
+      transform: none;
+    }
+  }
 }
 
 // 卡片发光效果
